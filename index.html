@@ -1,498 +1,262 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    <link rel="stylesheet" href="./style.css">
-
-  </head>
-    
-  <body>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veloxis - Market Intelligence</title>
   <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .card { transition: all 0.3s ease; }
+    .card:hover { transform: translateY(-4px); }
+    .glow-red { box-shadow: 0 0 25px rgba(239, 68, 68, 0.5); }
+    .active-tab { color: #10b981; border-bottom: 3px solid #10b981; }
+  </style>
+</head>
+<body class="bg-zinc-950 text-white">
 
-<div class="min-h-screen bg-zinc-950 text-white font-sans">
-  <!-- Navigation -->
-  <nav class="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-      <div class="flex items-center gap-x-3">
-        <div class="w-9 h-9 bg-emerald-500 rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner">V</div>
-        <span class="text-3xl font-bold tracking-tighter">Veloxis</span>
-      </div>
-      <div class="flex items-center gap-x-8 text-lg font-medium">
-        <button onclick="showPage('dashboard')" class="nav-link hover:text-emerald-400 transition-colors">Dashboard</button>
-        <button onclick="showPage('indicators')" class="nav-link hover:text-emerald-400 transition-colors">Indicators</button>
-        <button onclick="showPage('analysis')" class="nav-link hover:text-emerald-400 transition-colors">Analysis</button>
-        <button onclick="showPage('news')" class="nav-link hover:text-emerald-400 transition-colors">News</button>
-        <button onclick="showPage('topmovers')" class="nav-link hover:text-emerald-400 transition-colors">Top Movers</button>
-      </div>
-      <div class="px-5 py-2 bg-zinc-800 rounded-3xl text-sm flex items-center gap-x-2">
-        <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-        Ahmed Alqarni
+  <!-- Top Navigation -->
+  <nav class="bg-black border-b border-zinc-800 sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 bg-emerald-500 rounded-2xl flex items-center justify-center text-2xl font-bold">V</div>
+          <span class="font-bold text-2xl tracking-tight">Veloxis</span>
+        </div>
+        
+        <div class="flex items-center gap-8 text-sm font-medium">
+          <a href="#dashboard" onclick="showPage('dashboard')" class="hover:text-emerald-400">Dashboard</a>
+          <a href="#indicators" onclick="showPage('indicators')" id="tab-indicators" class="active-tab">Indicators</a>
+          <a href="#analysis" onclick="showPage('analysis')" id="tab-analysis">Analysis</a>
+          <a href="#news" onclick="showPage('news')">News</a>
+          <a href="#movers" onclick="showPage('movers')">Top Movers</a>
+        </div>
+
+        <div class="flex items-center gap-2 bg-zinc-900 px-4 py-1.5 rounded-3xl text-sm">
+          <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+          Ahmed Alqarni
+        </div>
       </div>
     </div>
   </nav>
 
-  <!-- ==================== PAGE 1: DASHBOARD ==================== -->
-  <div id="dashboard" class="page">
-    <div class="max-w-7xl mx-auto px-6 py-12 text-center">
-      <h1 class="text-6xl font-bold mb-2">Market Status</h1>
-      <p class="text-zinc-400 text-2xl">Live sentiment &amp; momentum</p>
+  <!-- ====================== PAGES ====================== -->
 
-      <div class="flex justify-center mt-16">
-        <div id="circle" onclick="toggleMarketStatus()" 
-             class="w-96 h-96 rounded-full bg-emerald-500 flex items-center justify-center text-8xl font-bold shadow-2xl shadow-emerald-500/50 transition-all duration-700 cursor-pointer">
-          72%
-        </div>
-      </div>
-
-      <div class="mt-12">
-        <p id="status-text" class="text-5xl font-semibold text-emerald-400">Market is Rising</p>
-        <p id="status-desc" class="text-zinc-400 mt-4 text-xl max-w-md mx-auto">Strong bullish momentum across major assets</p>
-      </div>
-
-      <div class="mt-20 max-w-md mx-auto">
-        <p class="text-xs uppercase tracking-widest text-zinc-500 mb-6">Simulate Market Condition</p>
-        <div class="flex gap-4 justify-center flex-wrap">
-          <button onclick="updateCircle('rising')" 
-                  class="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 rounded-3xl font-medium transition-all flex items-center gap-x-2">
-            🚀 Rising
-          </button>
-          <button onclick="updateCircle('falling')" 
-                  class="px-8 py-4 bg-red-500 hover:bg-red-600 rounded-3xl font-medium transition-all flex items-center gap-x-2">
-            📉 Falling
-          </button>
-          <button onclick="updateCircle('fluctuating')" 
-                  class="px-8 py-4 bg-zinc-500 hover:bg-zinc-600 rounded-3xl font-medium transition-all flex items-center gap-x-2">
-            ↔️ Fluctuating
-          </button>
-        </div>
-      </div>
-    </div>
+  <!-- Page 1: Dashboard -->
+  <div id="page-dashboard" class="page max-w-5xl mx-auto px-4 py-8 hidden">
+    <h1 class="text-4xl font-bold text-center">Dashboard</h1>
+    <p class="text-center text-zinc-400 mt-4">مرحباً بك في لوحة التحكم</p>
   </div>
 
-  <!-- ==================== PAGE 2: INDICATORS ==================== -->
-  <div id="indicators" class="page hidden max-w-7xl mx-auto px-6 py-12">
-    <h1 class="text-5xl font-bold mb-2">Market Indicators</h1>
-    <p class="text-zinc-400 mb-10">Real-time prices • Direction • Impact</p>
+  <!-- Page 2: Indicators (Market Pulse) - الترتيب النهائي -->
+  <div id="page-indicators" class="page max-w-5xl mx-auto px-4 py-8">
+    <div class="text-center mb-10">
+      <h1 class="text-5xl font-bold tracking-tighter">Market Pulse</h1>
+      <p class="text-zinc-400 mt-3 text-lg">Mixed sentiment with bearish pressure on oil prices</p>
+    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
-      <!-- Dollar -->
-      <div class="bg-zinc-900 rounded-3xl p-8 hover:scale-[1.03] transition-transform">
-        <div class="flex justify-between items-start">
-          <div>
-            <span class="text-violet-400 text-sm font-medium">USD INDEX</span>
-            <h3 class="text-4xl font-bold mt-2">104.85</h3>
-          </div>
-          <div id="dollar-arrow" class="text-5xl">📈</div>
+    <!-- Bearish Box -->
+    <div class="max-w-lg mx-auto mb-12">
+      <div class="bg-zinc-900 border border-red-500/70 rounded-3xl p-7 glow-red text-center">
+        <div class="inline-flex items-center gap-3 bg-red-950/50 text-red-400 rounded-2xl px-6 py-2 mb-4">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span class="font-semibold text-2xl">Bearish</span>
         </div>
-        <div class="mt-8 text-emerald-400 text-3xl font-medium">+0.32 <span class="text-xs text-zinc-400">24h</span></div>
-      </div>
-
-      <!-- Returns -->
-      <div class="bg-zinc-900 rounded-3xl p-8 hover:scale-[1.03] transition-transform">
-        <div class="flex justify-between items-start">
-          <div>
-            <span class="text-sky-400 text-sm font-medium">RETURNS (S&amp;P YTD)</span>
-            <h3 class="text-4xl font-bold mt-2">+12.8%</h3>
-          </div>
-          <div id="returns-arrow" class="text-5xl">📈</div>
-        </div>
-        <div class="mt-8 text-emerald-400 text-3xl font-medium">+1.4 <span class="text-xs text-zinc-400">24h</span></div>
-      </div>
-
-      <!-- Oil -->
-      <div class="bg-zinc-900 rounded-3xl p-8 hover:scale-[1.03] transition-transform">
-        <div class="flex justify-between items-start">
-          <div>
-            <span class="text-red-400 text-sm font-medium">CRUDE OIL</span>
-            <h3 id="oil-price" class="text-4xl font-bold mt-2">$78.40</h3>
-          </div>
-          <div id="oil-arrow" class="text-5xl">📉</div>
-        </div>
-        <div class="mt-8 text-red-400 text-3xl font-medium">-1.8 <span class="text-xs text-zinc-400">24h</span></div>
-      </div>
-
-      <!-- Gold -->
-      <div class="bg-zinc-900 rounded-3xl p-8 hover:scale-[1.03] transition-transform">
-        <div class="flex justify-between items-start">
-          <div>
-            <span class="text-yellow-400 text-sm font-medium">GOLD / OZ</span>
-            <h3 class="text-4xl font-bold mt-2">$2,652</h3>
-          </div>
-          <div id="gold-arrow" class="text-5xl">📈</div>
-        </div>
-        <div class="mt-8 text-emerald-400 text-3xl font-medium">+0.9 <span class="text-xs text-zinc-400">24h</span></div>
-      </div>
-
-      <!-- Bitcoin -->
-      <div class="bg-zinc-900 rounded-3xl p-8 hover:scale-[1.03] transition-transform">
-        <div class="flex justify-between items-start">
-          <div>
-            <span class="text-orange-400 text-sm font-medium">BITCOIN</span>
-            <h3 class="text-4xl font-bold mt-2">$67,420</h3>
-          </div>
-          <div id="btc-arrow" class="text-5xl">📈</div>
-        </div>
-        <div class="mt-8 text-emerald-400 text-3xl font-medium">+2.3 <span class="text-xs text-zinc-400">24h</span></div>
+        <p class="text-red-300 text-xl">Market is falling due to heavy pressure on oil prices</p>
       </div>
     </div>
 
-    <!-- Market Summary -->
-    <div class="mt-16 bg-zinc-900/70 border border-zinc-700 rounded-3xl p-8 max-w-2xl mx-auto text-center">
-      <p id="market-summary" class="text-3xl font-medium text-red-400">
-        Market is falling due to heavy pressure on oil prices
-      </p>
-      <p class="text-zinc-400 mt-4">Bearish sentiment is currently dominant</p>
-    </div>
-  </div>
-
-  <!-- ==================== PAGE 3: ANALYSIS ==================== -->
-  <div id="analysis" class="page hidden max-w-7xl mx-auto px-6 py-12">
-    <div class="text-center mb-12">
-      <h1 class="text-5xl font-bold">Technical Analysis</h1>
-      <p class="text-zinc-400 text-xl mt-2">Click the arrow to reveal live chart</p>
-    </div>
-
-    <!-- Central Arrow Icon -->
-    <div onclick="showChartCard()" 
-         class="mx-auto w-52 h-52 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-110 transition-all shadow-2xl shadow-emerald-500/30">
-      <div class="text-center">
-        <div class="text-8xl mb-2">📈</div>
-        <div class="text-4xl font-bold text-zinc-950">TREND</div>
-      </div>
-    </div>
-
-    <!-- Chart Card (hidden by default) -->
-    <div id="chart-card" class="hidden mt-16 bg-zinc-900 rounded-3xl p-8 max-w-4xl mx-auto">
-      <div class="flex justify-between mb-6">
-        <h3 class="text-3xl font-semibold">S&amp;P 500 Live Chart</h3>
-        <button onclick="hideChartCard()" 
-                class="text-zinc-400 hover:text-white">✕ Close</button>
-      </div>
-      <canvas id="marketChart" class="w-full h-96"></canvas>
-    </div>
-
-    <!-- AI Ask Veloxis -->
-    <div class="mt-20 max-w-2xl mx-auto">
-      <div class="bg-zinc-900 rounded-3xl p-8">
-        <div class="flex items-center gap-x-3 mb-6">
-          <div class="text-4xl">🤖</div>
-          <div>
-            <h3 class="text-3xl font-bold">Ask Veloxis AI</h3>
-            <p class="text-emerald-400 text-sm">Get instant analysis &amp; insights</p>
-          </div>
-        </div>
-
-        <div class="flex gap-3">
-          <input id="ai-input" type="text" placeholder="Ask anything about this chart or market..." 
-                 class="flex-1 bg-zinc-800 rounded-3xl px-6 py-5 outline-none focus:ring-2 focus:ring-emerald-400">
-          <button onclick="askVeloxis()" 
-                  class="bg-emerald-500 hover:bg-emerald-600 px-10 rounded-3xl font-medium transition-colors">ASK</button>
-        </div>
-
-        <div id="ai-response" class="hidden mt-8 bg-black/40 rounded-2xl p-6 text-sm leading-relaxed"></div>
-
-        <div class="mt-8 text-xs flex gap-6 text-zinc-400">
-          <button onclick="quickAsk('screenshot')" class="flex items-center gap-x-2 hover:text-white">
-            📸 Take screenshot of chart &amp; send to AI
-          </button>
-          <button onclick="quickAsk('explain')" class="flex items-center gap-x-2 hover:text-white">
-            🔍 Explain current trend
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== PAGE 4: NEWS ==================== -->
-  <div id="news" class="page hidden max-w-7xl mx-auto px-6 py-12">
-    <h1 class="text-5xl font-bold mb-10">Breaking &amp; Exclusive News</h1>
-    
-    <div class="space-y-8">
-      <!-- News 1 -->
-      <div class="bg-zinc-900 rounded-3xl p-8 flex gap-8 items-center">
-        <div class="text-6xl">🏛️</div>
-        <div class="flex-1">
-          <div class="uppercase text-xs tracking-widest text-amber-400">FEDERAL RESERVE</div>
-          <h3 class="text-3xl font-bold">Fed signals possible rate cut in June</h3>
-          <p class="text-zinc-400 mt-2">Powell comments on inflation cooling faster than expected</p>
-        </div>
-        <button onclick="askVeloxisNews(0)" 
-                class="bg-white text-zinc-950 px-8 py-4 rounded-3xl font-semibold hover:bg-emerald-400 hover:text-white transition-colors">
-          Ask Veloxis
-        </button>
-      </div>
-
-      <!-- News 2 -->
-      <div class="bg-zinc-900 rounded-3xl p-8 flex gap-8 items-center">
-        <div class="text-6xl">📉</div>
-        <div class="flex-1">
-          <div class="uppercase text-xs tracking-widest text-red-400">UNEMPLOYMENT</div>
-          <h3 class="text-3xl font-bold">US Jobless Claims rise to 8-week high</h3>
-          <p class="text-zinc-400 mt-2">Labor market showing first signs of cooling</p>
-        </div>
-        <button onclick="askVeloxisNews(1)" 
-                class="bg-white text-zinc-950 px-8 py-4 rounded-3xl font-semibold hover:bg-emerald-400 hover:text-white transition-colors">
-          Ask Veloxis
-        </button>
-      </div>
-
-      <!-- News 3 -->
-      <div class="bg-zinc-900 rounded-3xl p-8 flex gap-8 items-center">
-        <div class="text-6xl">🇨🇳</div>
-        <div class="flex-1">
-          <div class="uppercase text-xs tracking-widest text-sky-400">GEOPOLITICS</div>
-          <h3 class="text-3xl font-bold">China announces new stimulus package</h3>
-          <p class="text-zinc-400 mt-2">Expected to boost global commodity demand</p>
-        </div>
-        <button onclick="askVeloxisNews(2)" 
-                class="bg-white text-zinc-950 px-8 py-4 rounded-3xl font-semibold hover:bg-emerald-400 hover:text-white transition-colors">
-          Ask Veloxis
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== PAGE 5: TOP MOVERS ==================== -->
-  <div id="topmovers" class="page hidden max-w-7xl mx-auto px-6 py-12">
-    <h1 class="text-5xl font-bold mb-10">Top Movers Today</h1>
-    
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      <!-- Gainers -->
-      <div>
-        <h2 class="text-emerald-400 text-2xl font-medium mb-6 flex items-center gap-x-3"><span class="text-4xl">🚀</span> Top 5 Gainers</h2>
-        <div class="space-y-4">
-          <div class="flex justify-between items-center bg-zinc-900 rounded-3xl px-8 py-6">
-            <div class="flex items-center gap-x-6"><span class="text-3xl">NVDA</span> <span class="font-medium">NVIDIA</span></div>
-            <div class="text-right">
-              <div class="text-emerald-400 text-3xl">+6.8%</div>
-              <div class="text-xs text-zinc-400">$142.30</div>
+    <!-- Market Pressure Drivers + Donut -->
+    <div class="mb-16">
+      <h2 class="text-3xl font-semibold text-center mb-2">Market Pressure Drivers</h2>
+      <p class="text-center text-zinc-400 mb-10">Contribution to current bearish sentiment</p>
+      
+      <div class="flex justify-center">
+        <div class="relative w-80 h-80">
+          <svg class="w-full h-full" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="78" stroke="#27272a" stroke-width="32"/>
+            <circle cx="100" cy="100" r="78" stroke="#ef4444" stroke-width="32" stroke-dasharray="327 327" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+            <circle cx="100" cy="100" r="78" stroke="#22c55e" stroke-width="32" stroke-dasharray="172 327" stroke-dashoffset="-327" transform="rotate(-90 100 100)"/>
+            <circle cx="100" cy="100" r="78" stroke="#22c55e" stroke-width="32" stroke-dasharray="117 327" stroke-dashoffset="-499" transform="rotate(-90 100 100)"/>
+            <circle cx="100" cy="100" r="78" stroke="#22c55e" stroke-width="32" stroke-dasharray="94 327" stroke-dashoffset="-616" transform="rotate(-90 100 100)"/>
+            <circle cx="100" cy="100" r="78" stroke="#22c55e" stroke-width="32" stroke-dasharray="70 327" stroke-dashoffset="-710" transform="rotate(-90 100 100)"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="text-center">
+              <div class="text-5xl font-bold">100%</div>
+              <div class="text-xs text-zinc-500">TOTAL PRESSURE</div>
             </div>
-            <button onclick="askVeloxisStock(0)" class="text-sm bg-emerald-500/10 text-emerald-400 px-6 py-3 rounded-3xl hover:bg-emerald-500 hover:text-white">Ask Veloxis</button>
-          </div>
-          <div class="flex justify-between items-center bg-zinc-900 rounded-3xl px-8 py-6">
-            <div class="flex items-center gap-x-6"><span class="text-3xl">TSLA</span> <span class="font-medium">Tesla</span></div>
-            <div class="text-right">
-              <div class="text-emerald-400 text-3xl">+4.9%</div>
-              <div class="text-xs text-zinc-400">$312.45</div>
-            </div>
-            <button onclick="askVeloxisStock(1)" class="text-sm bg-emerald-500/10 text-emerald-400 px-6 py-3 rounded-3xl hover:bg-emerald-500 hover:text-white">Ask Veloxis</button>
-          </div>
-          <!-- Add more if you want -->
-        </div>
-      </div>
-
-      <!-- Losers -->
-      <div>
-        <h2 class="text-red-400 text-2xl font-medium mb-6 flex items-center gap-x-3"><span class="text-4xl">📉</span> Top 5 Losers</h2>
-        <div class="space-y-4">
-          <div class="flex justify-between items-center bg-zinc-900 rounded-3xl px-8 py-6">
-            <div class="flex items-center gap-x-6"><span class="text-3xl">AAPL</span> <span class="font-medium">Apple</span></div>
-            <div class="text-right">
-              <div class="text-red-400 text-3xl">-3.2%</div>
-              <div class="text-xs text-zinc-400">$218.90</div>
-            </div>
-            <button onclick="askVeloxisStock(2)" class="text-sm bg-red-500/10 text-red-400 px-6 py-3 rounded-3xl hover:bg-red-500 hover:text-white">Ask Veloxis</button>
-          </div>
-          <div class="flex justify-between items-center bg-zinc-900 rounded-3xl px-8 py-6">
-            <div class="flex items-center gap-x-6"><span class="text-3xl">AMZN</span> <span class="font-medium">Amazon</span></div>
-            <div class="text-right">
-              <div class="text-red-400 text-3xl">-2.7%</div>
-              <div class="text-xs text-zinc-400">$178.40</div>
-            </div>
-            <button onclick="askVeloxisStock(3)" class="text-sm bg-red-500/10 text-red-400 px-6 py-3 rounded-3xl hover:bg-red-500 hover:text-white">Ask Veloxis</button>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<!-- AI Modal -->
-<div id="ai-modal" onclick="if(event.target===this)hideModal()" 
-     class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
-  <div onclick="event.stopImmediatePropagation()" 
-       class="bg-zinc-900 rounded-3xl max-w-lg w-full mx-4 p-8">
-    <div class="flex justify-between mb-6">
-      <div class="flex items-center gap-x-3">
-        <span class="text-4xl">🤖</span>
-        <h2 class="text-3xl font-bold">Veloxis AI</h2>
+      <div class="grid grid-cols-2 gap-6 max-w-md mx-auto mt-12 text-sm">
+        <div><span class="text-red-400">●</span> Crude Oil 42%</div>
+        <div><span class="text-emerald-400">●</span> USD INDEX 22%</div>
+        <div><span class="text-emerald-400">●</span> S&P YTD 15%</div>
+        <div><span class="text-emerald-400">●</span> Bitcoin 12%</div>
+        <div><span class="text-emerald-400">●</span> Gold 9%</div>
       </div>
-      <button onclick="hideModal()" class="text-3xl text-zinc-400">✕</button>
     </div>
-    <div id="modal-content" class="text-zinc-200 leading-relaxed text-lg"></div>
+
+    <!-- 8 Indicator Cards -->
+    <div class="grid grid-cols-2 gap-4">
+      <div class="card bg-zinc-900 rounded-3xl p-6">
+        <div class="text-xs text-zinc-400">USD INDEX</div>
+        <div class="text-3xl font-bold mt-1">104.85</div>
+        <div class="text-emerald-400 text-sm">+0.32 <span class="text-zinc-500">24h</span></div>
+      </div>
+      <div class="card bg-zinc-900 rounded-3xl p-6">
+        <div class="text-xs text-zinc-400">RETURNS (S&P YTD)</div>
+        <div class="text-3xl font-bold mt-1">+12.8%</div>
+        <div class="text-emerald-400 text-sm">+1.4 <span class="text-zinc-500">24h</span></div>
+      </div>
+      <div class="card bg-zinc-900 rounded-3xl p-6">
+        <div class="text-xs text-red-400">CRUDE OIL</div>
+        <div class="text-3xl font-bold mt-1">$78.40</div>
+        <div class="text-red-400 text-sm">-1.8 <span class="text-zinc-500">24h</span></div>
+      </div>
+      <div class="card bg-zinc-900 rounded-3xl p-6">
+        <div class="text-xs text-zinc-400">GOLD / OZ</div>
+        <div class="text-3xl font-bold mt-1">$2,652</div>
+        <div class="text-emerald-400 text-sm">+0.9 <span class="text-zinc-500">24h</span></div>
+      </div>
+      <div class="card bg-zinc-900 rounded-3xl p-6">
+        <div class="text-xs text-zinc-400">BITCOIN</div>
+        <div class="text-3xl font-bold mt-1">$67,420</div>
+        <div class="text-emerald-400 text-sm">+2.3 <span class="text-zinc-500">24h</span></div>
+      </div>
+      <div class="card bg-zinc-900 rounded-3xl p-6">
+        <div class="text-xs text-zinc-400">VIX</div>
+        <div class="text-3xl font-bold mt-1">18.45</div>
+        <div class="text-red-400 text-sm">-0.85 <span class="text-zinc-500">24h</span></div>
+      </div>
+      <div class="card bg-zinc-900 rounded-3xl p-6">
+        <div class="text-xs text-zinc-400">DOW JONES FUTURES</div>
+        <div class="text-3xl font-bold mt-1">42,350</div>
+        <div class="text-emerald-400 text-sm">+0.28% <span class="text-zinc-500">24h</span></div>
+      </div>
+      <div class="card bg-zinc-900 rounded-3xl p-6">
+        <div class="text-xs text-zinc-400">S&P 500 FUTURES</div>
+        <div class="text-3xl font-bold mt-1">5,830</div>
+        <div class="text-emerald-400 text-sm">+0.43% <span class="text-zinc-500">24h</span></div>
+      </div>
+    </div>
   </div>
-</div>
 
-<script>
-  // Tailwind
-  function initTailwind() {
-    tailwind.config = { content: ["*"], theme: { extend: {} } }
-  }
+  <!-- Page 3: Technical Analysis (مع التعديلات المطلوبة) -->
+  <div id="page-analysis" class="page max-w-5xl mx-auto px-4 py-8 hidden">
+    <h1 class="text-4xl font-bold text-center mb-2">Technical Analysis</h1>
+    <p class="text-center text-zinc-400 mb-8">Click the arrow to reveal live chart</p>
 
-  // Page switching
-  function showPage(id) {
-    document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'))
-    document.getElementById(id).classList.remove('hidden')
-    if (id === 'analysis') setTimeout(initChartIfNeeded, 300)
-  }
+    <!-- Search Bar -->
+    <div class="max-w-md mx-auto mb-8">
+      <div class="relative">
+        <input id="stock-input" type="text" 
+               class="w-full bg-zinc-900 border border-zinc-700 rounded-3xl py-4 px-6 pl-14 text-lg focus:outline-none focus:border-emerald-500"
+               placeholder="أدخل رمز السهم (مثال: AAPL, TSLA, 2222)">
+        <i class="fa-solid fa-magnifying-glass absolute left-6 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+      </div>
+    </div>
 
-  // Dashboard circle
-  let currentStatus = 'rising'
-  function updateCircle(mode) {
-    const circle = document.getElementById('circle')
-    const text = document.getElementById('status-text')
-    const desc = document.getElementById('status-desc')
+    <!-- Trend Icon -->
+    <div class="flex justify-center mb-8">
+      <div class="bg-gradient-to-br from-emerald-500 to-cyan-500 w-28 h-28 rounded-3xl flex items-center justify-center shadow-2xl">
+        <div class="text-center">
+          <i class="fa-solid fa-chart-line text-5xl text-white"></i>
+          <div class="text-white font-bold text-sm mt-1 tracking-widest">TREND</div>
+        </div>
+      </div>
+    </div>
 
-    if (mode === 'rising') {
-      circle.style.backgroundColor = '#10b981'
-      circle.style.boxShadow = '0 0 60px #10b98180'
-      circle.textContent = '72%'
-      text.textContent = 'Market is Rising'
-      text.className = 'text-5xl font-semibold text-emerald-400'
-      desc.textContent = 'Strong bullish momentum across major assets'
-      currentStatus = 'rising'
-    } else if (mode === 'falling') {
-      circle.style.backgroundColor = '#ef4444'
-      circle.style.boxShadow = '0 0 60px #ef444480'
-      circle.textContent = '31%'
-      text.textContent = 'Market is Falling'
-      text.className = 'text-5xl font-semibold text-red-400'
-      desc.textContent = 'Heavy selling pressure detected'
-      currentStatus = 'falling'
-    } else {
-      circle.style.backgroundColor = '#6b7280'
-      circle.style.boxShadow = '0 0 60px #6b728080'
-      circle.textContent = '50%'
-      text.textContent = 'Market is Fluctuating'
-      text.className = 'text-5xl font-semibold text-zinc-400'
-      desc.textContent = 'Sideways movement, low conviction'
-      currentStatus = 'fluctuating'
+    <!-- Live Chart Placeholder -->
+    <div class="bg-zinc-900 rounded-3xl p-6 mb-6">
+      <div class="bg-zinc-950 h-80 rounded-2xl flex items-center justify-center border border-zinc-700">
+        <div class="text-center">
+          <p class="text-emerald-400 text-xl mb-2">شارت حي - AAPL</p>
+          <p class="text-zinc-500">Candlestick Chart</p>
+          <div class="mt-6 text-6xl text-emerald-500">📈</div>
+        </div>
+      </div>
+
+      <!-- Time Frame Bar -->
+      <div class="flex justify-center gap-2 mt-6">
+        <button onclick="this.classList.add('bg-emerald-500','text-white');" 
+                class="px-5 py-2 rounded-2xl text-sm font-medium hover:bg-zinc-800">1H</button>
+        <button onclick="this.classList.add('bg-emerald-500','text-white');" 
+                class="px-5 py-2 rounded-2xl text-sm font-medium hover:bg-zinc-800">4H</button>
+        <button onclick="this.classList.add('bg-emerald-500','text-white');" 
+                class="px-5 py-2 rounded-2xl text-sm font-medium bg-emerald-500 text-white">1D</button>
+        <button onclick="this.classList.add('bg-emerald-500','text-white');" 
+                class="px-5 py-2 rounded-2xl text-sm font-medium hover:bg-zinc-800">1W</button>
+        <button onclick="this.classList.add('bg-emerald-500','text-white');" 
+                class="px-5 py-2 rounded-2xl text-sm font-medium hover:bg-zinc-800">1M</button>
+        <button onclick="this.classList.add('bg-emerald-500','text-white');" 
+                class="px-5 py-2 rounded-2xl text-sm font-medium hover:bg-zinc-800">6M</button>
+      </div>
+    </div>
+
+    <!-- Ask Veloxis AI -->
+    <div class="bg-zinc-900 rounded-3xl p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center">🤖</div>
+        <div>
+          <div class="font-semibold">Ask Veloxis AI</div>
+          <div class="text-xs text-zinc-400">Get instant analysis & insights</div>
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <input type="text" class="flex-1 bg-zinc-800 rounded-3xl px-6 py-4 focus:outline-none" placeholder="Ask anything about this chart or market...">
+        <button class="bg-emerald-500 hover:bg-emerald-600 px-8 rounded-3xl font-medium">ASK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page 4: News -->
+  <div id="page-news" class="page max-w-5xl mx-auto px-4 py-8 hidden">
+    <h1 class="text-4xl font-bold mb-8">Breaking & Exclusive News</h1>
+    <div class="space-y-6">
+      <div class="bg-zinc-900 rounded-3xl p-6">Fed signals possible rate cut in June</div>
+      <div class="bg-zinc-900 rounded-3xl p-6">US Jobless Claims rise to 8-week high</div>
+      <div class="bg-zinc-900 rounded-3xl p-6">China announces new stimulus package</div>
+    </div>
+  </div>
+
+  <!-- Page 5: Top Movers -->
+  <div id="page-movers" class="page max-w-5xl mx-auto px-4 py-8 hidden">
+    <h1 class="text-4xl font-bold mb-8">Top Movers Today</h1>
+    <div class="space-y-4">
+      <div class="bg-zinc-900 rounded-3xl p-6 flex justify-between"><span>NVDA</span><span class="text-emerald-400">+6.8%</span></div>
+      <div class="bg-zinc-900 rounded-3xl p-6 flex justify-between"><span>TSLA</span><span class="text-emerald-400">+4.9%</span></div>
+      <div class="bg-zinc-900 rounded-3xl p-6 flex justify-between"><span>AAPL</span><span class="text-red-400">-3.2%</span></div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="fixed bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-700 max-w-5xl mx-auto">
+    <div class="flex justify-around text-3xl py-4 text-zinc-400">
+      <i class="fa-solid fa-copy"></i>
+      <i class="fa-solid fa-book"></i>
+      <i class="fa-solid fa-arrow-up-from-bracket text-emerald-400"></i>
+      <i class="fa-solid fa-chevron-left"></i>
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+  </div>
+
+  <script>
+    function showPage(page) {
+      document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+      document.getElementById(`page-${page}`).classList.remove('hidden');
+
+      // Update active tab
+      document.querySelectorAll('nav a').forEach(tab => tab.classList.remove('active-tab'));
+      const activeTab = document.getElementById(`tab-${page}`);
+      if (activeTab) activeTab.classList.add('active-tab');
     }
-  }
 
-  function toggleMarketStatus() {
-    if (currentStatus === 'rising') updateCircle('falling')
-    else if (currentStatus === 'falling') updateCircle('fluctuating')
-    else updateCircle('rising')
-  }
-
-  // Page 2 indicators are static for demo (you can make them dynamic later)
-
-  // Page 3 Chart
-  let chartInstance = null
-  function initChartIfNeeded() {
-    const canvas = document.getElementById('marketChart')
-    if (!canvas || chartInstance) return
-
-    const ctx = canvas.getContext('2d')
-    chartInstance = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00'],
-        datasets: [{
-          label: 'S&P 500',
-          data: [5120, 5145, 5118, 5162, 5189, 5175, 5201, 5228, 5214, 5240],
-          borderColor: '#10b981',
-          backgroundColor: 'rgba(16, 185, 129, 0.1)',
-          borderWidth: 3,
-          tension: 0.4,
-          pointRadius: 0,
-          pointHoverRadius: 6
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { grid: { color: '#27272a' }, ticks: { color: '#a1a1aa', font: { size: 14 } } },
-          x: { grid: { color: '#27272a' }, ticks: { color: '#a1a1aa', font: { size: 14 } } }
-        }
-      }
-    })
-  }
-
-  function showChartCard() {
-    document.getElementById('chart-card').classList.remove('hidden')
-    initChartIfNeeded()
-  }
-
-  function hideChartCard() {
-    document.getElementById('chart-card').classList.add('hidden')
-  }
-
-  // AI Ask functions
-  function askVeloxis() {
-    const input = document.getElementById('ai-input').value.trim()
-    const responseBox = document.getElementById('ai-response')
-    
-    if (!input) return
-    
-    responseBox.classList.remove('hidden')
-    responseBox.innerHTML = `
-      <strong>Veloxis AI:</strong><br><br>
-      ${input}<br><br>
-      Based on current technicals, the market shows <span class="text-emerald-400">bullish divergence</span> on the 4H timeframe. 
-      RSI is at 62 and MACD is crossing positively. Strong support at 5180, resistance at 5280.<br><br>
-      <span class="text-xs text-zinc-400">Confidence: 87% • Last updated moments ago</span>
-    `
-  }
-
-  function quickAsk(type) {
-    const responseBox = document.getElementById('ai-response')
-    responseBox.classList.remove('hidden')
-    
-    if (type === 'screenshot') {
-      responseBox.innerHTML = `✅ Screenshot captured and sent to Veloxis AI.<br><br><strong>Analysis:</strong> The chart shows a clear ascending triangle pattern. Breakout expected above 5230 with target 5380.`
-    } else {
-      responseBox.innerHTML = `The current trend is <span class="text-emerald-400">bullish</span> with increasing volume. Momentum indicators are aligned for continuation.`
-    }
-  }
-
-  // Modal for News & Stocks
-  function showModal(html) {
-    const modal = document.getElementById('ai-modal')
-    const content = document.getElementById('modal-content')
-    content.innerHTML = html
-    modal.classList.remove('hidden')
-    modal.classList.add('flex')
-  }
-
-  function hideModal() {
-    const modal = document.getElementById('ai-modal')
-    modal.classList.add('hidden')
-    modal.classList.remove('flex')
-  }
-
-  function askVeloxisNews(index) {
-    let text = ''
-    if (index === 0) text = `<strong>Fed Rate Cut Signal</strong><br><br>Veloxis AI rates this news as <span class="text-emerald-400 font-bold">HIGH IMPACT (+)</span>.<br><br>Markets will likely rally 1.2-1.8% on open. Bonds will strengthen and gold may pull back slightly.`
-    else if (index === 1) text = `<strong>Rising Unemployment Claims</strong><br><br>Veloxis AI rates this news as <span class="text-amber-400 font-bold">MEDIUM IMPACT (-)</span>.<br><br>This is the first clear sign of labor market softening. Expect rotation into defensive sectors.`
-    else text = `<strong>China Stimulus Package</strong><br><br>Veloxis AI rates this news as <span class="text-emerald-400 font-bold">HIGH IMPACT (+)</span>.<br><br>Commodities (oil, copper, gold) expected to surge 3-5% in the next 48 hours.`
-    showModal(text)
-  }
-
-  function askVeloxisStock(index) {
-    let text = ''
-    if (index === 0) text = `<strong>NVDA Analysis</strong><br><br>Veloxis AI: Strong momentum. AI chip demand still exceeds supply. Target price <span class="text-emerald-400">$158</span> within 30 days.`
-    else if (index === 1) text = `<strong>TSLA Analysis</strong><br><br>Veloxis AI: Robotaxi event in 10 days could be catalyst. Current price action is bullish with high volume.`
-    else if (index === 2) text = `<strong>AAPL Analysis</strong><br><br>Veloxis AI: Negative sentiment due to China sales concerns. Watch support at $210.`
-    else text = `<strong>AMZN Analysis</strong><br><br>Veloxis AI: Cloud revenue growth slowing. Short-term bearish but long-term remains strong.`
-    showModal(text)
-  }
-
-  // Initialize everything
-  window.onload = function() {
-    initTailwind()
-    console.log('%c✅ Veloxis 5-Page Website Ready! 🚀', 'color:#10b981; font-size:18px; font-weight:bold')
-    console.log('Just copy everything above into a new CodePen HTML panel and hit Save.')
-  }
-</script>
-    <script  src="./script.js"></script>
-
-  </body>
-  
+    // Show Indicators page by default
+    window.onload = () => showPage('indicators');
+  </script>
+</body>
 </html>
