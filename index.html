@@ -21,10 +21,14 @@
   <nav class="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-16">
+        
         <!-- Logo -->
         <div class="flex items-center gap-3">
-          <div class="text-4xl font-bold text-blue-700 dark:text-blue-500">V</div>
-          <span class="text-2xl font-semibold tracking-tight">veloxis</span>
+          <div class="relative">
+            <span class="text-5xl font-bold text-blue-700 dark:text-blue-500">V</span>
+            <div class="absolute -top-1 -right-6 text-4xl font-bold bg-gradient-to-r from-red-500 via-green-400 to-yellow-400 bg-clip-text text-transparent rotate-12">~</div>
+          </div>
+          <span class="text-2xl font-semibold tracking-tighter">veloxis</span>
         </div>
 
         <!-- Menu -->
@@ -37,7 +41,7 @@
         </div>
 
         <!-- Theme Toggle -->
-        <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 transition">
+        <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700">
           <i class="fa-solid fa-moon text-xl dark:hidden"></i>
           <i class="fa-solid fa-sun text-xl hidden dark:block"></i>
         </button>
@@ -47,81 +51,31 @@
 
   <div class="max-w-6xl mx-auto px-6 py-8">
 
-    <!-- INDICATORS (Market Pulse) -->
+    <!-- INDICATORS -->
     <div id="page-indicators" class="page">
       <h1 class="text-4xl font-bold text-center mb-2">Market Pulse</h1>
       <p class="text-center text-gray-500 dark:text-gray-400 mb-8">Mixed sentiment with bearish pressure on oil prices</p>
 
-      <!-- Bearish Box -->
-      <div class="max-w-md mx-auto mb-10 bg-white dark:bg-zinc-800 border border-red-200 dark:border-red-500/40 rounded-3xl p-6 text-center shadow">
+      <div class="max-w-md mx-auto mb-10 bg-white dark:bg-zinc-800 border border-red-200 dark:border-red-500/30 rounded-3xl p-6 text-center">
         <div class="text-red-600 dark:text-red-400 font-semibold text-2xl">Bearish</div>
         <p class="text-red-600 dark:text-red-300 mt-2">Market is falling due to heavy pressure on oil prices</p>
       </div>
 
-      <!-- Pressure Drivers -->
-      <div class="text-center mb-6">
-        <h2 class="text-xl font-semibold">Market Pressure Drivers</h2>
-      </div>
-      <div class="flex justify-center mb-12">
-        <div class="relative w-60 h-60">
-          <svg viewBox="0 0 200 200" class="w-full h-full">
-            <circle cx="100" cy="100" r="68" fill="none" stroke="#e5e7eb" stroke-width="26"/>
-            <circle cx="100" cy="100" r="68" fill="none" stroke="#22c55e" stroke-width="26" stroke-dasharray="280 280" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
-            <circle cx="100" cy="100" r="68" fill="none" stroke="#ef4444" stroke-width="26" stroke-dasharray="118 280" stroke-dashoffset="-280" transform="rotate(-90 100 100)"/>
-          </svg>
-          <div class="absolute inset-0 flex items-center justify-center text-center">
-            <div class="text-4xl font-bold">100%</div>
-            <div class="text-xs text-gray-500">TOTAL PRESSURE</div>
-          </div>
-        </div>
-      </div>
-
       <!-- Cards -->
       <div class="grid grid-cols-2 gap-4">
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">
-          <div class="text-xs text-gray-500">USD INDEX</div>
-          <div class="text-2xl font-bold">104.85</div>
-          <div class="text-emerald-500 text-sm">+0.32</div>
-        </div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">
-          <div class="text-xs text-gray-500">S&P YTD</div>
-          <div class="text-2xl font-bold">+12.8%</div>
-          <div class="text-emerald-500 text-sm">+1.4</div>
-        </div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">
-          <div class="text-xs text-red-500">CRUDE OIL</div>
-          <div class="text-2xl font-bold">$78.40</div>
-          <div class="text-red-500 text-sm">-1.8</div>
-        </div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">
-          <div class="text-xs text-gray-500">GOLD / OZ</div>
-          <div class="text-2xl font-bold">$2,652</div>
-          <div class="text-emerald-500 text-sm">+0.9</div>
-        </div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">
-          <div class="text-xs text-gray-500">BITCOIN</div>
-          <div class="text-2xl font-bold">$67,420</div>
-          <div class="text-emerald-500 text-sm">+2.3</div>
-        </div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">
-          <div class="text-xs text-gray-500">VIX</div>
-          <div class="text-2xl font-bold">18.45</div>
-          <div class="text-red-500 text-sm">-0.85</div>
-        </div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">
-          <div class="text-xs text-gray-500">DOW JONES FUTURES</div>
-          <div class="text-2xl font-bold">42,350</div>
-          <div class="text-emerald-500 text-sm">+0.28%</div>
-        </div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">
-          <div class="text-xs text-gray-500">S&P 500 FUTURES</div>
-          <div class="text-2xl font-bold">5,830</div>
-          <div class="text-emerald-500 text-sm">+0.43%</div>
-        </div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">USD INDEX<br><span class="text-2xl font-bold">104.85</span><span class="text-emerald-500 text-xs ml-2">+0.32</span></div>
+        <!-- باقي الكروت بنفس الطريقة (مختصرة للتوضيح) -->
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">S&P YTD<br><span class="text-2xl font-bold">+12.8%</span><span class="text-emerald-500 text-xs ml-2">+1.4</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">CRUDE OIL<br><span class="text-2xl font-bold">$78.40</span><span class="text-red-500 text-xs ml-2">-1.8</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">GOLD / OZ<br><span class="text-2xl font-bold">$2,652</span><span class="text-emerald-500 text-xs ml-2">+0.9</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">BITCOIN<br><span class="text-2xl font-bold">$67,420</span><span class="text-emerald-500 text-xs ml-2">+2.3</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">VIX<br><span class="text-2xl font-bold">18.45</span><span class="text-red-500 text-xs ml-2">-0.85</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">DOW JONES FUTURES<br><span class="text-2xl font-bold">42,350</span><span class="text-emerald-500 text-xs ml-2">+0.28%</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">S&P 500 FUTURES<br><span class="text-2xl font-bold">5,830</span><span class="text-emerald-500 text-xs ml-2">+0.43%</span></div>
       </div>
     </div>
 
-    <!-- ANALYSIS PAGE -->
+    <!-- ANALYSIS -->
     <div id="page-analysis" class="page hidden">
       <h1 class="text-4xl font-bold text-center mb-2">Technical Analysis</h1>
       <p class="text-center text-gray-500 dark:text-gray-400 mb-8">Enter stock symbol to analyze</p>
@@ -133,9 +87,9 @@
         </div>
       </div>
 
-      <div class="bg-white dark:bg-zinc-800 rounded-3xl p-6 shadow">
+      <div class="bg-white dark:bg-zinc-800 rounded-3xl p-6">
         <div class="text-emerald-500 text-center mb-4">AAPL - Live Chart</div>
-        <div class="h-64 bg-gray-100 dark:bg-zinc-900 rounded-2xl flex items-center justify-center border">📈</div>
+        <div class="h-64 bg-gray-100 dark:bg-zinc-900 rounded-2xl flex items-center justify-center">📈</div>
         
         <div class="flex justify-center gap-2 mt-6">
           <button class="px-5 py-2 text-sm rounded-2xl bg-gray-200 dark:bg-zinc-700">1H</button>
@@ -168,8 +122,7 @@
         <h1 class="text-5xl font-bold tracking-tighter bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">Veloxis Forge</h1>
         <p class="text-xl text-gray-600 dark:text-gray-400 mt-4">Build • Test • Optimize with AI</p>
       </div>
-
-      <div class="bg-white dark:bg-zinc-800 rounded-3xl p-10 shadow">
+      <div class="bg-white dark:bg-zinc-800 rounded-3xl p-10">
         <h2 class="text-2xl font-semibold text-center mb-8">What strategy do you want to forge today?</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
           <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">Momentum</button>
@@ -183,15 +136,18 @@
       </div>
     </div>
 
-    <!-- NEWS & TOP MOVERS (مختصرة) -->
+    <!-- NEWS PAGE (احترافي) -->
     <div id="page-news" class="page hidden">
       <h1 class="text-4xl font-bold mb-8">Breaking News</h1>
       <div class="space-y-4">
         <div class="bg-white dark:bg-zinc-800 p-6 rounded-3xl">Fed signals possible rate cut in June</div>
+        <div class="bg-white dark:bg-zinc-800 p-6 rounded-3xl">US Jobless Claims rise to 8-week high</div>
         <div class="bg-white dark:bg-zinc-800 p-6 rounded-3xl">China announces new stimulus package</div>
+        <!-- يمكنك إضافة حتى 10 أخبار -->
       </div>
     </div>
 
+    <!-- TOP MOVERS -->
     <div id="page-movers" class="page hidden">
       <h1 class="text-4xl font-bold mb-8">Top Movers Today</h1>
       <div class="mb-8">
@@ -234,7 +190,7 @@
     }
 
     function generateForge() {
-      alert("Strategy forged successfully! (Demo version)");
+      alert("Strategy forged successfully! (Demo)");
     }
 
     window.onload = () => showPage('indicators');
