@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Veloxis — Strategy Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg:#fafafa; --panel:#fff; --panel2:#f5f5f5; --border:#e5e7eb;
+      --text:#111827; --muted:#6b7280; --accent:#2563eb;
+      --pos:#16a34a; --neg:#dc2626; --warn:#d97706;
+      --shadow:0 10px 30px rgba(15,23,42,.06);
+    }
+    body.dark{
+      --bg:#09090b; --panel:#111827; --panel2:#18181b; --border:#27272a;
+      --text:#f4f4f5; --muted:#a1a1aa; --accent:#60a5fa;
+      --pos:#22c55e; --neg:#ef4444; --warn:#f59e0b;
+      --shadow:0 14px 34px rgba(0,0,0,.35);
+    }
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text)}
+    .panel{background:var(--panel);border:1px solid var(--border);box-shadow:var(--shadow)}
+    .soft{background:var(--panel2);border:1px solid var(--border)}
+    .muted{color:var(--muted)}
+    .chip{border:1px solid var(--border);background:var(--panel2)}
+    .chip.active{background:var(--accent);color:#fff;border-color:transparent}
+    .card{border:1px solid var(--border);background:var(--panel);transition:.2s}
+    .card:hover{transform:translateY(-2px)}
+    .card.active{border-color:rgba(96,165,250,.45); box-shadow:0 10px 22px rgba(96,165,250,.12)}
+    .nav-link{color:var(--muted)}
+    .nav-link.active{color:var(--text); border-bottom:2px solid var(--accent)}
+    .toast{position:fixed; right:20px; bottom:20px; z-index:50}
+    .toast-item{background:var(--panel); border:1px solid var(--border); box-shadow:var(--shadow)}
+    .status-monitor{color:var(--accent)}
+    .status-forming{color:var(--warn)}
+    .status-trigger{color:var(--pos)}
+    .status-reject{color:var(--neg)}
+    .status-expire{color:var(--muted)}
+  </style>
+</head>
+
+<body class="dark" id="app">
+
+<!-- Header -->
+<header class="border-b" style="border-color:var(--border)">
+  <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <img src="/mnt/data/8478C569-50B4-4693-9D56-5F10688E24B3.jpeg" class="h-8"/>
+      <span class="font-semibold text-lg">Veloxis</span>
+    </div>
+    <nav class="flex gap-6 text-sm">
+      <a href="index.html" class="nav-link">Market Pulse</a>
+      <a href="analysis.html" class="nav-link">Analysis</a>
+      <a href="#" class="nav-link active">Strategy Lab</a>
+      <a href="#" class="nav-link">News</a>
+      <a href="#" class="nav-link">Top Movers</a>
+    </nav>
+    <button onclick="toggleTheme()" class="soft px-3 py-2 rounded-lg text-sm">Theme</button>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-5 py-6 space-y-6">
+
+  <!-- Top Control -->
+  <section class="panel rounded-2xl p-4">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end">
+      <div class="lg:col-span-7">
+        <div class="text-sm muted mb-2">Watchlist (max 3)</div>
+        <div id="watchlist" class="flex flex-wrap gap-2"></div>
+        <div class="flex gap-2 mt-2">
+          <input id="symbolInput" placeholder="Add symbol (e.g., AAPL)" class="soft px-4 py-3 rounded-xl w-full"/>
+          <button onclick="addSymbol()" class="px-4 py-3 rounded-xl" style="background:var(--accent);color:#fff">Add</button>
+        </div>
+      </div>
+      <div class="lg:col-span-5">
+        <button onclick="runScan()" class="w-full px-5 py-4 rounded-2xl font-semibold" style="background:var(--accent);color:#fff">
+          Run Scan
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search + Filters -->
+  <section class="panel rounded-2xl p-4">
+    <input id="search" oninput="renderPatterns()" placeholder="Search patterns..." class="soft w-full px-4 py-3 rounded-xl mb-3"/>
+    <div class="flex gap-2 flex-wrap">
+      <button class="chip px-3 py-1 rounded-lg text-sm active" onclick="setFilter('All')">All</button>
+      <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setFilter('Trend')">Trend</button>
+      <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setFilter('Reversal')">Reversal</button>
+      <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setFilter('Candlestick')">Candlestick</button>
+      <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setFilter('Levels')">Levels</button>
+    </div>
+  </section>
+
+  <!-- Main Grid -->
+  <section class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+
+    <!-- Pattern Library -->
+    <div class="xl:col-span-8 panel rounded-3xl p-5">
+      <h2 class="text-xl font-semibold mb-4">Pattern Library</h2>
+      <div id="patterns" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+    </div>
+
+    <!-- Alerts + AI -->
+    <div class="xl:col-span-4 space-y-6">
+
+      <!-- Alert Center -->
+      <div class="panel rounded-3xl p-5">
+        <h2 class="text-lg font-semibold mb-3">Alert Center</h2>
+        <div id="alerts" class="space-y-2 text-sm"></div>
+      </div>
+
+      <!-- Ask Veloxis -->
+      <div class="panel rounded-3xl p-5">
+        <h3 class="font-semibold mb-2">Ask Veloxis</h3>
+        <input id="askInput" placeholder="Ask about patterns..." class="soft w-full px-4 py-3 rounded-xl mb-2"/>
+        <button onclick="askAI()" class="w-full px-4 py-3 rounded-xl" style="background:var(--accent);color:#fff">Ask</button>
+        <div id="aiResponse" class="mt-3 text-sm muted"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Detection Feed -->
+  <section class="panel rounded-3xl p-5">
+    <h2 class="text-lg font-semibold mb-3">Detection Feed</h2>
+    <div id="feed" class="text-sm space-y-1"></div>
+  </section>
+
+</main>
+
+<!-- Toast -->
+<div id="toast" class="toast space-y-2"></div>
+
+<script>
+let watchlist = [];
+let activePatterns = new Set();
+let filter = "All";
+
+const patterns = [
+  {name:"Bull Flag",cat:"Trend"},
+  {name:"Bear Flag",cat:"Trend"},
+  {name:"Breakout",cat:"Trend"},
+  {name:"Head & Shoulders",cat:"Reversal"},
+  {name:"Double Top",cat:"Reversal"},
+  {name:"Engulfing",cat:"Candlestick"},
+  {name:"Pin Bar",cat:"Candlestick"},
+  {name:"Support Bounce",cat:"Levels"},
+  {name:"Resistance Rejection",cat:"Levels"}
+];
+
+function toggleTheme(){ document.body.classList.toggle("dark"); }
+
+function addSymbol(){
+  let val = document.getElementById("symbolInput").value.toUpperCase();
+  if(!val || watchlist.includes(val) || watchlist.length>=3) return;
+  watchlist.push(val);
+  document.getElementById("symbolInput").value="";
+  renderWatchlist();
+}
+
+function renderWatchlist(){
+  let el=document.getElementById("watchlist");
+  el.innerHTML="";
+  watchlist.forEach(s=>{
+    el.innerHTML+=`<span class="chip px-3 py-1 rounded-lg">${s}</span>`;
+  });
+}
+
+function setFilter(f){filter=f; renderPatterns();}
+
+function renderPatterns(){
+  let grid=document.getElementById("patterns");
+  let search=document.getElementById("search").value.toLowerCase();
+  grid.innerHTML="";
+  patterns.filter(p=>{
+    return (filter==="All"||p.cat===filter)&&p.name.toLowerCase().includes(search);
+  }).forEach(p=>{
+    let active = activePatterns.has(p.name);
+    grid.innerHTML+=`
+    <div onclick="togglePattern('${p.name}')"
+      class="card ${active?'active':''} p-4 rounded-xl cursor-pointer">
+      ${p.name}
+    </div>`;
+  });
+}
+
+function togglePattern(name){
+  activePatterns.has(name)?activePatterns.delete(name):activePatterns.add(name);
+  renderPatterns();
+}
+
+function runScan(){
+  if(!watchlist.length||!activePatterns.size)return;
+  activePatterns.forEach(p=>{
+    watchlist.forEach(s=>{
+      let status = ["Monitoring","Forming","Triggered"][Math.floor(Math.random()*3)];
+      addAlert(s,p,status);
+      addFeed(`${s} → ${p} ${status}`);
+      if(status==="Triggered") showToast(`${s} — ${p} detected`);
+    });
+  });
+}
+
+function addAlert(symbol,pattern,status){
+  let el=document.getElementById("alerts");
+  el.innerHTML=`<div>${symbol} — ${pattern} <span class="status-${status.toLowerCase()}">→ ${status}</span></div>`+el.innerHTML;
+}
+
+function addFeed(text){
+  let el=document.getElementById("feed");
+  el.innerHTML=`<div>${text}</div>`+el.innerHTML;
+}
+
+function showToast(text){
+  let box=document.createElement("div");
+  box.className="toast-item px-4 py-3 rounded-xl text-sm";
+  box.innerText=text;
+  document.getElementById("toast").appendChild(box);
+  setTimeout(()=>box.remove(),4000);
+}
+
+function askAI(){
+  let q=document.getElementById("askInput").value;
+  document.getElementById("aiResponse").innerText =
+    "Veloxis: Pattern strength depends on structure, volume, and context. Current signals require confirmation.";
+}
+
+renderPatterns();
+</script>
+
+</body>
+</html>
