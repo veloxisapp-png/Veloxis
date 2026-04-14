@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Veloxis — Top Movers</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --bg:#fafafa;
+      --panel:#ffffff;
+      --panel2:#f5f5f5;
+      --border:#e5e7eb;
+      --text:#111827;
+      --muted:#6b7280;
+      --accent:#2563eb;
+      --positive:#16a34a;
+      --negative:#dc2626;
+      --shadow:0 10px 30px rgba(15,23,42,.06);
+    }
+
+    body.dark{
+      --bg:#09090b;
+      --panel:#111827;
+      --panel2:#18181b;
+      --border:#27272a;
+      --text:#f4f4f5;
+      --muted:#a1a1aa;
+      --accent:#60a5fa;
+      --positive:#22c55e;
+      --negative:#ef4444;
+      --shadow:0 14px 34px rgba(0,0,0,.35);
+    }
+
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+
+    .panel-soft{
+      background:var(--panel2);
+      border:1px solid var(--border);
+    }
+
+    .muted{ color:var(--muted); }
+
+    .nav-link{
+      color:var(--muted);
+      text-decoration:none;
+      font-size:.96rem;
+      font-weight:500;
+      padding:.35rem 0;
+      border-bottom:2px solid transparent;
+      transition:.18s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active{
+      color:var(--text);
+      border-bottom-color:var(--accent);
+    }
+
+    .mover-row{
+      cursor:pointer;
+      transition:.18s ease;
+      border-left:3px solid transparent;
+    }
+
+    .mover-row:hover{
+      transform:translateY(-1px);
+      border-left-color:var(--accent);
+    }
+
+    .mover-row.active{
+      border-left-color:var(--accent);
+      background:color-mix(in srgb, var(--panel2) 82%, var(--accent) 18%);
+    }
+
+    .tf-btn{
+      background:var(--panel2);
+      border:1px solid var(--border);
+      color:var(--muted);
+      transition:.18s ease;
+    }
+
+    .tf-btn:hover{
+      color:var(--text);
+      border-color:rgba(96,165,250,.35);
+    }
+
+    .tf-btn.active{
+      color:#fff;
+      background:var(--accent);
+      border-color:transparent;
+      box-shadow:0 10px 22px rgba(37,99,235,.22);
+    }
+
+    body.dark .tf-btn.active{
+      box-shadow:0 10px 22px rgba(96,165,250,.22);
+    }
+
+    .tab-btn{
+      background:var(--panel2);
+      border:1px solid var(--border);
+      color:var(--muted);
+      transition:.18s ease;
+    }
+
+    .tab-btn.active{
+      background:var(--accent);
+      color:#fff;
+      border-color:transparent;
+    }
+
+    .trend-up{ color:var(--positive); }
+    .trend-down{ color:var(--negative); }
+
+    .fade-in{ animation:fadeIn .18s ease; }
+    @keyframes fadeIn{
+      from{ opacity:0; transform:translateY(4px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    .thin-scroll::-webkit-scrollbar{
+      width:8px;
+      height:8px;
+    }
+
+    .thin-scroll::-webkit-scrollbar-thumb{
+      background:#3f3f46;
+      border-radius:999px;
+    }
+
+    .mobile-drawer{
+      transform:translateX(100%);
+      transition:transform .22s ease;
+    }
+
+    .mobile-drawer.open{
+      transform:translateX(0);
+    }
+  </style>
+</head>
+<body class="dark" id="app-body">
+  <header class="border-b sticky top-0 z-40" style="border-color:var(--border); background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(10px);">
+    <div class="max-w-7xl mx-auto px-4 lg:px-8">
+      <div class="h-16 flex items-center justify-between gap-4">
+
+        <div class="flex items-center gap-3 min-w-0">
+          <img
+            src="/mnt/data/8478C569-50B4-4693-9D56-5F10688E24B3.jpeg"
+            alt="Veloxis logo"
+            class="h-8 w-auto object-contain"
+            onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='flex';"
+          />
+          <div id="fallback-logo" class="hidden h-8 w-8 items-center justify-center rounded-lg panel-soft text-sm font-bold">V</div>
+          <span class="font-semibold text-lg truncate">Veloxis</span>
+        </div>
+
+        <!-- Desktop nav -->
+        <nav class="hidden lg:flex items-center gap-7 flex-1 justify-center">
+          <a href="index.html" class="nav-link">Market Pulse</a>
+          <a href="analysis.html" class="nav-link">Analysis</a>
+          <a href="strategy.html" class="nav-link">Strategy Lab</a>
+          <a href="news.html" class="nav-link">News</a>
+          <a href="top-movers.html" class="nav-link active">Top Movers</a>
+        </nav>
+
+        <!-- Desktop actions -->
+        <div class="hidden lg:block min-w-fit">
+          <button
+            onclick="toggleTheme()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color:var(--text);"
+          >
+            Theme
+          </button>
+        </div>
+
+        <!-- Mobile actions -->
+        <div class="flex lg:hidden items-center gap-2">
+          <button
+            onclick="toggleTheme()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color:var(--text);"
+          >
+            Theme
+          </button>
+          <button
+            onclick="toggleMobileMenu()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color:var(--text);"
+          >
+            Menu
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div id="mobileMenuWrap" class="lg:hidden fixed inset-0 z-50 hidden">
+      <div class="absolute inset-0 bg-black/40" onclick="toggleMobileMenu()"></div>
+      <div id="mobileDrawer" class="mobile-drawer absolute right-0 top-0 h-full w-[82%] max-w-[340px] panel p-5">
+        <div class="flex items-center justify-between mb-6">
+          <div class="font-semibold text-lg">Navigation</div>
+          <button onclick="toggleMobileMenu()" class="panel-soft rounded-xl px-3 py-2 text-sm">Close</button>
+        </div>
+        <div class="flex flex-col gap-4">
+          <a href="index.html" class="nav-link">Market Pulse</a>
+          <a href="analysis.html" class="nav-link">Analysis</a>
+          <a href="strategy.html" class="nav-link">Strategy Lab</a>
+          <a href="news.html" class="nav-link">News</a>
+          <a href="top-movers.html" class="nav-link active">Top Movers</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 lg:px-8 py-5 lg:py-8 space-y-6">
+
+    <!-- Header -->
+    <section class="panel rounded-3xl p-6 lg:p-8">
+      <p class="text-sm font-medium mb-3" style="color:var(--accent);">Opportunity Flow Scanner</p>
+      <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Top Movers</h1>
+      <p class="text-base lg:text-lg leading-8 muted max-w-4xl">
+        Scan the strongest gainers and weakest names in real time, then instantly shift into chart context without leaving the page.
+        Veloxis keeps discovery and decision-making in one place.
+      </p>
+    </section>
+
+    <!-- Search -->
+    <section class="panel rounded-2xl p-4">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end">
+        <div class="lg:col-span-9">
+          <label class="block text-sm font-medium muted mb-2">Quick Symbol Search</label>
+          <input
+            id="symbolSearch"
+            type="text"
+            placeholder="Search any symbol already listed in movers..."
+            class="panel-soft w-full rounded-2xl px-4 py-3 outline-none"
+            style="color:var(--text);"
+            oninput="searchMoverSymbol()"
+          />
+        </div>
+        <div class="lg:col-span-3">
+          <label class="block text-sm font-medium muted mb-2 opacity-0">Reset</label>
+          <button
+            onclick="resetSelection()"
+            class="w-full rounded-2xl px-4 py-3 font-semibold"
+            style="background:var(--accent); color:#fff;"
+          >
+            Reset View
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Desktop layout -->
+    <section class="hidden xl:grid grid-cols-12 gap-6">
+      <!-- Losers -->
+      <div class="col-span-3 panel rounded-3xl p-5">
+        <div class="mb-4">
+          <h2 class="text-xl font-semibold">Top Losers</h2>
+          <p class="text-sm muted mt-1">Weakest names on the board.</p>
+        </div>
+        <div id="losersListDesktop" class="space-y-2 thin-scroll max-h-[760px] overflow-auto"></div>
+      </div>
+
+      <!-- Center -->
+      <div class="col-span-6 space-y-6">
+        <div id="emptyChartCardDesktop" class="panel rounded-3xl p-8 lg:p-10">
+          <div class="max-w-2xl">
+            <p class="text-sm font-medium mb-3" style="color:var(--accent);">Mover Analysis</p>
+            <h2 class="text-3xl font-semibold mb-4">Select a top mover to view structure and momentum</h2>
+            <p class="text-base leading-8 muted">
+              Choose any symbol from gainers or losers to load a chart instantly in the center view.
+              This lets you compare opportunity flow and chart structure without leaving the page.
+            </p>
+          </div>
+        </div>
+
+        <div id="chartCardDesktop" class="panel rounded-3xl p-6 hidden fade-in">
+          <div class="flex items-start justify-between gap-4 mb-5">
+            <div>
+              <p class="text-sm font-medium mb-2" id="chartTagDesktop" style="color:var(--accent);">Mover Context</p>
+              <h2 class="text-2xl lg:text-3xl font-semibold" id="chartTitleDesktop">AAPL — Momentum Leader</h2>
+              <p class="text-sm muted mt-1" id="chartSubtitleDesktop">Selected mover context appears here.</p>
+            </div>
+            <div class="text-right">
+              <p class="text-xs uppercase tracking-[0.16em] muted">Timeframe</p>
+              <p class="text-sm font-semibold mt-1" id="chartTfLabelDesktop">1D</p>
+            </div>
+          </div>
+
+          <div class="panel-soft rounded-3xl p-5 lg:p-6">
+            <div class="flex items-center justify-between mb-4 gap-4">
+              <div>
+                <p class="text-sm muted">Live Mover Chart</p>
+                <h3 class="text-lg font-semibold mt-1" id="chartHeaderLabelDesktop">AAPL Opportunity Structure</h3>
+              </div>
+              <div class="text-right">
+                <p class="text-xs uppercase tracking-[0.16em] muted">Price</p>
+                <p class="text-lg font-semibold" id="chartPriceLabelDesktop">$192.84</p>
+              </div>
+            </div>
+
+            <div class="rounded-2xl overflow-hidden border h-[430px] relative" style="border-color:var(--border); background:linear-gradient(180deg, rgba(37,99,235,0.04) 0%, rgba(15,23,42,0.04) 100%);">
+              <div class="absolute inset-0 opacity-40">
+                <svg viewBox="0 0 1000 500" class="w-full h-full">
+                  <defs>
+                    <pattern id="moverGridDesktop" width="50" height="50" patternUnits="userSpaceOnUse">
+                      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(113,113,122,0.18)" stroke-width="1" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#moverGridDesktop)" />
+                </svg>
+              </div>
+              <svg id="chartSvgDesktop" viewBox="0 0 1000 500" class="absolute inset-0 w-full h-full"></svg>
+            </div>
+
+            <div class="mt-5 flex items-center gap-2 flex-wrap" id="tfButtonsDesktop">
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'1H','desktop')">1H</button>
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'4H','desktop')">4H</button>
+              <button class="tf-btn active rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'1D','desktop')">1D</button>
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'1W','desktop')">1W</button>
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'1M','desktop')">1M</button>
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'3M','desktop')">3M</button>
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'6M','desktop')">6M</button>
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'1Y','desktop')">1Y</button>
+            </div>
+          </div>
+
+          <div class="panel-soft rounded-2xl p-5 mt-5">
+            <div class="mb-4">
+              <h3 class="text-lg font-semibold">Ask Veloxis</h3>
+              <p class="text-sm muted mt-1">Interpret the selected mover without leaving this page.</p>
+            </div>
+            <div class="space-y-3">
+              <input
+                id="askInputDesktop"
+                type="text"
+                placeholder="Ask why this mover stands out..."
+                class="panel rounded-2xl px-4 py-4 w-full outline-none"
+                style="color:var(--text);"
+              />
+              <button
+                onclick="askVeloxis('desktop')"
+                class="w-full rounded-2xl px-4 py-3 font-semibold"
+                style="background:var(--accent); color:#fff;"
+              >
+                Ask
+              </button>
+            </div>
+            <div id="askResponseDesktop" class="panel rounded-2xl p-4 mt-4 text-sm leading-7 muted">
+              Select a mover first, then ask for context, momentum quality, or structure interpretation.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gainers -->
+      <div class="col-span-3 panel rounded-3xl p-5">
+        <div class="mb-4">
+          <h2 class="text-xl font-semibold">Top Gainers</h2>
+          <p class="text-sm muted mt-1">Strongest names on the board.</p>
+        </div>
+        <div id="gainersListDesktop" class="space-y-2 thin-scroll max-h-[760px] overflow-auto"></div>
+      </div>
+    </section>
+
+    <!-- Mobile / tablet layout -->
+    <section class="xl:hidden space-y-6">
+      <!-- Chart first -->
+      <div id="emptyChartCardMobile" class="panel rounded-3xl p-8">
+        <div class="max-w-2xl">
+          <p class="text-sm font-medium mb-3" style="color:var(--accent);">Mover Analysis</p>
+          <h2 class="text-3xl font-semibold mb-4">Select a top mover to view structure and momentum</h2>
+          <p class="text-base leading-8 muted">
+            Choose any symbol from the tabs below to load a chart instantly.
+            This keeps comparison and decision-making clean on mobile.
+          </p>
+        </div>
+      </div>
+
+      <div id="chartCardMobile" class="panel rounded-3xl p-5 hidden fade-in">
+        <div class="flex items-start justify-between gap-4 mb-5">
+          <div>
+            <p class="text-sm font-medium mb-2" id="chartTagMobile" style="color:var(--accent);">Mover Context</p>
+            <h2 class="text-2xl font-semibold" id="chartTitleMobile">AAPL — Momentum Leader</h2>
+            <p class="text-sm muted mt-1" id="chartSubtitleMobile">Selected mover context appears here.</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs uppercase tracking-[0.16em] muted">Timeframe</p>
+            <p class="text-sm font-semibold mt-1" id="chartTfLabelMobile">1D</p>
+          </div>
+        </div>
+
+        <div class="panel-soft rounded-3xl p-4">
+          <div class="flex items-center justify-between mb-4 gap-4">
+            <div>
+              <p class="text-sm muted">Live Mover Chart</p>
+              <h3 class="text-lg font-semibold mt-1" id="chartHeaderLabelMobile">AAPL Opportunity Structure</h3>
+            </div>
+            <div class="text-right">
+              <p class="text-xs uppercase tracking-[0.16em] muted">Price</p>
+              <p class="text-lg font-semibold" id="chartPriceLabelMobile">$192.84</p>
+            </div>
+          </div>
+
+          <div class="rounded-2xl overflow-hidden border h-[300px] sm:h-[360px] relative" style="border-color:var(--border); background:linear-gradient(180deg, rgba(37,99,235,0.04) 0%, rgba(15,23,42,0.04) 100%);">
+            <div class="absolute inset-0 opacity-40">
+              <svg viewBox="0 0 1000 500" class="w-full h-full">
+                <defs>
+                  <pattern id="moverGridMobile" width="50" height="50" patternUnits="userSpaceOnUse">
+                    <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(113,113,122,0.18)" stroke-width="1" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#moverGridMobile)" />
+              </svg>
+            </div>
+            <svg id="chartSvgMobile" viewBox="0 0 1000 500" class="absolute inset-0 w-full h-full"></svg>
+          </div>
+
+          <div class="mt-5 flex items-center gap-2 flex-wrap" id="tfButtonsMobile">
+            <button class="tf-btn rounded-xl px-3 py-2 text-sm font-medium" onclick="setTimeframe(this,'1H','mobile')">1H</button>
+            <button class="tf-btn rounded-xl px-3 py-2 text-sm font-medium" onclick="setTimeframe(this,'4H','mobile')">4H</button>
+            <button class="tf-btn active rounded-xl px-3 py-2 text-sm font-medium" onclick="setTimeframe(this,'1D','mobile')">1D</button>
+            <button class="tf-btn rounded-xl px-3 py-2 text-sm font-medium" onclick="setTimeframe(this,'1W','mobile')">1W</button>
+            <button class="tf-btn rounded-xl px-3 py-2 text-sm font-medium" onclick="setTimeframe(this,'1M','mobile')">1M</button>
+            <button class="tf-btn rounded-xl px-3 py-2 text-sm font-medium" onclick="setTimeframe(this,'3M','mobile')">3M</button>
+            <button class="tf-btn rounded-xl px-3 py-2 text-sm font-medium" onclick="setTimeframe(this,'6M','mobile')">6M</button>
+            <button class="tf-btn rounded-xl px-3 py-2 text-sm font-medium" onclick="setTimeframe(this,'1Y','mobile')">1Y</button>
+          </div>
+        </div>
+
+        <div class="panel-soft rounded-2xl p-5 mt-5">
+          <div class="mb-4">
+            <h3 class="text-lg font-semibold">Ask Veloxis</h3>
+            <p class="text-sm muted mt-1">Interpret the selected mover from the same screen.</p>
+          </div>
+          <div class="space-y-3">
+            <input
+              id="askInputMobile"
+              type="text"
+              placeholder="Ask why this mover stands out..."
+              class="panel rounded-2xl px-4 py-4 w-full outline-none"
+              style="color:var(--text);"
+            />
+            <button
+              onclick="askVeloxis('mobile')"
+              class="w-full rounded-2xl px-4 py-3 font-semibold"
+              style="background:var(--accent); color:#fff;"
+            >
+              Ask
+            </button>
+          </div>
+          <div id="askResponseMobile" class="panel rounded-2xl p-4 mt-4 text-sm leading-7 muted">
+            Select a mover first, then ask for context, momentum quality, or structure interpretation.
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <section class="panel rounded-3xl p-4">
+        <div class="flex gap-2 flex-wrap">
+          <button class="tab-btn active rounded-xl px-4 py-2 text-sm font-medium" onclick="switchMobileTab(event,'gainers')">Gainers</button>
+          <button class="tab-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="switchMobileTab(event,'losers')">Losers</button>
+          <button class="tab-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="switchMobileTab(event,'active')">Most Active</button>
+        </div>
+      </section>
+
+      <div id="mobileTabContent" class="panel rounded-3xl p-5">
+        <div class="mb-4">
+          <h2 class="text-xl font-semibold" id="mobileTabTitle">Top Gainers</h2>
+          <p class="text-sm muted mt-1" id="mobileTabDesc">Strongest names on the board.</p>
+        </div>
+        <div id="mobileTabList" class="space-y-2"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    let currentSymbol = "";
+    let currentTimeframeDesktop = "1D";
+    let currentTimeframeMobile = "1D";
+    let mobileTab = "gainers";
+
+    const gainers = [
+      { symbol:"AAPL", price:"192.84", change:"+4.20%", volume:"120M", type:"gainer", title:"Momentum Leader" },
+      { symbol:"NVDA", price:"941.20", change:"+3.90%", volume:"98M", type:"gainer", title:"Breakout Strength" },
+      { symbol:"TSLA", price:"248.30", change:"+3.45%", volume:"89M", type:"gainer", title:"Trend Expansion" },
+      { symbol:"MSFT", price:"425.16", change:"+2.88%", volume:"54M", type:"gainer", title:"Relative Strength" },
+      { symbol:"AMZN", price:"183.44", change:"+2.24%", volume:"63M", type:"gainer", title:"Participation Build" }
+    ];
+
+    const losers = [
+      { symbol:"META", price:"502.70", change:"-2.95%", volume:"47M", type:"loser", title:"Weakness Structure" },
+      { symbol:"NFLX", price:"617.22", change:"-2.54%", volume:"22M", type:"loser", title:"Failure Follow-Through" },
+      { symbol:"AMD", price:"168.30", change:"-2.12%", volume:"58M", type:"loser", title:"Pressure Rotation" },
+      { symbol:"BABA", price:"77.15", change:"-1.94%", volume:"31M", type:"loser", title:"Support Stress" },
+      { symbol:"INTC", price:"33.60", change:"-1.76%", volume:"44M", type:"loser", title:"Trend Weakness" }
+    ];
+
+    const mostActive = [
+      { symbol:"AAPL", price:"192.84", change:"+4.20%", volume:"120M", type:"gainer", title:"Momentum Leader" },
+      { symbol:"TSLA", price:"248.30", change:"+3.45%", volume:"89M", type:"gainer", title:"Trend Expansion" },
+      { symbol:"NVDA", price:"941.20", change:"+3.90%", volume:"98M", type:"gainer", title:"Breakout Strength" },
+      { symbol:"AMD", price:"168.30", change:"-2.12%", volume:"58M", type:"loser", title:"Pressure Rotation" },
+      { symbol:"MSFT", price:"425.16", change:"+2.88%", volume:"54M", type:"gainer", title:"Relative Strength" },
+      { symbol:"META", price:"502.70", change:"-2.95%", volume:"47M", type:"loser", title:"Weakness Structure" }
+    ];
+
+    function toggleTheme() {
+      document.getElementById("app-body").classList.toggle("dark");
+    }
+
+    function toggleMobileMenu() {
+      const wrap = document.getElementById("mobileMenuWrap");
+      const drawer = document.getElementById("mobileDrawer");
+      const isHidden = wrap.classList.contains("hidden");
+
+      if (isHidden) {
+        wrap.classList.remove("hidden");
+        requestAnimationFrame(() => drawer.classList.add("open"));
+      } else {
+        drawer.classList.remove("open");
+        setTimeout(() => wrap.classList.add("hidden"), 220);
+      }
+    }
+
+    function moverRow(item) {
+      const trendClass = item.type === "gainer" ? "trend-up" : "trend-down";
+      const isActive = currentSymbol === item.symbol ? "active" : "";
+      return `
+        <div onclick="selectMover('${item.symbol}')" class="mover-row panel-soft rounded-2xl p-4 ${isActive}">
+          <div class="flex items-center justify-between gap-3 mb-2">
+            <div class="font-semibold text-base">${item.symbol}</div>
+            <div class="text-sm font-semibold ${trendClass}">${item.change}</div>
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <div class="muted">$${item.price}</div>
+            <div class="muted">${item.volume}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDesktopLists() {
+      document.getElementById("gainersListDesktop").innerHTML = gainers.map(moverRow).join("");
+      document.getElementById("losersListDesktop").innerHTML = losers.map(moverRow).join("");
+    }
+
+    function renderMobileTabContent() {
+      const listEl = document.getElementById("mobileTabList");
+      const titleEl = document.getElementById("mobileTabTitle");
+      const descEl = document.getElementById("mobileTabDesc");
+
+      let source = gainers;
+      let title = "Top Gainers";
+      let desc = "Strongest names on the board.";
+
+      if (mobileTab === "losers") {
+        source = losers;
+        title = "Top Losers";
+        desc = "Weakest names on the board.";
+      } else if (mobileTab === "active") {
+        source = mostActive;
+        title = "Most Active";
+        desc = "Most traded names by session activity.";
+      }
+
+      titleEl.textContent = title;
+      descEl.textContent = desc;
+      listEl.innerHTML = source.map(moverRow).join("");
+    }
+
+    function switchMobileTab(event, tab) {
+      mobileTab = tab;
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      event.target.classList.add("active");
+      renderMobileTabContent();
+    }
+
+    function selectMover(symbol) {
+      currentSymbol = symbol;
+      renderDesktopLists();
+      renderMobileTabContent();
+
+      const all = [...gainers, ...losers, ...mostActive];
+      const item = all.find(x => x.symbol === symbol);
+      if (!item) return;
+
+      // Desktop
+      document.getElementById("emptyChartCardDesktop").classList.add("hidden");
+      document.getElementById("chartCardDesktop").classList.remove("hidden");
+      fillChart("desktop", item, currentTimeframeDesktop);
+
+      // Mobile
+      document.getElementById("emptyChartCardMobile").classList.add("hidden");
+      document.getElementById("chartCardMobile").classList.remove("hidden");
+      fillChart("mobile", item, currentTimeframeMobile);
+
+      // Auto-scroll on smaller screens
+      if (window.innerWidth < 1280) {
+        document.getElementById("chartCardMobile").scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function fillChart(mode, item, tf) {
+      const isGainer = item.type === "gainer";
+      const prefix = mode === "desktop" ? "Desktop" : "Mobile";
+
+      document.getElementById(`chartTag${prefix}`).textContent = isGainer ? "Momentum Context" : "Weakness Context";
+      document.getElementById(`chartTag${prefix}`).style.color = isGainer ? "var(--positive)" : "var(--negative)";
+      document.getElementById(`chartTitle${prefix}`).textContent = `${item.symbol} — ${item.title}`;
+      document.getElementById(`chartSubtitle${prefix}`).textContent = isGainer
+        ? "Selected from current gainers. Assess whether the move is expanding cleanly or becoming extended."
+        : "Selected from current losers. Assess whether the move is breaking structure or nearing exhaustion.";
+      document.getElementById(`chartHeaderLabel${prefix}`).textContent = `${item.symbol} Opportunity Structure`;
+      document.getElementById(`chartPriceLabel${prefix}`).textContent = `$${item.price}`;
+      document.getElementById(`chartTfLabel${prefix}`).textContent = tf;
+
+      const svg = document.getElementById(`chartSvg${prefix}`);
+      const lineColor = isGainer ? "rgba(34,197,94,0.95)" : "rgba(239,68,68,0.95)";
+      const fillColor = isGainer ? "rgba(34,197,94,0.10)" : "rgba(239,68,68,0.10)";
+      const zoneColor = isGainer ? "rgba(34,197,94,0.65)" : "rgba(239,68,68,0.65)";
+      const zoneFill = isGainer ? "rgba(34,197,94,0.08)" : "rgba(239,68,68,0.08)";
+      const title = isGainer ? "Momentum zone" : "Weakness zone";
+
+      const points = isGainer
+        ? "25,395 85,360 130,340 180,300 230,265 290,220 350,195 430,150 510,120 590,95 670,84 760,60 850,46 940,38"
+        : "25,58 85,92 130,110 180,145 230,168 290,205 350,230 430,280 510,320 590,350 670,372 760,395 850,418 940,442";
+
+      const fillPoints = isGainer
+        ? `${points} 940,500 25,500`
+        : `25,0 940,0 ${points}`;
+
+      svg.innerHTML = `
+        <polyline fill="none" stroke="${lineColor}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" points="${points}" />
+        <polyline fill="${fillColor}" stroke="none" points="${fillPoints}" />
+        <rect x="${isGainer ? "650" : "590"}" y="${isGainer ? "52" : "320"}" width="220" height="82" rx="12" fill="${zoneFill}" stroke="${zoneColor}" stroke-dasharray="8 8" stroke-width="2"/>
+        <text x="${isGainer ? "672" : "612"}" y="${isGainer ? "85" : "353"}" fill="${zoneColor}" font-size="18" font-weight="600">${title}</text>
+
+        <line x1="0" y1="110" x2="1000" y2="110" stroke="rgba(34,197,94,0.40)" stroke-width="2" stroke-dasharray="8 8" />
+        <line x1="0" y1="320" x2="1000" y2="320" stroke="rgba(239,68,68,0.40)" stroke-width="2" stroke-dasharray="8 8" />
+        <line x1="0" y1="215" x2="1000" y2="215" stroke="rgba(161,161,170,0.28)" stroke-width="2" stroke-dasharray="6 8" />
+
+        <text x="770" y="102" fill="rgba(34,197,94,0.95)" font-size="16" font-weight="600">Resistance</text>
+        <text x="790" y="312" fill="rgba(239,68,68,0.95)" font-size="16" font-weight="600">Support</text>
+        <text x="795" y="208" fill="rgba(161,161,170,0.95)" font-size="15" font-weight="500">Range Mid</text>
+      `;
+    }
+
+    function setTimeframe(button, tf, mode) {
+      const prefix = mode === "desktop" ? "Desktop" : "Mobile";
+      if (mode === "desktop") currentTimeframeDesktop = tf;
+      else currentTimeframeMobile = tf;
+
+      document.getElementById(`chartTfLabel${prefix}`).textContent = tf;
+      document.querySelectorAll(`#tfButtons${prefix} .tf-btn`).forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+
+      if (currentSymbol) {
+        const all = [...gainers, ...losers, ...mostActive];
+        const item = all.find(x => x.symbol === currentSymbol);
+        if (item) fillChart(mode, item, tf);
+      }
+    }
+
+    function searchMoverSymbol() {
+      const value = document.getElementById("symbolSearch").value.trim().toUpperCase();
+      if (!value) return;
+
+      const all = [...gainers, ...losers, ...mostActive];
+      const item = all.find(x => x.symbol === value);
+      if (item) selectMover(item.symbol);
+    }
+
+    function resetSelection() {
+      currentSymbol = "";
+      renderDesktopLists();
+      renderMobileTabContent();
+
+      document.getElementById("chartCardDesktop").classList.add("hidden");
+      document.getElementById("emptyChartCardDesktop").classList.remove("hidden");
+      document.getElementById("chartCardMobile").classList.add("hidden");
+      document.getElementById("emptyChartCardMobile").classList.remove("hidden");
+
+      document.getElementById("askResponseDesktop").textContent =
+        "Select a mover first, then ask for context, momentum quality, or structure interpretation.";
+      document.getElementById("askResponseMobile").textContent =
+        "Select a mover first, then ask for context, momentum quality, or structure interpretation.";
+
+      document.getElementById("symbolSearch").value = "";
+    }
+
+    function askVeloxis(mode) {
+      const prefix = mode === "desktop" ? "Desktop" : "Mobile";
+      const output = document.getElementById(`askResponse${prefix}`);
+
+      if (!currentSymbol) {
+        output.textContent = "Select a mover first so Veloxis can interpret structure and momentum context.";
+        return;
+      }
+
+      const all = [...gainers, ...losers, ...mostActive];
+      const item = all.find(x => x.symbol === currentSymbol);
+
+      output.textContent = item.type === "gainer"
+        ? `Veloxis: ${currentSymbol} is leading because momentum is attracting attention, but the key question is whether the move is still structurally healthy or already extended into resistance. Read continuation quality before assuming upside persistence.`
+        : `Veloxis: ${currentSymbol} is weak relative to the board, but weakness alone is not the edge. Focus on whether the breakdown is expanding cleanly or beginning to show signs of exhaustion near support.`;
+    }
+
+    renderDesktopLists();
+    renderMobileTabContent();
+  </script>
+</body>
+</html>
