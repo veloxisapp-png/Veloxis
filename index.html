@@ -1,199 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Veloxis - Market Intelligence</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <style>
-    body { font-family: 'Inter', system-ui, sans-serif; }
-    .card { transition: all 0.3s ease; }
-    .card:hover { transform: translateY(-3px); }
-    .nav-link { transition: all 0.2s; }
-    .nav-link:hover { color: #0ea5e9; }
-    .active { color: #0ea5e9; border-bottom: 3px solid #0ea5e9; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veloxis Forge</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b0f19;
+  color: white;
+}
+
+.container {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+h1 {
+  font-size: 32px;
+}
+
+.subtitle {
+  color: #9ca3af;
+  margin-bottom: 20px;
+}
+
+.nav a {
+  margin-right: 10px;
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+.card {
+  background: #111827;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 10px 0;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.card:hover {
+  background: #1f2937;
+}
+
+.btn {
+  background: linear-gradient(90deg,#2563eb,#06b6d4);
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.news {
+  margin-top: 30px;
+}
+
+.news-item {
+  background: #111827;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 8px 0;
+}
+
+.toggle {
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.light {
+  background: #f9fafb;
+  color: #111;
+}
+
+.light .card {
+  background: white;
+}
+
+.light .news-item {
+  background: white;
+}
+</style>
+
 </head>
-<body class="bg-white dark:bg-zinc-950 text-gray-900 dark:text-gray-100 min-h-screen" id="main-body">
 
-  <!-- Top Navigation -->
-  <nav class="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="flex items-center justify-between h-16">
-        
-        <!-- Logo -->
-        <div class="flex items-center gap-3">
-          <div class="relative">
-            <span class="text-5xl font-bold text-blue-700 dark:text-blue-500">V</span>
-            <div class="absolute -top-1 -right-6 text-4xl font-bold bg-gradient-to-r from-red-500 via-green-400 to-yellow-400 bg-clip-text text-transparent rotate-12">~</div>
-          </div>
-          <span class="text-2xl font-semibold tracking-tighter">veloxis</span>
-        </div>
+<body>
 
-        <!-- Menu -->
-        <div class="flex items-center gap-8 text-base font-medium">
-          <a href="#" onclick="showPage('indicators')" id="tab-indicators" class="nav-link active">Indicators</a>
-          <a href="#" onclick="showPage('analysis')" id="tab-analysis" class="nav-link">Analysis</a>
-          <a href="#" onclick="showPage('forge')" id="tab-forge" class="nav-link">Forge</a>
-          <a href="#" onclick="showPage('news')" id="tab-news" class="nav-link">News</a>
-          <a href="#" onclick="showPage('movers')" id="tab-movers" class="nav-link">Top Movers</a>
-        </div>
+<div class="container">
 
-        <!-- Theme Toggle -->
-        <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700">
-          <i class="fa-solid fa-moon text-xl dark:hidden"></i>
-          <i class="fa-solid fa-sun text-xl hidden dark:block"></i>
-        </button>
-      </div>
-    </div>
-  </nav>
+<h1>Veloxis Forge</h1>
+<p class="subtitle">Build your edge. Test it. Optimize it with AI.</p>
 
-  <div class="max-w-6xl mx-auto px-6 py-8">
+<div class="nav">
+  <a href="#">Indicators</a>
+  <a href="#">Analysis</a>
+  <a href="#">Forge</a>
+  <a href="#">News</a>
+  <a href="#">Top Movers</a>
+</div>
 
-    <!-- INDICATORS -->
-    <div id="page-indicators" class="page">
-      <h1 class="text-4xl font-bold text-center mb-2">Market Pulse</h1>
-      <p class="text-center text-gray-500 dark:text-gray-400 mb-8">Mixed sentiment with bearish pressure on oil prices</p>
+<div class="toggle" onclick="toggleTheme()">🌙 / ☀️</div>
 
-      <div class="max-w-md mx-auto mb-10 bg-white dark:bg-zinc-800 border border-red-200 dark:border-red-500/30 rounded-3xl p-6 text-center">
-        <div class="text-red-600 dark:text-red-400 font-semibold text-2xl">Bearish</div>
-        <p class="text-red-600 dark:text-red-300 mt-2">Market is falling due to heavy pressure on oil prices</p>
-      </div>
+<h2>Choose your edge</h2>
 
-      <!-- Cards -->
-      <div class="grid grid-cols-2 gap-4">
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">USD INDEX<br><span class="text-2xl font-bold">104.85</span><span class="text-emerald-500 text-xs ml-2">+0.32</span></div>
-        <!-- باقي الكروت بنفس الطريقة (مختصرة للتوضيح) -->
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">S&P YTD<br><span class="text-2xl font-bold">+12.8%</span><span class="text-emerald-500 text-xs ml-2">+1.4</span></div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">CRUDE OIL<br><span class="text-2xl font-bold">$78.40</span><span class="text-red-500 text-xs ml-2">-1.8</span></div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">GOLD / OZ<br><span class="text-2xl font-bold">$2,652</span><span class="text-emerald-500 text-xs ml-2">+0.9</span></div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">BITCOIN<br><span class="text-2xl font-bold">$67,420</span><span class="text-emerald-500 text-xs ml-2">+2.3</span></div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">VIX<br><span class="text-2xl font-bold">18.45</span><span class="text-red-500 text-xs ml-2">-0.85</span></div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">DOW JONES FUTURES<br><span class="text-2xl font-bold">42,350</span><span class="text-emerald-500 text-xs ml-2">+0.28%</span></div>
-        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow border border-gray-100 dark:border-zinc-700">S&P 500 FUTURES<br><span class="text-2xl font-bold">5,830</span><span class="text-emerald-500 text-xs ml-2">+0.43%</span></div>
-      </div>
-    </div>
+<div class="card">🚀 Momentum - Ride strong trends</div>
+<div class="card">📈 Breakout - Catch explosive moves</div>
+<div class="card">🔄 Mean Reversion - Trade reversals</div>
+<div class="card">🛡 Low Risk - Defensive model</div>
+<div class="card">🤖 AI Sentiment - Smart bias</div>
 
-    <!-- ANALYSIS -->
-    <div id="page-analysis" class="page hidden">
-      <h1 class="text-4xl font-bold text-center mb-2">Technical Analysis</h1>
-      <p class="text-center text-gray-500 dark:text-gray-400 mb-8">Enter stock symbol to analyze</p>
+<div class="btn">⚡ Forge Strategy</div>
 
-      <div class="max-w-md mx-auto mb-8">
-        <div class="relative">
-          <input type="text" class="w-full bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-3xl py-5 px-6 pl-14 focus:outline-none focus:border-sky-500" placeholder="AAPL, TSLA...">
-          <i class="fa-solid fa-magnifying-glass absolute left-6 top-1/2 -translate-y-1/2 text-gray-400"></i>
-        </div>
-      </div>
+<h2>AI Blueprint Preview</h2>
 
-      <div class="bg-white dark:bg-zinc-800 rounded-3xl p-6">
-        <div class="text-emerald-500 text-center mb-4">AAPL - Live Chart</div>
-        <div class="h-64 bg-gray-100 dark:bg-zinc-900 rounded-2xl flex items-center justify-center">📈</div>
-        
-        <div class="flex justify-center gap-2 mt-6">
-          <button class="px-5 py-2 text-sm rounded-2xl bg-gray-200 dark:bg-zinc-700">1H</button>
-          <button class="px-5 py-2 text-sm rounded-2xl bg-gray-200 dark:bg-zinc-700">4H</button>
-          <button class="px-5 py-2 text-sm rounded-2xl bg-sky-500 text-white">1D</button>
-          <button class="px-5 py-2 text-sm rounded-2xl bg-gray-200 dark:bg-zinc-700">1W</button>
-          <button class="px-5 py-2 text-sm rounded-2xl bg-gray-200 dark:bg-zinc-700">1M</button>
-        </div>
+<div class="card">
+Bias: <b>Bullish</b><br>
+Model: <b>Momentum</b><br>
+Entry: Break + retest<br>
+Risk: 1R<br>
+Target: 2R<br>
+</div>
 
-        <!-- Ask Veloxis AI -->
-        <div class="mt-10 bg-gray-50 dark:bg-zinc-900 rounded-3xl p-6">
-          <div class="flex items-center gap-3 mb-4">
-            <span class="text-3xl">🤖</span>
-            <div>
-              <div class="font-semibold">Ask Veloxis AI</div>
-              <div class="text-sm text-gray-500 dark:text-gray-400">Get instant analysis & insights</div>
-            </div>
-          </div>
-          <div class="flex gap-3">
-            <input type="text" class="flex-1 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-3xl px-6 py-4 text-sm" placeholder="What do you think about this trend?">
-            <button class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 rounded-3xl text-sm font-medium">ASK</button>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="news">
+<h2>Market News</h2>
+<div id="newsContainer"></div>
+</div>
 
-    <!-- FORGE PAGE -->
-    <div id="page-forge" class="page hidden">
-      <div class="text-center mb-12">
-        <h1 class="text-5xl font-bold tracking-tighter bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">Veloxis Forge</h1>
-        <p class="text-xl text-gray-600 dark:text-gray-400 mt-4">Build • Test • Optimize with AI</p>
-      </div>
-      <div class="bg-white dark:bg-zinc-800 rounded-3xl p-10">
-        <h2 class="text-2xl font-semibold text-center mb-8">What strategy do you want to forge today?</h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
-          <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">Momentum</button>
-          <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">Breakout</button>
-          <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">Mean Reversion</button>
-          <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">AI Sentiment</button>
-          <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">Low Risk</button>
-          <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">Custom</button>
-        </div>
-        <button onclick="generateForge()" class="w-full bg-gradient-to-r from-blue-600 to-sky-500 text-white font-bold py-5 rounded-3xl text-lg">Forge Strategy Now</button>
-      </div>
-    </div>
+</div>
 
-    <!-- NEWS PAGE (احترافي) -->
-    <div id="page-news" class="page hidden">
-      <h1 class="text-4xl font-bold mb-8">Breaking News</h1>
-      <div class="space-y-4">
-        <div class="bg-white dark:bg-zinc-800 p-6 rounded-3xl">Fed signals possible rate cut in June</div>
-        <div class="bg-white dark:bg-zinc-800 p-6 rounded-3xl">US Jobless Claims rise to 8-week high</div>
-        <div class="bg-white dark:bg-zinc-800 p-6 rounded-3xl">China announces new stimulus package</div>
-        <!-- يمكنك إضافة حتى 10 أخبار -->
-      </div>
-    </div>
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("light");
+}
 
-    <!-- TOP MOVERS -->
-    <div id="page-movers" class="page hidden">
-      <h1 class="text-4xl font-bold mb-8">Top Movers Today</h1>
-      <div class="mb-8">
-        <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2"><span class="text-emerald-500">🚀</span> Top Gainers</h2>
-        <div class="space-y-3">
-          <div class="bg-white dark:bg-zinc-800 p-5 rounded-3xl flex justify-between"><span>NVDA</span><span class="text-emerald-500">+6.8%</span></div>
-          <div class="bg-white dark:bg-zinc-800 p-5 rounded-3xl flex justify-between"><span>TSLA</span><span class="text-emerald-500">+4.9%</span></div>
-        </div>
-      </div>
-      <div>
-        <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2"><span class="text-red-500">📉</span> Top Losers</h2>
-        <div class="space-y-3">
-          <div class="bg-white dark:bg-zinc-800 p-5 rounded-3xl flex justify-between"><span>AAPL</span><span class="text-red-500">-3.2%</span></div>
-          <div class="bg-white dark:bg-zinc-800 p-5 rounded-3xl flex justify-between"><span>AMZN</span><span class="text-red-500">-2.7%</span></div>
-        </div>
-      </div>
-    </div>
+const newsData = [
+"Market rallies on tech strength",
+"Oil prices surge amid tension",
+"Fed signals rate stability",
+"Nvidia leads AI momentum",
+"Bitcoin holds above support",
+"Bond yields decline",
+"Small caps outperform",
+"Energy sector spikes",
+"Gold stabilizes",
+"Volatility drops"
+];
 
-  </div>
+const container = document.getElementById("newsContainer");
 
-  <!-- Bottom Navigation -->
-  <div class="fixed bottom-0 left-0 right-0 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-700 max-w-6xl mx-auto">
-    <div class="flex justify-around py-4 text-2xl text-gray-400">
-      <i class="fa-solid fa-chart-line"></i>
-      <i class="fa-solid fa-newspaper"></i>
-      <i class="fa-solid fa-arrow-trend-up"></i>
-    </div>
-  </div>
+newsData.slice(0,10).forEach(n => {
+  const div = document.createElement("div");
+  div.className = "news-item";
+  div.innerText = n;
+  container.appendChild(div);
+});
+</script>
 
-  <script>
-    function showPage(page) {
-      document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-      document.getElementById(`page-${page}`).classList.remove('hidden');
-      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-      document.getElementById(`tab-${page}`).classList.add('active');
-    }
-
-    function toggleTheme() {
-      document.getElementById('main-body').classList.toggle('dark');
-    }
-
-    function generateForge() {
-      alert("Strategy forged successfully! (Demo)");
-    }
-
-    window.onload = () => showPage('indicators');
-  </script>
 </body>
 </html>
