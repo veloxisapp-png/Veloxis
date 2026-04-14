@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,25 +9,22 @@
   <style>
     body { font-family: 'Inter', system-ui, sans-serif; }
     .card { transition: all 0.3s ease; }
-    .card:hover { transform: translateY(-4px); }
+    .card:hover { transform: translateY(-3px); }
     .nav-link { transition: all 0.2s; }
     .nav-link:hover { color: #0ea5e9; }
     .active { color: #0ea5e9; border-bottom: 3px solid #0ea5e9; }
-    .forge-card { transition: all 0.3s ease; }
-    .forge-card:hover { transform: scale(1.03); }
   </style>
 </head>
-<body class="bg-zinc-950 text-white min-h-screen" id="main-body">
+<body class="bg-zinc-950 text-zinc-100 dark:bg-zinc-950 dark:text-zinc-100" id="main-body">
 
   <!-- Top Navigation -->
-  <nav class="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-50">
+  <nav class="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-16">
-        
         <!-- Logo -->
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 bg-blue-700 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">V</div>
-          <span class="font-bold text-2xl tracking-tighter text-blue-100">Veloxis</span>
+          <div class="text-4xl font-bold text-blue-700">V</div>
+          <span class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">veloxis</span>
         </div>
 
         <!-- Menu -->
@@ -40,9 +37,9 @@
         </div>
 
         <!-- Theme Toggle -->
-        <button onclick="toggleTheme()" 
-                class="w-10 h-10 flex items-center justify-center rounded-2xl bg-zinc-800 hover:bg-zinc-700 transition-colors">
-          <i class="fa-solid fa-moon text-xl" id="theme-icon"></i>
+        <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700">
+          <i class="fa-solid fa-moon text-xl dark:hidden"></i>
+          <i class="fa-solid fa-sun text-xl hidden dark:block"></i>
         </button>
       </div>
     </div>
@@ -50,184 +47,167 @@
 
   <div class="max-w-6xl mx-auto px-6 py-8">
 
-    <!-- ====================== 1. INDICATORS (Market Pulse) ====================== -->
+    <!-- ==================== INDICATORS PAGE ==================== -->
     <div id="page-indicators" class="page">
-      <div class="text-center mb-10">
-        <h1 class="text-5xl font-bold tracking-tighter">Market Pulse</h1>
-        <p class="text-zinc-400 mt-3">Mixed sentiment with bearish pressure on oil prices</p>
-      </div>
+      <h1 class="text-4xl font-bold text-center mb-2">Market Pulse</h1>
+      <p class="text-center text-gray-500 dark:text-gray-400 mb-8">Mixed sentiment with bearish pressure on oil prices</p>
 
       <!-- Bearish Box -->
-      <div class="max-w-md mx-auto mb-12">
-        <div class="bg-zinc-900 border border-red-500/60 rounded-3xl p-7 text-center">
-          <div class="text-red-400 font-semibold text-2xl mb-3">Bearish</div>
-          <p class="text-red-300 text-lg">Market is falling due to heavy pressure on oil prices</p>
-        </div>
+      <div class="max-w-md mx-auto mb-10 bg-white dark:bg-zinc-800 border border-red-200 dark:border-red-500/30 rounded-3xl p-6 text-center shadow-sm">
+        <div class="text-red-600 dark:text-red-400 font-semibold text-2xl">Bearish</div>
+        <p class="text-red-600 dark:text-red-300 mt-2">Market is falling due to heavy pressure on oil prices</p>
       </div>
 
-      <!-- Market Pressure Drivers -->
-      <div class="mb-14">
-        <h2 class="text-2xl font-semibold text-center mb-6">Market Pressure Drivers</h2>
-        <div class="flex justify-center">
-          <div class="relative w-72 h-72">
-            <svg viewBox="0 0 200 200" class="w-full h-full">
-              <circle cx="100" cy="100" r="78" fill="none" stroke="#27272a" stroke-width="32"/>
-              <circle cx="100" cy="100" r="78" fill="none" stroke="#ef4444" stroke-width="32" stroke-dasharray="327 327" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
-              <circle cx="100" cy="100" r="78" fill="none" stroke="#22c55e" stroke-width="32" stroke-dasharray="172 327" stroke-dashoffset="-327" transform="rotate(-90 100 100)"/>
-              <circle cx="100" cy="100" r="78" fill="none" stroke="#22c55e" stroke-width="32" stroke-dasharray="117 327" stroke-dashoffset="-499" transform="rotate(-90 100 100)"/>
-              <circle cx="100" cy="100" r="78" fill="none" stroke="#22c55e" stroke-width="32" stroke-dasharray="94 327" stroke-dashoffset="-616" transform="rotate(-90 100 100)"/>
-              <circle cx="100" cy="100" r="78" fill="none" stroke="#22c55e" stroke-width="32" stroke-dasharray="70 327" stroke-dashoffset="-710" transform="rotate(-90 100 100)"/>
-            </svg>
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="text-center">
-                <div class="text-5xl font-bold">100%</div>
-                <div class="text-xs text-zinc-500">TOTAL PRESSURE</div>
-              </div>
+      <!-- Pressure Drivers -->
+      <div class="text-center mb-6">
+        <h2 class="text-xl font-semibold">Market Pressure Drivers</h2>
+      </div>
+      <div class="flex justify-center mb-12">
+        <div class="relative w-60 h-60">
+          <svg viewBox="0 0 200 200" class="w-full h-full">
+            <circle cx="100" cy="100" r="68" fill="none" stroke="#e5e7eb" stroke-width="26"/>
+            <circle cx="100" cy="100" r="68" fill="none" stroke="#22c55e" stroke-width="26" stroke-dasharray="280 280" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+            <circle cx="100" cy="100" r="68" fill="none" stroke="#ef4444" stroke-width="26" stroke-dasharray="118 280" stroke-dashoffset="-280" transform="rotate(-90 100 100)"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="text-center">
+              <div class="text-4xl font-bold text-gray-900 dark:text-white">100%</div>
+              <div class="text-xs text-gray-500">TOTAL PRESSURE</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 8 Indicator Cards -->
+      <!-- 8 Cards -->
       <div class="grid grid-cols-2 gap-4">
-        <div class="card bg-zinc-900 rounded-3xl p-6">
-          <div class="text-xs text-zinc-400">USD INDEX</div>
-          <div class="text-3xl font-bold mt-1">104.85</div>
-          <div class="text-emerald-400 text-sm">+0.32 <span class="text-zinc-500">24h</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow-sm border border-gray-100 dark:border-zinc-700">
+          <div class="text-xs text-gray-500">USD INDEX</div>
+          <div class="text-2xl font-bold text-gray-900 dark:text-white">104.85</div>
+          <div class="text-emerald-500 text-sm">+0.32</div>
         </div>
-        <div class="card bg-zinc-900 rounded-3xl p-6">
-          <div class="text-xs text-zinc-400">S&P YTD</div>
-          <div class="text-3xl font-bold mt-1">+12.8%</div>
-          <div class="text-emerald-400 text-sm">+1.4 <span class="text-zinc-500">24h</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow-sm border border-gray-100 dark:border-zinc-700">
+          <div class="text-xs text-gray-500">S&P YTD</div>
+          <div class="text-2xl font-bold text-gray-900 dark:text-white">+12.8%</div>
+          <div class="text-emerald-500 text-sm">+1.4</div>
         </div>
-        <div class="card bg-zinc-900 rounded-3xl p-6">
-          <div class="text-xs text-red-400">CRUDE OIL</div>
-          <div class="text-3xl font-bold mt-1">$78.40</div>
-          <div class="text-red-400 text-sm">-1.8 <span class="text-zinc-500">24h</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow-sm border border-gray-100 dark:border-zinc-700">
+          <div class="text-xs text-red-500">CRUDE OIL</div>
+          <div class="text-2xl font-bold text-gray-900 dark:text-white">$78.40</div>
+          <div class="text-red-500 text-sm">-1.8</div>
         </div>
-        <div class="card bg-zinc-900 rounded-3xl p-6">
-          <div class="text-xs text-zinc-400">GOLD / OZ</div>
-          <div class="text-3xl font-bold mt-1">$2,652</div>
-          <div class="text-emerald-400 text-sm">+0.9 <span class="text-zinc-500">24h</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow-sm border border-gray-100 dark:border-zinc-700">
+          <div class="text-xs text-gray-500">GOLD / OZ</div>
+          <div class="text-2xl font-bold text-gray-900 dark:text-white">$2,652</div>
+          <div class="text-emerald-500 text-sm">+0.9</div>
         </div>
-        <div class="card bg-zinc-900 rounded-3xl p-6">
-          <div class="text-xs text-zinc-400">BITCOIN</div>
-          <div class="text-3xl font-bold mt-1">$67,420</div>
-          <div class="text-emerald-400 text-sm">+2.3 <span class="text-zinc-500">24h</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow-sm border border-gray-100 dark:border-zinc-700">
+          <div class="text-xs text-gray-500">BITCOIN</div>
+          <div class="text-2xl font-bold text-gray-900 dark:text-white">$67,420</div>
+          <div class="text-emerald-500 text-sm">+2.3</div>
         </div>
-        <div class="card bg-zinc-900 rounded-3xl p-6">
-          <div class="text-xs text-zinc-400">VIX</div>
-          <div class="text-3xl font-bold mt-1">18.45</div>
-          <div class="text-red-400 text-sm">-0.85 <span class="text-zinc-500">24h</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow-sm border border-gray-100 dark:border-zinc-700">
+          <div class="text-xs text-gray-500">VIX</div>
+          <div class="text-2xl font-bold text-gray-900 dark:text-white">18.45</div>
+          <div class="text-red-500 text-sm">-0.85</div>
         </div>
-        <div class="card bg-zinc-900 rounded-3xl p-6">
-          <div class="text-xs text-zinc-400">DOW JONES FUTURES</div>
-          <div class="text-3xl font-bold mt-1">42,350</div>
-          <div class="text-emerald-400 text-sm">+0.28% <span class="text-zinc-500">24h</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow-sm border border-gray-100 dark:border-zinc-700">
+          <div class="text-xs text-gray-500">DOW JONES FUTURES</div>
+          <div class="text-2xl font-bold text-gray-900 dark:text-white">42,350</div>
+          <div class="text-emerald-500 text-sm">+0.28%</div>
         </div>
-        <div class="card bg-zinc-900 rounded-3xl p-6">
-          <div class="text-xs text-zinc-400">S&P 500 FUTURES</div>
-          <div class="text-3xl font-bold mt-1">5,830</div>
-          <div class="text-emerald-400 text-sm">+0.43% <span class="text-zinc-500">24h</span></div>
+        <div class="card bg-white dark:bg-zinc-800 p-5 rounded-3xl shadow-sm border border-gray-100 dark:border-zinc-700">
+          <div class="text-xs text-gray-500">S&P 500 FUTURES</div>
+          <div class="text-2xl font-bold text-gray-900 dark:text-white">5,830</div>
+          <div class="text-emerald-500 text-sm">+0.43%</div>
         </div>
       </div>
     </div>
 
-    <!-- ====================== 2. ANALYSIS ====================== -->
+    <!-- ==================== ANALYSIS PAGE ==================== -->
     <div id="page-analysis" class="page hidden">
       <h1 class="text-4xl font-bold text-center mb-2">Technical Analysis</h1>
-      <p class="text-center text-zinc-400 mb-8">اكتب رمز السهم لعرض التحليل الفني</p>
+      <p class="text-center text-gray-500 dark:text-gray-400 mb-8">Enter stock symbol to analyze</p>
 
-      <div class="max-w-lg mx-auto mb-8">
+      <div class="max-w-md mx-auto mb-8">
         <div class="relative">
-          <input type="text" class="w-full bg-zinc-900 border border-zinc-700 rounded-3xl py-5 px-6 pl-14 text-lg focus:outline-none focus:border-sky-500" 
-                 placeholder="أدخل رمز السهم (مثال: AAPL, TSLA, 2222)">
-          <i class="fa-solid fa-magnifying-glass absolute left-6 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+          <input type="text" class="w-full bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-3xl py-5 px-6 pl-14 focus:outline-none focus:border-sky-500" placeholder="AAPL, TSLA...">
+          <i class="fa-solid fa-magnifying-glass absolute left-6 top-1/2 -translate-y-1/2 text-gray-400"></i>
         </div>
       </div>
 
-      <div class="bg-zinc-900 rounded-3xl p-8">
-        <div class="text-emerald-400 text-xl mb-4 text-center">AAPL - شارت حي</div>
-        <div class="h-80 bg-zinc-950 rounded-2xl flex items-center justify-center border border-zinc-700">
-          <div class="text-8xl text-emerald-500/60">📈</div>
-        </div>
+      <div class="bg-white dark:bg-zinc-800 rounded-3xl p-6 shadow-sm">
+        <div class="text-emerald-500 text-center mb-4">AAPL - Live Chart</div>
+        <div class="h-64 bg-gray-100 dark:bg-zinc-900 rounded-2xl flex items-center justify-center border border-gray-200 dark:border-zinc-700">📈</div>
+        
         <div class="flex justify-center gap-2 mt-6">
-          <button class="px-5 py-2 rounded-2xl text-sm bg-zinc-800 hover:bg-zinc-700">1H</button>
-          <button class="px-5 py-2 rounded-2xl text-sm bg-zinc-800 hover:bg-zinc-700">4H</button>
-          <button class="px-5 py-2 rounded-2xl text-sm bg-sky-500 text-white">1D</button>
-          <button class="px-5 py-2 rounded-2xl text-sm bg-zinc-800 hover:bg-zinc-700">1W</button>
-          <button class="px-5 py-2 rounded-2xl text-sm bg-zinc-800 hover:bg-zinc-700">1M</button>
+          <button class="px-5 py-2 text-sm rounded-2xl bg-gray-200 dark:bg-zinc-700">1H</button>
+          <button class="px-5 py-2 text-sm rounded-2xl bg-gray-200 dark:bg-zinc-700">4H</button>
+          <button class="px-5 py-2 text-sm rounded-2xl bg-sky-500 text-white">1D</button>
+          <button class="px-5 py-2 text-sm rounded-2xl bg-gray-200 dark:bg-zinc-700">1W</button>
+          <button class="px-5 py-2 text-sm rounded-2xl bg-gray-200 dark:bg-zinc-700">1M</button>
+        </div>
+
+        <!-- Ask Veloxis AI -->
+        <div class="mt-10 bg-gray-50 dark:bg-zinc-900 rounded-3xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-3xl">🤖</span>
+            <div>
+              <div class="font-semibold">Ask Veloxis AI</div>
+              <div class="text-sm text-gray-500 dark:text-gray-400">Get instant analysis & insights</div>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <input type="text" class="flex-1 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-3xl px-6 py-4 text-sm" placeholder="What do you think about this trend?">
+            <button class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 rounded-3xl text-sm font-medium">ASK</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- ====================== 3. FORGE ====================== -->
+    <!-- ==================== FORGE PAGE ==================== -->
     <div id="page-forge" class="page hidden">
       <div class="text-center mb-12">
-        <h1 class="text-5xl font-bold tracking-tighter bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">
-          Veloxis Forge
-        </h1>
-        <p class="text-2xl text-zinc-300 mt-4">اصنع استراتيجيتك الذكية مع الذكاء الاصطناعي</p>
+        <h1 class="text-5xl font-bold tracking-tighter bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">Veloxis Forge</h1>
+        <p class="text-xl text-gray-600 dark:text-gray-400 mt-4">Build • Test • Optimize with AI</p>
       </div>
 
-      <div class="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-sky-500/30 rounded-3xl p-12">
-        <div class="max-w-2xl mx-auto text-center">
-          <h2 class="text-3xl font-semibold mb-8">اختر نوع الاستراتيجية</h2>
-          
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
-            <button class="forge-card py-7 rounded-2xl border border-zinc-700 hover:border-sky-400 hover:bg-sky-950 text-lg transition">Momentum</button>
-            <button class="forge-card py-7 rounded-2xl border border-zinc-700 hover:border-sky-400 hover:bg-sky-950 text-lg transition">Breakout</button>
-            <button class="forge-card py-7 rounded-2xl border border-zinc-700 hover:border-sky-400 hover:bg-sky-950 text-lg transition">Mean Reversion</button>
-            <button class="forge-card py-7 rounded-2xl border border-zinc-700 hover:border-sky-400 hover:bg-sky-950 text-lg transition">AI Sentiment</button>
-            <button class="forge-card py-7 rounded-2xl border border-zinc-700 hover:border-sky-400 hover:bg-sky-950 text-lg transition">Low Risk</button>
-            <button class="forge-card py-7 rounded-2xl border border-zinc-700 hover:border-sky-400 hover:bg-sky-950 text-lg transition">Custom</button>
-          </div>
-
-          <button onclick="generateForge()" 
-                  class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold text-xl px-16 py-6 rounded-3xl shadow-2xl">
-            Forge Strategy الآن
-          </button>
+      <div class="bg-white dark:bg-zinc-800 rounded-3xl p-10 shadow-sm">
+        <h2 class="text-2xl font-semibold text-center mb-8">What strategy do you want to forge today?</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
+          <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">Momentum</button>
+          <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">Breakout</button>
+          <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">Mean Reversion</button>
+          <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">AI Sentiment</button>
+          <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">Low Risk</button>
+          <button class="py-6 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:border-sky-400 text-lg transition">Custom</button>
         </div>
-      </div>
-
-      <!-- Result -->
-      <div id="forge-result" class="hidden mt-12 bg-zinc-900 rounded-3xl p-10 text-center">
-        <h3 class="text-2xl font-semibold mb-6">استراتيجية Momentum على AAPL</h3>
-        <div class="text-7xl font-bold text-emerald-400 mb-2">87%</div>
-        <p class="text-zinc-400 mb-8">درجة الثقة</p>
-        <button class="bg-emerald-500 text-black font-bold py-4 px-12 rounded-2xl text-lg hover:bg-emerald-600">
-          تطبيق الاستراتيجية
-        </button>
+        <button onclick="generateForge()" class="w-full bg-gradient-to-r from-blue-600 to-sky-500 text-white font-bold py-5 rounded-3xl text-lg">Forge Strategy Now</button>
       </div>
     </div>
 
-    <!-- ====================== 4. NEWS ====================== -->
+    <!-- ==================== NEWS & MOVERS (مختصرة) ==================== -->
     <div id="page-news" class="page hidden">
-      <h1 class="text-4xl font-bold mb-8">Breaking & Exclusive News</h1>
-      <div class="space-y-6">
-        <div class="bg-zinc-900 rounded-3xl p-6">Fed signals possible rate cut in June</div>
-        <div class="bg-zinc-900 rounded-3xl p-6">US Jobless Claims rise to 8-week high</div>
-        <div class="bg-zinc-900 rounded-3xl p-6">China announces new stimulus package</div>
+      <h1 class="text-4xl font-bold mb-8">Breaking News</h1>
+      <div class="space-y-4">
+        <div class="bg-white dark:bg-zinc-800 p-6 rounded-3xl">Fed signals possible rate cut in June</div>
+        <div class="bg-white dark:bg-zinc-800 p-6 rounded-3xl">China announces new stimulus package</div>
       </div>
     </div>
 
-    <!-- ====================== 5. TOP MOVERS ====================== -->
     <div id="page-movers" class="page hidden">
-      <h1 class="text-4xl font-bold mb-10">Top Movers Today</h1>
-      
-      <div class="mb-10">
-        <h2 class="text-2xl font-semibold mb-4 flex items-center gap-3"><span class="text-emerald-400">🚀</span> Top Gainers</h2>
+      <h1 class="text-4xl font-bold mb-8">Top Movers Today</h1>
+      <div class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2"><span class="text-emerald-500">🚀</span> Top Gainers</h2>
         <div class="space-y-3">
-          <div class="bg-zinc-900 rounded-3xl p-6 flex justify-between items-center"><span>NVDA</span><span class="text-emerald-400 font-medium">+6.8%</span></div>
-          <div class="bg-zinc-900 rounded-3xl p-6 flex justify-between items-center"><span>TSLA</span><span class="text-emerald-400 font-medium">+4.9%</span></div>
+          <div class="bg-white dark:bg-zinc-800 p-5 rounded-3xl flex justify-between"><span>NVDA</span><span class="text-emerald-500">+6.8%</span></div>
+          <div class="bg-white dark:bg-zinc-800 p-5 rounded-3xl flex justify-between"><span>TSLA</span><span class="text-emerald-500">+4.9%</span></div>
         </div>
       </div>
-
       <div>
-        <h2 class="text-2xl font-semibold mb-4 flex items-center gap-3"><span class="text-red-400">📉</span> Top Losers</h2>
+        <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2"><span class="text-red-500">📉</span> Top Losers</h2>
         <div class="space-y-3">
-          <div class="bg-zinc-900 rounded-3xl p-6 flex justify-between items-center"><span>AAPL</span><span class="text-red-400 font-medium">-3.2%</span></div>
-          <div class="bg-zinc-900 rounded-3xl p-6 flex justify-between items-center"><span>AMZN</span><span class="text-red-400 font-medium">-2.7%</span></div>
+          <div class="bg-white dark:bg-zinc-800 p-5 rounded-3xl flex justify-between"><span>AAPL</span><span class="text-red-500">-3.2%</span></div>
+          <div class="bg-white dark:bg-zinc-800 p-5 rounded-3xl flex justify-between"><span>AMZN</span><span class="text-red-500">-2.7%</span></div>
         </div>
       </div>
     </div>
@@ -235,8 +215,8 @@
   </div>
 
   <!-- Bottom Navigation -->
-  <div class="fixed bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-700 max-w-6xl mx-auto">
-    <div class="flex justify-around py-4 text-2xl text-zinc-400">
+  <div class="fixed bottom-0 left-0 right-0 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-700 max-w-6xl mx-auto">
+    <div class="flex justify-around py-4 text-2xl text-gray-400">
       <i class="fa-solid fa-chart-line"></i>
       <i class="fa-solid fa-newspaper"></i>
       <i class="fa-solid fa-arrow-trend-up"></i>
@@ -247,29 +227,19 @@
     function showPage(page) {
       document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
       document.getElementById(`page-${page}`).classList.remove('hidden');
-
-      document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
       document.getElementById(`tab-${page}`).classList.add('active');
     }
 
     function toggleTheme() {
-      const body = document.getElementById('main-body');
-      if (body.classList.contains('bg-zinc-950')) {
-        body.classList.remove('bg-zinc-950', 'text-white');
-        body.classList.add('bg-zinc-100', 'text-zinc-900');
-        document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
-      } else {
-        body.classList.add('bg-zinc-950', 'text-white');
-        body.classList.remove('bg-zinc-100', 'text-zinc-900');
-        document.getElementById('theme-icon').classList.replace('fa-sun', 'fa-moon');
-      }
+      document.getElementById('main-body').classList.toggle('dark');
     }
 
     function generateForge() {
-      document.getElementById('forge-result').classList.toggle('hidden');
+      alert("Strategy successfully forged! (This is a demo)");
     }
 
-    // بداية الصفحة الافتراضية
+    // Default page
     window.onload = () => showPage('indicators');
   </script>
 </body>
