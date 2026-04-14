@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Veloxis — News</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --bg:#fafafa;
+      --panel:#ffffff;
+      --panel2:#f5f5f5;
+      --border:#e5e7eb;
+      --text:#111827;
+      --muted:#6b7280;
+      --accent:#2563eb;
+      --positive:#16a34a;
+      --negative:#dc2626;
+      --warning:#d97706;
+      --shadow:0 10px 30px rgba(15,23,42,.06);
+    }
+
+    body.dark{
+      --bg:#09090b;
+      --panel:#111827;
+      --panel2:#18181b;
+      --border:#27272a;
+      --text:#f4f4f5;
+      --muted:#a1a1aa;
+      --accent:#60a5fa;
+      --positive:#22c55e;
+      --negative:#ef4444;
+      --warning:#f59e0b;
+      --shadow:0 14px 34px rgba(0,0,0,.35);
+    }
+
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+
+    .panel-soft{
+      background:var(--panel2);
+      border:1px solid var(--border);
+    }
+
+    .muted{ color:var(--muted); }
+
+    .nav-link{
+      color:var(--muted);
+      text-decoration:none;
+      font-size:.96rem;
+      font-weight:500;
+      padding:.35rem 0;
+      border-bottom:2px solid transparent;
+      transition:.18s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active{
+      color:var(--text);
+      border-bottom-color:var(--accent);
+    }
+
+    .impact-high{
+      color:#fff;
+      background:rgba(220,38,38,.92);
+    }
+
+    .impact-medium{
+      color:#fff;
+      background:rgba(217,119,6,.92);
+    }
+
+    .impact-low{
+      color:var(--text);
+      background:rgba(113,113,122,.16);
+      border:1px solid var(--border);
+    }
+
+    .news-row{
+      transition:.18s ease;
+      border-left:3px solid transparent;
+    }
+
+    .news-row:hover{
+      transform:translateY(-1px);
+      border-left-color:var(--accent);
+    }
+
+    .asset-icon{
+      width:36px;
+      height:36px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1rem;
+      font-weight:700;
+      border:1px solid var(--border);
+      background:var(--panel2);
+      flex-shrink:0;
+    }
+
+    .ask-btn{
+      color:var(--accent);
+      font-weight:600;
+      text-decoration:none;
+      white-space:nowrap;
+    }
+
+    .chip{
+      background:var(--panel2);
+      border:1px solid var(--border);
+      color:var(--text);
+      transition:.18s ease;
+    }
+
+    .chip.active{
+      background:var(--accent);
+      color:#fff;
+      border-color:transparent;
+      box-shadow:0 10px 22px rgba(37,99,235,.22);
+    }
+
+    body.dark .chip.active{
+      box-shadow:0 10px 22px rgba(96,165,250,.22);
+    }
+
+    .thin-scroll::-webkit-scrollbar{
+      width:8px;
+      height:8px;
+    }
+
+    .thin-scroll::-webkit-scrollbar-thumb{
+      background:#3f3f46;
+      border-radius:999px;
+    }
+
+    @media (max-width: 1100px){
+      .desktop-nav{
+        overflow:auto;
+        white-space:nowrap;
+      }
+    }
+  </style>
+</head>
+<body class="dark" id="app-body">
+  <header class="border-b" style="border-color:var(--border);">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <div class="h-16 flex items-center justify-between gap-6">
+        <div class="flex items-center min-w-fit">
+          <img
+            src="/mnt/data/8478C569-50B4-4693-9D56-5F10688E24B3.jpeg"
+            alt="Veloxis logo"
+            class="h-9 w-auto object-contain"
+          />
+        </div>
+
+        <nav class="desktop-nav flex items-center gap-7 flex-1 justify-center">
+          <a href="index.html" class="nav-link">Market Pulse</a>
+          <a href="analysis.html" class="nav-link">Analysis</a>
+          <a href="strategy.html" class="nav-link">Strategy Lab</a>
+          <a href="news.html" class="nav-link active">News</a>
+          <a href="#" class="nav-link">Top Movers</a>
+        </nav>
+
+        <div class="min-w-fit">
+          <button
+            onclick="toggleTheme()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color:var(--text);"
+          >
+            Theme
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-5 lg:px-8 py-6 lg:py-8 space-y-6">
+
+    <!-- Title -->
+    <section class="panel rounded-3xl p-6 lg:p-8">
+      <p class="text-sm font-medium mb-3" style="color:var(--accent);">High-Impact Headline Flow</p>
+      <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Market News</h1>
+      <p class="text-base lg:text-lg leading-8 muted max-w-4xl">
+        High-relevance market headlines filtered by impact, symbol context, and decision value.
+        Every item is designed for fast reading, fast identification, and direct interpretation through Ask Veloxis.
+      </p>
+    </section>
+
+    <!-- Controls -->
+    <section class="panel rounded-2xl p-4">
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
+        <div class="xl:col-span-6">
+          <label class="block text-sm font-medium muted mb-2">Search</label>
+          <input
+            id="newsSearch"
+            type="text"
+            placeholder="Search by symbol or keyword..."
+            class="panel-soft w-full rounded-2xl px-4 py-3 outline-none"
+            style="color:var(--text);"
+            oninput="filterNews()"
+          />
+        </div>
+
+        <div class="xl:col-span-3">
+          <label class="block text-sm font-medium muted mb-2">Category</label>
+          <div class="flex flex-wrap gap-2">
+            <button class="chip px-3 py-2 rounded-xl text-sm active" onclick="setCategory(event,'All')">All</button>
+            <button class="chip px-3 py-2 rounded-xl text-sm" onclick="setCategory(event,'Macro')">Macro</button>
+            <button class="chip px-3 py-2 rounded-xl text-sm" onclick="setCategory(event,'Earnings')">Earnings</button>
+            <button class="chip px-3 py-2 rounded-xl text-sm" onclick="setCategory(event,'Market')">Market</button>
+            <button class="chip px-3 py-2 rounded-xl text-sm" onclick="setCategory(event,'Sector')">Sector</button>
+          </div>
+        </div>
+
+        <div class="xl:col-span-3">
+          <label class="block text-sm font-medium muted mb-2">Impact</label>
+          <div class="flex flex-wrap gap-2">
+            <button class="chip px-3 py-2 rounded-xl text-sm active" onclick="setImpact(event,'All')">All</button>
+            <button class="chip px-3 py-2 rounded-xl text-sm" onclick="setImpact(event,'High')">High</button>
+            <button class="chip px-3 py-2 rounded-xl text-sm" onclick="setImpact(event,'Medium')">Medium</button>
+            <button class="chip px-3 py-2 rounded-xl text-sm" onclick="setImpact(event,'Low')">Low</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Market Focus -->
+    <section id="marketFocusSection" class="panel rounded-3xl p-6 lg:p-8">
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-center">
+        <div class="xl:col-span-2">
+          <div id="focusIcon" class="asset-icon !w-20 !h-20 !rounded-3xl text-2xl">🏦</div>
+        </div>
+
+        <div class="xl:col-span-8">
+          <p class="text-sm font-medium mb-2" style="color:var(--accent);">Market Focus</p>
+          <h2 id="focusTitle" class="text-2xl lg:text-3xl font-semibold mb-3">Fed Rate Decision — 9:00 PM ET</h2>
+          <p id="focusText" class="text-base leading-8 muted">
+            Rate-sensitive assets remain in focus ahead of the policy decision. Market participants are watching not only the rate outcome,
+            but the tone around inflation persistence, growth sensitivity, and forward guidance.
+          </p>
+        </div>
+
+        <div class="xl:col-span-2">
+          <div class="space-y-3">
+            <div class="panel-soft rounded-2xl px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Event Time</div>
+              <div id="focusTime" class="font-semibold">9:00 PM ET</div>
+            </div>
+            <button
+              class="w-full rounded-2xl px-4 py-3 font-semibold"
+              style="background:var(--accent); color:#fff;"
+              onclick="askFocus()"
+            >
+              Ask Veloxis
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- News Feed -->
+    <section class="panel rounded-3xl p-5 lg:p-6">
+      <div class="flex items-center justify-between gap-4 mb-5">
+        <div>
+          <h2 class="text-xl font-semibold">Headline Feed</h2>
+          <p class="text-sm muted mt-1">Up to 10 market-relevant headlines, shown dynamically based on current availability.</p>
+        </div>
+        <div class="text-sm muted">
+          <span id="newsCount">0</span> items
+        </div>
+      </div>
+
+      <div id="newsFeed" class="space-y-3 thin-scroll"></div>
+    </section>
+
+    <!-- Ask Result -->
+    <section class="panel rounded-3xl p-5 lg:p-6">
+      <div class="mb-4">
+        <h2 class="text-xl font-semibold">Veloxis Interpretation</h2>
+        <p class="text-sm muted mt-1">Contextual reading of the selected headline or featured event.</p>
+      </div>
+
+      <div id="askOutput" class="panel-soft rounded-2xl p-4 text-sm leading-7 muted">
+        Select “Ask” on a headline or use the featured event panel to generate context here.
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const allNews = [
+      {
+        time: "10:42 AM",
+        asset: "AAPL",
+        icon: "🍎",
+        headline: "Apple supplier guidance improves near-term hardware outlook.",
+        category: "Earnings",
+        impact: "High",
+        source: "Reuters"
+      },
+      {
+        time: "11:05 AM",
+        asset: "FED",
+        icon: "🏦",
+        headline: "Federal Reserve officials keep policy tone cautious ahead of the next rate decision.",
+        category: "Macro",
+        impact: "High",
+        source: "Fed"
+      },
+      {
+        time: "11:30 AM",
+        asset: "TSLA",
+        icon: "⚡",
+        headline: "Tesla pricing adjustments in Europe renew margin debate across the EV complex.",
+        category: "Market",
+        impact: "Medium",
+        source: "Bloomberg"
+      },
+      {
+        time: "12:08 PM",
+        asset: "NVDA",
+        icon: "🟢",
+        headline: "Nvidia remains in focus as AI demand expectations hold across semiconductor peers.",
+        category: "Sector",
+        impact: "High",
+        source: "CNBC"
+      },
+      {
+        time: "12:42 PM",
+        asset: "AMZN",
+        icon: "🛒",
+        headline: "Amazon logistics expansion adds fresh attention to retail and cloud spending trends.",
+        category: "Earnings",
+        impact: "Medium",
+        source: "WSJ"
+      },
+      {
+        time: "01:15 PM",
+        asset: "META",
+        icon: "∞",
+        headline: "Meta ad pricing commentary raises questions about digital demand durability.",
+        category: "Sector",
+        impact: "Medium",
+        source: "Reuters"
+      },
+      {
+        time: "01:44 PM",
+        asset: "MSFT",
+        icon: "▣",
+        headline: "Microsoft cloud commentary reinforces enterprise AI spending focus.",
+        category: "Earnings",
+        impact: "High",
+        source: "Bloomberg"
+      },
+      {
+        time: "02:10 PM",
+        asset: "OIL",
+        icon: "🛢",
+        headline: "Crude stabilizes as traders reassess supply headlines and near-term inflation sensitivity.",
+        category: "Macro",
+        impact: "Medium",
+        source: "MarketWatch"
+      },
+      {
+        time: "02:36 PM",
+        asset: "BTC",
+        icon: "₿",
+        headline: "Bitcoin price strength keeps risk appetite in focus despite higher real-yield pressure.",
+        category: "Market",
+        impact: "Low",
+        source: "CoinDesk"
+      },
+      {
+        time: "03:05 PM",
+        asset: "GOOGL",
+        icon: "G",
+        headline: "Alphabet remains under watch as AI monetization expectations rise across big tech.",
+        category: "Sector",
+        impact: "Medium",
+        source: "Reuters"
+      }
+    ];
+
+    let activeCategory = "All";
+    let activeImpact = "All";
+
+    function toggleTheme() {
+      document.getElementById("app-body").classList.toggle("dark");
+    }
+
+    function setCategory(event, category) {
+      activeCategory = category;
+      document.querySelectorAll("button").forEach(btn => {
+        if (btn.parentElement && btn.parentElement.previousElementSibling && btn.parentElement.previousElementSibling.textContent === "Category") {
+          btn.classList.remove("active");
+        }
+      });
+      event.target.classList.add("active");
+      filterNews();
+    }
+
+    function setImpact(event, impact) {
+      activeImpact = impact;
+      document.querySelectorAll("button").forEach(btn => {
+        if (btn.parentElement && btn.parentElement.previousElementSibling && btn.parentElement.previousElementSibling.textContent === "Impact") {
+          btn.classList.remove("active");
+        }
+      });
+      event.target.classList.add("active");
+      filterNews();
+    }
+
+    function getImpactClass(level) {
+      if (level === "High") return "impact-high";
+      if (level === "Medium") return "impact-medium";
+      return "impact-low";
+    }
+
+    function renderNews(items) {
+      const feed = document.getElementById("newsFeed");
+      const limited = items.slice(0, 10);
+
+      document.getElementById("newsCount").textContent = limited.length;
+
+      if (!limited.length) {
+        feed.innerHTML = `
+          <div class="panel-soft rounded-2xl px-4 py-4 muted text-sm">
+            No headlines match the current filters.
+          </div>
+        `;
+        return;
+      }
+
+      feed.innerHTML = limited.map(item => `
+        <div class="news-row panel-soft rounded-2xl p-4 lg:p-5">
+          <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 items-center">
+
+            <div class="xl:col-span-2">
+              <div class="flex items-center gap-3">
+                <div class="asset-icon">${item.icon}</div>
+                <div>
+                  <div class="text-sm font-semibold">${item.asset}</div>
+                  <div class="text-xs muted">${item.time}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="xl:col-span-6">
+              <div class="text-base font-medium leading-7">${item.headline}</div>
+              <div class="text-xs muted mt-2">${item.source} • ${item.category}</div>
+            </div>
+
+            <div class="xl:col-span-2">
+              <div class="flex items-center xl:justify-center">
+                <span class="${getImpactClass(item.impact)} rounded-xl px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em]">
+                  ${item.impact}
+                </span>
+              </div>
+            </div>
+
+            <div class="xl:col-span-2">
+              <div class="flex items-center xl:justify-end">
+                <button
+                  onclick="askNews('${item.asset.replace(/'/g, "\\'")}', '${item.headline.replace(/'/g, "\\'")}')"
+                  class="ask-btn"
+                >
+                  Ask Veloxis →
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function filterNews() {
+      const query = document.getElementById("newsSearch").value.toLowerCase().trim();
+
+      const filtered = allNews.filter(item => {
+        const matchesCategory = activeCategory === "All" || item.category === activeCategory;
+        const matchesImpact = activeImpact === "All" || item.impact === activeImpact;
+        const matchesSearch =
+          item.asset.toLowerCase().includes(query) ||
+          item.headline.toLowerCase().includes(query) ||
+          item.source.toLowerCase().includes(query);
+
+        return matchesCategory && matchesImpact && matchesSearch;
+      });
+
+      renderNews(filtered);
+    }
+
+    function askNews(asset, headline) {
+      const output = document.getElementById("askOutput");
+      output.textContent =
+        `Veloxis: ${asset} is in focus because this headline may alter short-term market expectations, positioning, or sector sentiment. The key is not the headline alone, but whether the market treats it as confirmation, surprise, or narrative reinforcement.`;
+    }
+
+    function askFocus() {
+      const output = document.getElementById("askOutput");
+      output.textContent =
+        `Veloxis: This featured event matters because it can reset cross-asset pricing quickly. Watch not only the event itself, but how yields, the dollar, and key leadership stocks respond after the first reaction.`;
+    }
+
+    renderNews(allNews);
+  </script>
+</body>
+</html>
