@@ -7,227 +7,882 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --bg:#fafafa; --panel:#fff; --panel2:#f5f5f5; --border:#e5e7eb;
-      --text:#111827; --muted:#6b7280; --accent:#2563eb;
-      --pos:#16a34a; --neg:#dc2626; --warn:#d97706;
+      --bg:#fafafa;
+      --panel:#ffffff;
+      --panel2:#f5f5f5;
+      --border:#e5e7eb;
+      --text:#111827;
+      --muted:#6b7280;
+      --accent:#2563eb;
+      --positive:#16a34a;
+      --negative:#dc2626;
+      --warning:#d97706;
       --shadow:0 10px 30px rgba(15,23,42,.06);
     }
-    body.dark{
-      --bg:#09090b; --panel:#111827; --panel2:#18181b; --border:#27272a;
-      --text:#f4f4f5; --muted:#a1a1aa; --accent:#60a5fa;
-      --pos:#22c55e; --neg:#ef4444; --warn:#f59e0b;
+
+    body.dark {
+      --bg:#09090b;
+      --panel:#111827;
+      --panel2:#18181b;
+      --border:#27272a;
+      --text:#f4f4f5;
+      --muted:#a1a1aa;
+      --accent:#60a5fa;
+      --positive:#22c55e;
+      --negative:#ef4444;
+      --warning:#f59e0b;
       --shadow:0 14px 34px rgba(0,0,0,.35);
     }
-    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text)}
-    .panel{background:var(--panel);border:1px solid var(--border);box-shadow:var(--shadow)}
-    .soft{background:var(--panel2);border:1px solid var(--border)}
-    .muted{color:var(--muted)}
-    .chip{border:1px solid var(--border);background:var(--panel2)}
-    .chip.active{background:var(--accent);color:#fff;border-color:transparent}
-    .card{border:1px solid var(--border);background:var(--panel);transition:.2s}
-    .card:hover{transform:translateY(-2px)}
-    .card.active{border-color:rgba(96,165,250,.45); box-shadow:0 10px 22px rgba(96,165,250,.12)}
-    .nav-link{color:var(--muted)}
-    .nav-link.active{color:var(--text); border-bottom:2px solid var(--accent)}
-    .toast{position:fixed; right:20px; bottom:20px; z-index:50}
-    .toast-item{background:var(--panel); border:1px solid var(--border); box-shadow:var(--shadow)}
-    .status-monitor{color:var(--accent)}
-    .status-forming{color:var(--warn)}
-    .status-trigger{color:var(--pos)}
-    .status-reject{color:var(--neg)}
-    .status-expire{color:var(--muted)}
+
+    body {
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .panel {
+      background:var(--panel);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+
+    .panel-soft {
+      background:var(--panel2);
+      border:1px solid var(--border);
+    }
+
+    .nav-link {
+      color:var(--muted);
+      text-decoration:none;
+      font-size:.96rem;
+      font-weight:500;
+      padding:.35rem 0;
+      border-bottom:2px solid transparent;
+      transition:.2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color:var(--text);
+      border-bottom-color:var(--accent);
+    }
+
+    .muted { color:var(--muted); }
+
+    .chip {
+      background:var(--panel2);
+      border:1px solid var(--border);
+      color:var(--text);
+    }
+
+    .chip.active {
+      background:var(--accent);
+      color:#fff;
+      border-color:transparent;
+      box-shadow:0 10px 22px rgba(37,99,235,.22);
+    }
+
+    body.dark .chip.active {
+      box-shadow:0 10px 22px rgba(96,165,250,.22);
+    }
+
+    .dropdown-panel {
+      max-height:420px;
+      overflow:auto;
+    }
+
+    .dropdown-panel::-webkit-scrollbar,
+    .feed-scroll::-webkit-scrollbar,
+    .alerts-scroll::-webkit-scrollbar {
+      width:8px;
+      height:8px;
+    }
+
+    .dropdown-panel::-webkit-scrollbar-thumb,
+    .feed-scroll::-webkit-scrollbar-thumb,
+    .alerts-scroll::-webkit-scrollbar-thumb {
+      background:#3f3f46;
+      border-radius:999px;
+    }
+
+    .pattern-item {
+      border:1px solid var(--border);
+      background:var(--panel);
+      transition:.18s ease;
+    }
+
+    .pattern-item:hover {
+      transform:translateY(-1px);
+      border-color:rgba(96,165,250,.35);
+    }
+
+    .pattern-item.active {
+      border-color:rgba(96,165,250,.45);
+      background:color-mix(in srgb, var(--panel) 82%, var(--accent) 18%);
+    }
+
+    .tf-btn {
+      background:var(--panel2);
+      border:1px solid var(--border);
+      color:var(--muted);
+      transition:.18s ease;
+    }
+
+    .tf-btn:hover {
+      color:var(--text);
+      border-color:rgba(96,165,250,.35);
+    }
+
+    .tf-btn.active {
+      color:#fff;
+      background:var(--accent);
+      border-color:transparent;
+      box-shadow:0 10px 22px rgba(37,99,235,.22);
+    }
+
+    body.dark .tf-btn.active {
+      box-shadow:0 10px 22px rgba(96,165,250,.22);
+    }
+
+    .toast-wrap {
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      z-index:999;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      max-width:340px;
+    }
+
+    .toast-item {
+      background:var(--panel);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      border-radius:16px;
+      padding:14px 16px;
+      animation:toastIn .18s ease;
+    }
+
+    @keyframes toastIn {
+      from { opacity:0; transform:translateY(8px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    .status-monitoring { color:var(--accent); }
+    .status-forming { color:var(--warning); }
+    .status-triggered { color:var(--positive); }
+    .status-rejected { color:var(--negative); }
+    .status-expired { color:var(--muted); }
+
+    .tab-symbol {
+      border:1px solid var(--border);
+      background:var(--panel2);
+      color:var(--muted);
+      transition:.18s ease;
+    }
+
+    .tab-symbol.active {
+      background:var(--accent);
+      color:#fff;
+      border-color:transparent;
+    }
+
+    .hidden-block { display:none; }
+
+    @media (max-width: 1100px) {
+      .desktop-nav {
+        overflow:auto;
+        white-space:nowrap;
+      }
+    }
   </style>
 </head>
+<body class="dark" id="app-body">
+  <header class="border-b" style="border-color:var(--border);">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <div class="h-16 flex items-center justify-between gap-6">
+        <div class="flex items-center min-w-fit">
+          <img
+            src="/mnt/data/8478C569-50B4-4693-9D56-5F10688E24B3.jpeg"
+            alt="Veloxis logo"
+            class="h-9 w-auto object-contain"
+          />
+        </div>
 
-<body class="dark" id="app">
+        <nav class="desktop-nav flex items-center gap-7 flex-1 justify-center">
+          <a href="index.html" class="nav-link">Market Pulse</a>
+          <a href="analysis.html" class="nav-link">Analysis</a>
+          <a href="strategy.html" class="nav-link active">Strategy Lab</a>
+          <a href="#" class="nav-link">News</a>
+          <a href="#" class="nav-link">Top Movers</a>
+        </nav>
 
-<!-- Header -->
-<header class="border-b" style="border-color:var(--border)">
-  <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <img src="/mnt/data/8478C569-50B4-4693-9D56-5F10688E24B3.jpeg" class="h-8"/>
-      <span class="font-semibold text-lg">Veloxis</span>
-    </div>
-    <nav class="flex gap-6 text-sm">
-      <a href="index.html" class="nav-link">Market Pulse</a>
-      <a href="analysis.html" class="nav-link">Analysis</a>
-      <a href="#" class="nav-link active">Strategy Lab</a>
-      <a href="#" class="nav-link">News</a>
-      <a href="#" class="nav-link">Top Movers</a>
-    </nav>
-    <button onclick="toggleTheme()" class="soft px-3 py-2 rounded-lg text-sm">Theme</button>
-  </div>
-</header>
-
-<main class="max-w-7xl mx-auto px-5 py-6 space-y-6">
-
-  <!-- Top Control -->
-  <section class="panel rounded-2xl p-4">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end">
-      <div class="lg:col-span-7">
-        <div class="text-sm muted mb-2">Watchlist (max 3)</div>
-        <div id="watchlist" class="flex flex-wrap gap-2"></div>
-        <div class="flex gap-2 mt-2">
-          <input id="symbolInput" placeholder="Add symbol (e.g., AAPL)" class="soft px-4 py-3 rounded-xl w-full"/>
-          <button onclick="addSymbol()" class="px-4 py-3 rounded-xl" style="background:var(--accent);color:#fff">Add</button>
+        <div class="min-w-fit">
+          <button
+            onclick="toggleTheme()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color:var(--text);"
+          >
+            Theme
+          </button>
         </div>
       </div>
-      <div class="lg:col-span-5">
-        <button onclick="runScan()" class="w-full px-5 py-4 rounded-2xl font-semibold" style="background:var(--accent);color:#fff">
-          Run Scan
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-5 lg:px-8 py-6 lg:py-8 space-y-6">
+
+    <!-- Top Control Row -->
+    <section class="panel rounded-2xl p-4">
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 items-start">
+        <div class="xl:col-span-4">
+          <div class="text-sm font-medium muted mb-2">Watchlist (max 3)</div>
+          <div id="watchlistChips" class="flex flex-wrap gap-2 mb-3"></div>
+          <div class="flex gap-2">
+            <input
+              id="symbolInput"
+              type="text"
+              placeholder="Add symbol (e.g., AAPL)"
+              class="panel-soft w-full rounded-2xl px-4 py-3 outline-none"
+              style="color:var(--text);"
+            />
+            <button
+              onclick="addSymbol()"
+              class="rounded-2xl px-5 py-3 font-semibold"
+              style="background:var(--accent); color:#fff;"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+        <div class="xl:col-span-5 relative">
+          <div class="text-sm font-medium muted mb-2">Pattern Selector</div>
+          <button
+            onclick="togglePatternDropdown()"
+            class="panel-soft w-full rounded-2xl px-4 py-3 text-left flex items-center justify-between"
+            style="color:var(--text);"
+          >
+            <span id="patternButtonLabel">Select patterns</span>
+            <span class="muted text-sm">Library</span>
+          </button>
+
+          <!-- Dropdown -->
+          <div
+            id="patternDropdown"
+            class="hidden-block absolute top-[74px] left-0 right-0 z-40 panel rounded-2xl p-4"
+          >
+            <div class="mb-3">
+              <input
+                id="patternSearch"
+                type="text"
+                placeholder="Search patterns..."
+                oninput="renderPatternDropdown()"
+                class="panel-soft w-full rounded-xl px-4 py-3 outline-none"
+                style="color:var(--text);"
+              />
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-4">
+              <button class="chip px-3 py-1 rounded-lg text-sm active" onclick="setPatternFilter(event,'All')">All</button>
+              <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setPatternFilter(event,'Trend')">Trend</button>
+              <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setPatternFilter(event,'Reversal')">Reversal</button>
+              <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setPatternFilter(event,'Candlestick')">Candlestick</button>
+              <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setPatternFilter(event,'Levels')">Levels</button>
+              <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setPatternFilter(event,'Advanced')">Advanced</button>
+            </div>
+
+            <div id="patternDropdownGrid" class="dropdown-panel grid grid-cols-1 md:grid-cols-2 gap-3 pr-1"></div>
+
+            <div class="flex items-center justify-between gap-4 mt-4">
+              <div class="text-sm muted">
+                <span id="activePatternCount">0</span> active patterns
+              </div>
+              <button
+                onclick="applyPatternSelection()"
+                class="rounded-xl px-4 py-2 font-medium"
+                style="background:var(--accent); color:#fff;"
+              >
+                Apply Selection
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="xl:col-span-3">
+          <div class="text-sm font-medium muted mb-2 opacity-0">Run</div>
+          <button
+            onclick="runScan()"
+            class="w-full rounded-2xl px-5 py-3 font-semibold"
+            style="background:var(--accent); color:#fff;"
+          >
+            Run Scan
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Active Summary -->
+    <section class="panel rounded-2xl p-4">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-8">
+          <div class="text-sm font-medium mb-2">Active Patterns</div>
+          <div id="activePatternsBar" class="flex flex-wrap gap-2"></div>
+        </div>
+        <div class="lg:col-span-4">
+          <div class="text-sm font-medium mb-2">Current Scan Scope</div>
+          <div class="panel-soft rounded-2xl px-4 py-3 text-sm">
+            <span id="scopeText">No symbols selected</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Grid -->
+    <section class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+
+      <!-- LEFT: Chart + Feed -->
+      <div class="xl:col-span-8 space-y-6">
+
+        <!-- Dynamic Chart Card -->
+        <div id="chartSection" class="panel rounded-3xl p-6 hidden-block">
+          <div class="flex items-start justify-between gap-4 mb-5">
+            <div>
+              <p class="text-sm font-medium mb-2" style="color:var(--accent);">Live Strategy Chart</p>
+              <h2 class="text-2xl font-semibold" id="chartSymbolTitle">AAPL</h2>
+              <p class="text-sm muted mt-1" id="chartPatternSubtitle">Selected pattern context will appear here.</p>
+            </div>
+            <div class="text-right">
+              <p class="text-xs uppercase tracking-[0.16em] muted">Timeframe</p>
+              <p class="text-sm font-semibold mt-1" id="chartTfLabel">1D</p>
+            </div>
+          </div>
+
+          <!-- Symbol Tabs -->
+          <div id="symbolTabs" class="flex flex-wrap gap-2 mb-4"></div>
+
+          <!-- Chart -->
+          <div class="panel-soft rounded-3xl p-5 lg:p-6">
+            <div class="flex items-center justify-between mb-4 gap-4">
+              <div>
+                <p class="text-sm muted">Pattern Context View</p>
+                <h3 class="text-lg font-semibold mt-1" id="chartHeaderLabel">AAPL Strategy Structure</h3>
+              </div>
+              <div class="text-right">
+                <p class="text-xs uppercase tracking-[0.16em] muted">Price</p>
+                <p class="text-lg font-semibold" id="chartPriceLabel">$192.84</p>
+              </div>
+            </div>
+
+            <div class="rounded-2xl overflow-hidden border h-[360px] lg:h-[430px] relative" style="border-color:var(--border); background:linear-gradient(180deg, rgba(37,99,235,0.04) 0%, rgba(15,23,42,0.04) 100%);">
+              <div class="absolute inset-0 opacity-40">
+                <svg viewBox="0 0 1000 500" class="w-full h-full">
+                  <defs>
+                    <pattern id="stratGrid" width="50" height="50" patternUnits="userSpaceOnUse">
+                      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(113,113,122,0.18)" stroke-width="1" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#stratGrid)" />
+                </svg>
+              </div>
+
+              <svg viewBox="0 0 1000 500" class="absolute inset-0 w-full h-full">
+                <!-- price -->
+                <polyline
+                  fill="none"
+                  stroke="rgba(96,165,250,0.95)"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  points="25,395 85,360 130,345 180,275 235,255 290,180 350,170 420,115 490,102 570,68 650,64 730,42 815,38 900,34 965,32"
+                />
+                <polyline
+                  fill="rgba(96,165,250,0.10)"
+                  stroke="none"
+                  points="25,395 85,360 130,345 180,275 235,255 290,180 350,170 420,115 490,102 570,68 650,64 730,42 815,38 900,34 965,32 965,500 25,500"
+                />
+
+                <!-- pattern overlay zone -->
+                <rect x="620" y="28" width="230" height="88" rx="12" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.65)" stroke-dasharray="8 8" stroke-width="2"/>
+                <text x="640" y="58" fill="rgba(245,158,11,0.95)" font-size="18" font-weight="600" id="patternZoneText">Pattern zone</text>
+
+                <!-- resistance -->
+                <line x1="0" y1="72" x2="1000" y2="72" stroke="rgba(34,197,94,0.50)" stroke-width="2" stroke-dasharray="8 8" />
+                <text x="760" y="64" fill="rgba(34,197,94,0.95)" font-size="16" font-weight="600">Resistance 194.20</text>
+
+                <!-- support -->
+                <line x1="0" y1="210" x2="1000" y2="210" stroke="rgba(239,68,68,0.42)" stroke-width="2" stroke-dasharray="8 8" />
+                <text x="765" y="202" fill="rgba(239,68,68,0.95)" font-size="16" font-weight="600">Support 189.80</text>
+
+                <!-- mid -->
+                <line x1="0" y1="142" x2="1000" y2="142" stroke="rgba(161,161,170,0.28)" stroke-width="2" stroke-dasharray="6 8" />
+                <text x="770" y="136" fill="rgba(161,161,170,0.95)" font-size="15" font-weight="500">Range Mid 191.60</text>
+              </svg>
+            </div>
+
+            <!-- Timeframes -->
+            <div class="mt-5 flex items-center gap-2 flex-wrap" id="tfButtons">
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'1H')">1H</button>
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'4H')">4H</button>
+              <button class="tf-btn active rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'1D')">1D</button>
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'1W')">1W</button>
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'1M')">1M</button>
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'3M')">3M</button>
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'6M')">6M</button>
+              <button class="tf-btn rounded-xl px-4 py-2 text-sm font-medium" onclick="setTimeframe(this,'1Y')">1Y</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty Chart State -->
+        <div id="emptyChartState" class="panel rounded-3xl p-8">
+          <div class="max-w-2xl">
+            <p class="text-sm font-medium mb-3" style="color:var(--accent);">Strategy Context</p>
+            <h2 class="text-3xl font-semibold mb-4">Enter a symbol to start scanning patterns</h2>
+            <p class="text-base leading-8 muted">
+              Add up to three symbols to activate the live strategy view. Once a symbol is selected and a scan is run,
+              the chart will appear with the same candlestick-style structure and timeframe controls used in Analysis.
+            </p>
+          </div>
+        </div>
+
+        <!-- Detection Feed -->
+        <div class="panel rounded-3xl p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-lg font-semibold">Detection Feed</h2>
+              <p class="text-sm muted mt-1">Recent strategy observations across the active watchlist.</p>
+            </div>
+          </div>
+
+          <div id="feedList" class="feed-scroll max-h-[260px] overflow-auto space-y-2 text-sm">
+            <div class="panel-soft rounded-2xl px-4 py-3 muted">No pattern activity yet. Add symbols, select patterns, then run a scan.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Alerts + Ask Veloxis -->
+      <div class="xl:col-span-4 space-y-6">
+
+        <div class="panel rounded-3xl p-5">
+          <div class="mb-4">
+            <h2 class="text-lg font-semibold">Alert Center</h2>
+            <p class="text-sm muted mt-1">Monitoring, triggered, and forming pattern states.</p>
+          </div>
+
+          <div id="alertList" class="alerts-scroll max-h-[320px] overflow-auto space-y-2 text-sm">
+            <div class="panel-soft rounded-2xl px-4 py-3 muted">No alerts yet. Run a scan to populate live pattern states.</div>
+          </div>
+        </div>
+
+        <div class="panel rounded-3xl p-5">
+          <div class="mb-4">
+            <h3 class="text-lg font-semibold">Ask Veloxis</h3>
+            <p class="text-sm muted mt-1">Ask about a pattern, a symbol, or why an alert is weak or strong.</p>
+          </div>
+
+          <div class="space-y-3">
+            <input
+              id="askInput"
+              type="text"
+              placeholder="Ask about pattern behavior..."
+              class="panel-soft w-full rounded-2xl px-4 py-4 outline-none"
+              style="color:var(--text);"
+            />
+            <button
+              onclick="askVeloxis()"
+              class="w-full rounded-2xl px-4 py-3 font-semibold"
+              style="background:var(--accent); color:#fff;"
+            >
+              Ask
+            </button>
+          </div>
+
+          <div id="askResponse" class="panel-soft rounded-2xl p-4 mt-4 text-sm leading-7 muted">
+            Veloxis will interpret pattern strength, structure quality, and context once scanning begins.
+          </div>
+        </div>
+
+        <div class="panel rounded-3xl p-5">
+          <div class="mb-4">
+            <h3 class="text-lg font-semibold">Pattern Summary</h3>
+            <p class="text-sm muted mt-1">Current strategy context for the selected symbol.</p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Primary Pattern</div>
+              <div class="font-semibold" id="summaryPattern">None selected</div>
+            </div>
+            <div class="panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">State</div>
+              <div class="font-semibold" id="summaryState">Waiting</div>
+            </div>
+            <div class="panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Interpretation Style</div>
+              <div class="font-semibold">Probabilistic, Not Directive</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast notifications -->
+  <div id="toastWrap" class="toast-wrap"></div>
+
+  <script>
+    const watchlist = [];
+    const selectedPatterns = new Set();
+    let patternFilter = "All";
+    let currentSymbol = "";
+    let currentTimeframe = "1D";
+
+    const patterns = [
+      { name: "Bull Flag", category: "Trend" },
+      { name: "Bear Flag", category: "Trend" },
+      { name: "Breakout", category: "Trend" },
+      { name: "Pullback Continuation", category: "Trend" },
+
+      { name: "Head & Shoulders", category: "Reversal" },
+      { name: "Inverse Head & Shoulders", category: "Reversal" },
+      { name: "Double Top", category: "Reversal" },
+      { name: "Double Bottom", category: "Reversal" },
+      { name: "Rising Wedge", category: "Reversal" },
+      { name: "Falling Wedge", category: "Reversal" },
+
+      { name: "Bullish Engulfing", category: "Candlestick" },
+      { name: "Bearish Engulfing", category: "Candlestick" },
+      { name: "Pin Bar", category: "Candlestick" },
+      { name: "Inside Bar", category: "Candlestick" },
+      { name: "Doji Reversal", category: "Candlestick" },
+      { name: "Morning Star", category: "Candlestick" },
+      { name: "Evening Star", category: "Candlestick" },
+
+      { name: "Support Bounce", category: "Levels" },
+      { name: "Resistance Rejection", category: "Levels" },
+      { name: "Range Break", category: "Levels" },
+      { name: "False Breakout", category: "Levels" },
+      { name: "Retest Confirmation", category: "Levels" },
+
+      { name: "Ascending Triangle", category: "Advanced" },
+      { name: "Descending Triangle", category: "Advanced" },
+      { name: "Channel Break", category: "Advanced" },
+      { name: "Compression Release", category: "Advanced" }
+    ];
+
+    function toggleTheme() {
+      document.getElementById("app-body").classList.toggle("dark");
+    }
+
+    function togglePatternDropdown() {
+      const dropdown = document.getElementById("patternDropdown");
+      dropdown.classList.toggle("hidden-block");
+    }
+
+    function setPatternFilter(event, filterName) {
+      patternFilter = filterName;
+
+      document.querySelectorAll("#patternDropdown .chip").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      event.target.classList.add("active");
+      renderPatternDropdown();
+    }
+
+    function renderPatternDropdown() {
+      const grid = document.getElementById("patternDropdownGrid");
+      const search = document.getElementById("patternSearch").value.toLowerCase().trim();
+
+      const filtered = patterns.filter(pattern => {
+        const matchesCategory = patternFilter === "All" || pattern.category === patternFilter;
+        const matchesSearch = pattern.name.toLowerCase().includes(search);
+        return matchesCategory && matchesSearch;
+      });
+
+      grid.innerHTML = filtered.map(pattern => {
+        const active = selectedPatterns.has(pattern.name);
+        return `
+          <button
+            onclick="togglePattern('${pattern.name.replace(/'/g, "\\'")}')"
+            class="pattern-item ${active ? "active" : ""} rounded-2xl p-4 text-left"
+          >
+            <div class="text-sm font-semibold">${pattern.name}</div>
+            <div class="text-xs muted mt-1">${pattern.category}</div>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function togglePattern(name) {
+      if (selectedPatterns.has(name)) {
+        selectedPatterns.delete(name);
+      } else {
+        selectedPatterns.add(name);
+      }
+
+      updateActivePatterns();
+      renderPatternDropdown();
+    }
+
+    function applyPatternSelection() {
+      document.getElementById("patternDropdown").classList.add("hidden-block");
+      updateActivePatterns();
+    }
+
+    function updateActivePatterns() {
+      const count = selectedPatterns.size;
+      document.getElementById("activePatternCount").textContent = count;
+
+      const bar = document.getElementById("activePatternsBar");
+      const label = document.getElementById("patternButtonLabel");
+
+      if (count === 0) {
+        bar.innerHTML = `<div class="panel-soft rounded-2xl px-4 py-3 text-sm muted">No active patterns selected.</div>`;
+        label.textContent = "Select patterns";
+      } else {
+        label.textContent = `${count} pattern${count > 1 ? "s" : ""} selected`;
+        bar.innerHTML = [...selectedPatterns].map(pattern => `
+          <div class="chip rounded-xl px-3 py-2 text-sm">${pattern}</div>
+        `).join("");
+      }
+
+      document.getElementById("scopeText").textContent =
+        watchlist.length
+          ? `${watchlist.length} symbol${watchlist.length > 1 ? "s" : ""} • ${count} active pattern${count > 1 ? "s" : ""}`
+          : "No symbols selected";
+    }
+
+    function addSymbol() {
+      const input = document.getElementById("symbolInput");
+      const symbol = input.value.trim().toUpperCase();
+
+      if (!symbol) return;
+      if (watchlist.includes(symbol)) {
+        input.value = "";
+        return;
+      }
+      if (watchlist.length >= 3) {
+        showToast("Watchlist limit reached (max 3 symbols).");
+        return;
+      }
+
+      watchlist.push(symbol);
+      input.value = "";
+
+      if (!currentSymbol) {
+        currentSymbol = symbol;
+      }
+
+      renderWatchlist();
+      renderSymbolTabs();
+      toggleChartVisibility();
+      updateActivePatterns();
+    }
+
+    function removeSymbol(symbol) {
+      const index = watchlist.indexOf(symbol);
+      if (index > -1) {
+        watchlist.splice(index, 1);
+      }
+
+      if (currentSymbol === symbol) {
+        currentSymbol = watchlist[0] || "";
+      }
+
+      renderWatchlist();
+      renderSymbolTabs();
+      toggleChartVisibility();
+      updateActivePatterns();
+      updateChartLabels();
+    }
+
+    function renderWatchlist() {
+      const container = document.getElementById("watchlistChips");
+
+      if (!watchlist.length) {
+        container.innerHTML = `<div class="panel-soft rounded-2xl px-4 py-3 text-sm muted">No symbols added yet.</div>`;
+        return;
+      }
+
+      container.innerHTML = watchlist.map(symbol => `
+        <div class="chip rounded-xl px-3 py-2 text-sm flex items-center gap-2">
+          <span>${symbol}</span>
+          <button onclick="removeSymbol('${symbol}')" class="muted text-xs">✕</button>
+        </div>
+      `).join("");
+    }
+
+    function renderSymbolTabs() {
+      const tabs = document.getElementById("symbolTabs");
+
+      if (!watchlist.length) {
+        tabs.innerHTML = "";
+        return;
+      }
+
+      tabs.innerHTML = watchlist.map(symbol => `
+        <button
+          onclick="selectSymbol('${symbol}')"
+          class="tab-symbol rounded-xl px-4 py-2 text-sm font-medium ${currentSymbol === symbol ? 'active' : ''}"
+        >
+          ${symbol}
         </button>
-      </div>
-    </div>
-  </section>
+      `).join("");
+    }
 
-  <!-- Search + Filters -->
-  <section class="panel rounded-2xl p-4">
-    <input id="search" oninput="renderPatterns()" placeholder="Search patterns..." class="soft w-full px-4 py-3 rounded-xl mb-3"/>
-    <div class="flex gap-2 flex-wrap">
-      <button class="chip px-3 py-1 rounded-lg text-sm active" onclick="setFilter('All')">All</button>
-      <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setFilter('Trend')">Trend</button>
-      <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setFilter('Reversal')">Reversal</button>
-      <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setFilter('Candlestick')">Candlestick</button>
-      <button class="chip px-3 py-1 rounded-lg text-sm" onclick="setFilter('Levels')">Levels</button>
-    </div>
-  </section>
+    function selectSymbol(symbol) {
+      currentSymbol = symbol;
+      renderSymbolTabs();
+      updateChartLabels();
+    }
 
-  <!-- Main Grid -->
-  <section class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+    function toggleChartVisibility() {
+      const chartSection = document.getElementById("chartSection");
+      const emptyState = document.getElementById("emptyChartState");
 
-    <!-- Pattern Library -->
-    <div class="xl:col-span-8 panel rounded-3xl p-5">
-      <h2 class="text-xl font-semibold mb-4">Pattern Library</h2>
-      <div id="patterns" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
-    </div>
+      if (watchlist.length > 0) {
+        chartSection.classList.remove("hidden-block");
+        emptyState.classList.add("hidden-block");
+        updateChartLabels();
+      } else {
+        chartSection.classList.add("hidden-block");
+        emptyState.classList.remove("hidden-block");
+      }
+    }
 
-    <!-- Alerts + AI -->
-    <div class="xl:col-span-4 space-y-6">
+    function setTimeframe(button, tf) {
+      currentTimeframe = tf;
+      document.querySelectorAll("#tfButtons .tf-btn").forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+      document.getElementById("chartTfLabel").textContent = tf;
+    }
 
-      <!-- Alert Center -->
-      <div class="panel rounded-3xl p-5">
-        <h2 class="text-lg font-semibold mb-3">Alert Center</h2>
-        <div id="alerts" class="space-y-2 text-sm"></div>
-      </div>
+    function updateChartLabels() {
+      if (!currentSymbol) return;
 
-      <!-- Ask Veloxis -->
-      <div class="panel rounded-3xl p-5">
-        <h3 class="font-semibold mb-2">Ask Veloxis</h3>
-        <input id="askInput" placeholder="Ask about patterns..." class="soft w-full px-4 py-3 rounded-xl mb-2"/>
-        <button onclick="askAI()" class="w-full px-4 py-3 rounded-xl" style="background:var(--accent);color:#fff">Ask</button>
-        <div id="aiResponse" class="mt-3 text-sm muted"></div>
-      </div>
+      const firstPattern = [...selectedPatterns][0] || "Pattern context pending";
+      document.getElementById("chartSymbolTitle").textContent = currentSymbol;
+      document.getElementById("chartPatternSubtitle").textContent = firstPattern;
+      document.getElementById("chartHeaderLabel").textContent = `${currentSymbol} Strategy Structure`;
+      document.getElementById("chartPriceLabel").textContent = getMockPrice(currentSymbol);
+      document.getElementById("summaryPattern").textContent = firstPattern;
+      document.getElementById("patternZoneText").textContent = firstPattern.length > 18 ? "Pattern zone" : firstPattern;
+    }
 
-    </div>
-  </section>
+    function getMockPrice(symbol) {
+      const prices = {
+        AAPL: "$192.84",
+        TSLA: "$248.30",
+        NVDA: "$941.20",
+        MSFT: "$425.16",
+        AMZN: "$183.44",
+        META: "$502.70"
+      };
+      return prices[symbol] || "$156.40";
+    }
 
-  <!-- Detection Feed -->
-  <section class="panel rounded-3xl p-5">
-    <h2 class="text-lg font-semibold mb-3">Detection Feed</h2>
-    <div id="feed" class="text-sm space-y-1"></div>
-  </section>
+    function runScan() {
+      if (!watchlist.length) {
+        showToast("Add at least one symbol before running a scan.");
+        return;
+      }
 
-</main>
+      if (!selectedPatterns.size) {
+        showToast("Select at least one pattern before running a scan.");
+        return;
+      }
 
-<!-- Toast -->
-<div id="toast" class="toast space-y-2"></div>
+      const alertList = document.getElementById("alertList");
+      const feedList = document.getElementById("feedList");
+      let alertsHtml = "";
+      let feedHtml = "";
 
-<script>
-let watchlist = [];
-let activePatterns = new Set();
-let filter = "All";
+      const statuses = ["Monitoring", "Forming", "Triggered", "Rejected"];
 
-const patterns = [
-  {name:"Bull Flag",cat:"Trend"},
-  {name:"Bear Flag",cat:"Trend"},
-  {name:"Breakout",cat:"Trend"},
-  {name:"Head & Shoulders",cat:"Reversal"},
-  {name:"Double Top",cat:"Reversal"},
-  {name:"Engulfing",cat:"Candlestick"},
-  {name:"Pin Bar",cat:"Candlestick"},
-  {name:"Support Bounce",cat:"Levels"},
-  {name:"Resistance Rejection",cat:"Levels"}
-];
+      watchlist.forEach((symbol, symbolIndex) => {
+        [...selectedPatterns].slice(0, 3).forEach((pattern, patternIndex) => {
+          const status = statuses[(symbolIndex + patternIndex) % statuses.length];
+          const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-function toggleTheme(){ document.body.classList.toggle("dark"); }
+          alertsHtml += `
+            <div class="panel-soft rounded-2xl px-4 py-3">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <div class="font-semibold text-sm">${symbol} — ${pattern}</div>
+                  <div class="text-xs muted mt-1">${time}</div>
+                </div>
+                <div class="text-sm font-medium status-${status.toLowerCase()}">${status}</div>
+              </div>
+            </div>
+          `;
 
-function addSymbol(){
-  let val = document.getElementById("symbolInput").value.toUpperCase();
-  if(!val || watchlist.includes(val) || watchlist.length>=3) return;
-  watchlist.push(val);
-  document.getElementById("symbolInput").value="";
-  renderWatchlist();
-}
+          feedHtml += `
+            <div class="panel-soft rounded-2xl px-4 py-3">
+              <div class="font-semibold text-sm">${symbol}</div>
+              <div class="text-sm mt-1">${pattern} — ${status}</div>
+            </div>
+          `;
 
-function renderWatchlist(){
-  let el=document.getElementById("watchlist");
-  el.innerHTML="";
-  watchlist.forEach(s=>{
-    el.innerHTML+=`<span class="chip px-3 py-1 rounded-lg">${s}</span>`;
-  });
-}
+          if (status === "Triggered" || status === "Forming") {
+            showToast(`${symbol} — ${pattern} ${status.toLowerCase()}`);
+          }
+        });
+      });
 
-function setFilter(f){filter=f; renderPatterns();}
+      alertList.innerHTML = alertsHtml || `<div class="panel-soft rounded-2xl px-4 py-3 muted">No alerts available.</div>`;
+      feedList.innerHTML = feedHtml || `<div class="panel-soft rounded-2xl px-4 py-3 muted">No detection feed available.</div>`;
 
-function renderPatterns(){
-  let grid=document.getElementById("patterns");
-  let search=document.getElementById("search").value.toLowerCase();
-  grid.innerHTML="";
-  patterns.filter(p=>{
-    return (filter==="All"||p.cat===filter)&&p.name.toLowerCase().includes(search);
-  }).forEach(p=>{
-    let active = activePatterns.has(p.name);
-    grid.innerHTML+=`
-    <div onclick="togglePattern('${p.name}')"
-      class="card ${active?'active':''} p-4 rounded-xl cursor-pointer">
-      ${p.name}
-    </div>`;
-  });
-}
+      document.getElementById("summaryState").textContent = "Active";
+      updateChartLabels();
+    }
 
-function togglePattern(name){
-  activePatterns.has(name)?activePatterns.delete(name):activePatterns.add(name);
-  renderPatterns();
-}
+    function askVeloxis() {
+      const input = document.getElementById("askInput").value.trim();
+      const response = document.getElementById("askResponse");
 
-function runScan(){
-  if(!watchlist.length||!activePatterns.size)return;
-  activePatterns.forEach(p=>{
-    watchlist.forEach(s=>{
-      let status = ["Monitoring","Forming","Triggered"][Math.floor(Math.random()*3)];
-      addAlert(s,p,status);
-      addFeed(`${s} → ${p} ${status}`);
-      if(status==="Triggered") showToast(`${s} — ${p} detected`);
+      if (!input) {
+        response.textContent = "Ask about a symbol, a pattern, or why a signal is weak or strong.";
+        return;
+      }
+
+      const symbolText = currentSymbol || "the selected symbol";
+      const patternText = [...selectedPatterns][0] || "the active pattern set";
+
+      response.textContent =
+        `Veloxis: ${patternText} on ${symbolText} should be read through structure quality, nearby levels, and confirmation behavior. The current setup is better interpreted as a monitored condition rather than a direct trading instruction.`;
+    }
+
+    function showToast(message) {
+      const wrap = document.getElementById("toastWrap");
+      const item = document.createElement("div");
+      item.className = "toast-item";
+      item.innerHTML = `<div class="text-sm font-medium">${message}</div>`;
+      wrap.appendChild(item);
+
+      setTimeout(() => {
+        item.remove();
+      }, 3600);
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function(event) {
+      const dropdown = document.getElementById("patternDropdown");
+      const isInsideDropdown = dropdown.contains(event.target);
+      const isButton = event.target.closest("button") && event.target.closest("button").onclick?.toString().includes("togglePatternDropdown");
+
+      if (!isInsideDropdown && !isButton && !dropdown.classList.contains("hidden-block")) {
+        dropdown.classList.add("hidden-block");
+      }
     });
-  });
-}
 
-function addAlert(symbol,pattern,status){
-  let el=document.getElementById("alerts");
-  el.innerHTML=`<div>${symbol} — ${pattern} <span class="status-${status.toLowerCase()}">→ ${status}</span></div>`+el.innerHTML;
-}
-
-function addFeed(text){
-  let el=document.getElementById("feed");
-  el.innerHTML=`<div>${text}</div>`+el.innerHTML;
-}
-
-function showToast(text){
-  let box=document.createElement("div");
-  box.className="toast-item px-4 py-3 rounded-xl text-sm";
-  box.innerText=text;
-  document.getElementById("toast").appendChild(box);
-  setTimeout(()=>box.remove(),4000);
-}
-
-function askAI(){
-  let q=document.getElementById("askInput").value;
-  document.getElementById("aiResponse").innerText =
-    "Veloxis: Pattern strength depends on structure, volume, and context. Current signals require confirmation.";
-}
-
-renderPatterns();
-</script>
-
+    renderWatchlist();
+    renderPatternDropdown();
+    updateActivePatterns();
+    toggleChartVisibility();
+  </script>
 </body>
 </html>
