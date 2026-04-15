@@ -1,151 +1,329 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Veloxis — نبض السوق</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #05070a; --card: #0f172a; --accent: #3b82f6;
-      --pos: #10b981; --neg: #ef4444; --text: #f8fafc;
-    }
-    body {
-      background: radial-gradient(circle at top, #1e293b 0%, var(--bg) 100%);
-      color: var(--text); font-family: 'Inter', sans-serif;
-    }
-    .glass-card {
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 1.5rem;
-    }
-    .gauge-needle {
-      transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
-      transform-origin: 250px 250px;
-    }
-    .mini-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.1); overflow: hidden; }
-  </style>
-</head>
-<body class="p-4 md:p-8">
-
-  <header class="max-w-7xl mx-auto flex justify-between items-center mb-10">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-bold text-xl">V</div>
-      <h1 class="text-xl font-bold tracking-tight uppercase">Veloxis</h1>
-    </div>
-    <nav class="hidden md:flex gap-6 text-sm text-slate-400">
-      <a href="#" class="text-blue-400">نبض السوق</a>
-      <a href="#" class="hover:text-white">التحليلات</a>
-      <a href="#" class="hover:text-white">المختبر</a>
-    </nav>
-    <div id="live-clock" class="text-xs font-mono text-slate-500">جارِ التحميل...</div>
-  </header>
-
-  <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
-    
-    <div class="lg:col-span-4 space-y-6">
-      <div class="glass-card p-6">
-        <h3 class="text-slate-400 text-sm mb-1">حالة المخاطر</h3>
-        <div id="risk-tone" class="text-3xl font-bold mb-4">-</div>
-        <div class="space-y-3">
-          <div class="flex justify-between text-sm"><span class="text-slate-500">القوة الدافعة</span> <span id="main-driver" class="font-medium">--</span></div>
-          <div class="flex justify-between text-sm"><span class="text-slate-500">عوامل التوازن</span> <span id="offset-driver" class="font-medium">--</span></div>
-        </div>
+<section id="page-market-pulse" class="page active">
+  <!-- Top Strip -->
+  <div class="panel rounded-2xl p-3 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+      <div class="panel-soft rounded-xl px-4 py-3 flex items-center justify-between">
+        <span class="muted">Sentiment Ratio</span>
+        <span class="font-semibold">76%</span>
       </div>
+      <div class="panel-soft rounded-xl px-4 py-3 flex items-center justify-between">
+        <span class="muted">Risk Tone</span>
+        <span class="font-semibold">Risk-On</span>
+      </div>
+      <div class="panel-soft rounded-xl px-4 py-3 flex items-center justify-between">
+        <span class="muted">Session Bias</span>
+        <span class="font-semibold">Constructive Advance</span>
+      </div>
+    </div>
+  </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <div class="glass-card p-4 text-center">
-          <div class="text-xs text-slate-500 mb-1">NASDAQ</div>
-          <div class="font-bold text-emerald-400">+0.52%</div>
+  <!-- Hero Grid -->
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
+    <!-- Summary -->
+    <div class="xl:col-span-7 panel rounded-3xl p-6 lg:p-8">
+      <p class="text-sm font-medium mb-3" style="color: var(--accent);">
+        Cross-Asset Market View
+      </p>
+
+      <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">
+        Market Pulse
+      </h1>
+
+      <p class="text-base lg:text-lg leading-8 muted mb-6">
+        A live market engine built from weighted cross-asset inputs. Veloxis
+        converts macro pressure into a cleaner signal for faster decision-making.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="panel-soft rounded-2xl px-4 py-4">
+          <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Market Status</div>
+          <div class="text-lg font-semibold">Constructive</div>
         </div>
-        <div class="glass-card p-4 text-center">
-          <div class="text-xs text-slate-500 mb-1">VIX</div>
-          <div class="font-bold text-rose-400">18.4</div>
+
+        <div class="panel-soft rounded-2xl px-4 py-4">
+          <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Primary Pressure</div>
+          <div class="text-lg font-semibold">Gold + Dollar</div>
+        </div>
+
+        <div class="panel-soft rounded-2xl px-4 py-4">
+          <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Primary Support</div>
+          <div class="text-lg font-semibold">Bitcoin + Oil</div>
         </div>
       </div>
     </div>
 
-    <div class="lg:col-span-8 glass-card p-8 flex flex-col items-center justify-center relative overflow-hidden">
-      <div class="absolute top-6 left-6 flex items-center gap-2">
-        <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-        <span class="text-xs text-slate-400 uppercase tracking-widest">Live Engine</span>
-      </div>
-
-      <svg viewBox="0 0 500 300" class="w-full max-w-md">
-        <path d="M 100 250 A 150 150 0 0 1 400 250" fill="none" stroke="#1e293b" stroke-width="25" stroke-linecap="round"/>
-        <path id="gauge-path" d="M 100 250 A 150 150 0 0 1 400 250" fill="none" stroke="url(#gradient)" stroke-width="25" stroke-linecap="round" stroke-dasharray="471" stroke-dashoffset="471"/>
-        <defs>
-          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#ef4444" />
-            <stop offset="50%" stop-color="#eab308" />
-            <stop offset="100%" stop-color="#10b981" />
-          </linearGradient>
-        </defs>
-        <g id="needle" class="gauge-needle">
-          <rect x="248" y="110" width="4" height="140" fill="white" rx="2" />
-          <circle cx="250" cy="250" r="10" fill="white" />
-        </g>
-      </svg>
-      
-      <div class="text-center -mt-10">
-        <div id="gauge-value" class="text-6xl font-black italic">0</div>
-        <div class="text-slate-500 text-sm uppercase tracking-widest mt-2">Sentiment Score</div>
-      </div>
-    </div>
-
-    <div class="lg:col-span-12">
-      <h3 class="text-lg font-bold mb-4 px-2">محركات السوق الأساسية</h3>
-      <div id="drivers-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- Gauge Block -->
+    <div class="xl:col-span-5 panel rounded-3xl p-6 lg:p-8">
+      <div class="flex items-start justify-between gap-4 mb-5">
+        <div>
+          <p class="text-sm muted mb-1">Live Market Ratio</p>
+          <h2 class="text-2xl font-semibold">Signature Gauge</h2>
         </div>
+        <div class="text-right">
+          <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
+          <p class="text-sm font-medium">Now</p>
+        </div>
+      </div>
+
+      <div class="mb-4 text-center">
+        <div class="panel-soft rounded-full px-4 py-2 inline-flex">
+          <span class="font-semibold" style="color: var(--positive);">Constructive</span>
+        </div>
+      </div>
+
+      <!-- Placeholder HTML only -->
+      <div class="panel-soft rounded-3xl p-6 text-center mb-4">
+        <div class="text-sm muted mb-2">Signature Gauge Area</div>
+        <div class="text-5xl font-semibold tracking-tight mb-2">76</div>
+        <div class="text-xs uppercase tracking-[0.22em] muted mb-4">Live Read</div>
+
+        <div class="grid grid-cols-3 gap-2 text-xs uppercase tracking-[0.14em] muted">
+          <div class="text-left">Pressure</div>
+          <div class="text-center">Balance</div>
+          <div class="text-right">Momentum</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 text-sm">
+        <div class="panel-soft rounded-2xl px-4 py-3">
+          <div class="muted mb-1">Signal Balance</div>
+          <div class="font-semibold">Constructive</div>
+        </div>
+        <div class="panel-soft rounded-2xl px-4 py-3">
+          <div class="muted mb-1">Net Drivers</div>
+          <div class="font-semibold">6 Active Inputs</div>
+        </div>
+      </div>
     </div>
-  </main>
+  </div>
 
-  <script>
-    const marketData = [
-      { name: "الدولار", val: "104.2", chg: -0.15, weight: 30, impact: "ايجابي للأسهم" },
-      { name: "عائد السندات", val: "4.25%", chg: 0.05, weight: 25, impact: "ضغط طفيف" },
-      { name: "الذهب", val: "$2340", chg: 1.2, weight: 20, impact: "طلب دفاعي" },
-      { name: "البيتكوين", val: "$67k", chg: 2.5, weight: 25, impact: "شهية مخاطرة" }
-    ];
+  <!-- Insight + Distribution -->
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
+    <!-- Insight -->
+    <div class="xl:col-span-4 panel rounded-3xl p-6">
+      <div class="mb-5">
+        <h3 class="text-xl font-semibold">Veloxis Insight</h3>
+        <p class="text-sm muted mt-1">Cause and current result.</p>
+      </div>
 
-    function updateDashboard() {
-      const driversContainer = document.getElementById('drivers-list');
-      let totalScore = 0;
+      <div class="panel-soft rounded-2xl p-5 mb-4">
+        <p class="text-sm leading-7">
+          Gold and Dollar remain the main sources of market pressure, while
+          Bitcoin and softer oil keep the structure from becoming fully one-sided.
+          The current read remains constructive.
+        </p>
+      </div>
 
-      driversContainer.innerHTML = marketData.map(item => {
-        const isPos = item.chg > 0;
-        totalScore += isPos ? item.weight : 0;
-        return `
-          <div class="glass-card p-5 border-l-4 ${isPos ? 'border-emerald-500' : 'border-rose-500'}">
-            <div class="flex justify-between mb-2">
-              <span class="text-slate-400 text-sm">${item.name}</span>
-              <span class="${isPos ? 'text-emerald-400' : 'text-rose-400'} text-xs font-bold">${isPos?'+':''}${item.chg}%</span>
+      <div class="grid grid-cols-1 gap-3">
+        <div class="panel-soft rounded-2xl px-4 py-3">
+          <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Main Pressure</div>
+          <div class="font-semibold">Gold + Dollar</div>
+        </div>
+
+        <div class="panel-soft rounded-2xl px-4 py-3">
+          <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Offsetting Factors</div>
+          <div class="font-semibold">Bitcoin + Oil</div>
+        </div>
+
+        <div class="panel-soft rounded-2xl px-4 py-3">
+          <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Decision Style</div>
+          <div class="font-semibold">Probabilistic, Not Directive</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distribution -->
+    <div class="xl:col-span-8 panel rounded-3xl p-6">
+      <div class="mb-5">
+        <h3 class="text-xl font-semibold">Signal Distribution</h3>
+        <p class="text-sm muted mt-1">
+          Live weighted contributors behind the current reading.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div class="panel-soft rounded-2xl p-4">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <div class="text-sm muted">Dollar</div>
+              <div class="text-lg font-semibold mt-1">8%</div>
             </div>
-            <div class="text-xl font-bold mb-1">${item.val}</div>
-            <div class="mini-bar"><div class="h-full ${isPos?'bg-emerald-500':'bg-rose-500'}" style="width:${item.weight}%"></div></div>
+            <div class="text-right">
+              <div class="text-sm font-medium" style="color: var(--negative);">+0.32%</div>
+              <div class="text-xs muted mt-1">Pressure</div>
+            </div>
           </div>
-        `;
-      }).join('');
+          <p class="text-sm muted leading-6">Broad pressure across risk assets.</p>
+        </div>
 
-      // Update Gauge
-      const score = Math.round(totalScore);
-      document.getElementById('gauge-value').innerText = score;
-      const angle = (score / 100) * 180 - 90;
-      document.getElementById('needle').style.transform = `rotate(${angle}deg)`;
-      
-      // Update Summary
-      document.getElementById('risk-tone').innerText = score > 50 ? "متفائل (Risk-On)" : "حذر (Risk-Off)";
-      document.getElementById('main-driver').innerText = marketData[3].name;
-      document.getElementById('offset-driver').innerText = marketData[1].name;
-      
-      // Clock
-      document.getElementById('live-clock').innerText = new Date().toLocaleTimeString();
-    }
+        <div class="panel-soft rounded-2xl p-4">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <div class="text-sm muted">Yields</div>
+              <div class="text-lg font-semibold mt-1">3%</div>
+            </div>
+            <div class="text-right">
+              <div class="text-sm font-medium" style="color: var(--negative);">+0.14%</div>
+              <div class="text-xs muted mt-1">Pressure</div>
+            </div>
+          </div>
+          <p class="text-sm muted leading-6">Tighter conditions and valuation pressure.</p>
+        </div>
 
-    updateDashboard();
-    setInterval(updateDashboard, 5000);
-  </script>
-</body>
-</html>
+        <div class="panel-soft rounded-2xl p-4">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <div class="text-sm muted">Gold</div>
+              <div class="text-lg font-semibold mt-1">12%</div>
+            </div>
+            <div class="text-right">
+              <div class="text-sm font-medium" style="color: var(--negative);">+0.90%</div>
+              <div class="text-xs muted mt-1">Pressure</div>
+            </div>
+          </div>
+          <p class="text-sm muted leading-6">Defensive capital still respected.</p>
+        </div>
+
+        <div class="panel-soft rounded-2xl p-4">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <div class="text-sm muted">Bitcoin</div>
+              <div class="text-lg font-semibold mt-1">42%</div>
+            </div>
+            <div class="text-right">
+              <div class="text-sm font-medium" style="color: var(--positive);">+2.30%</div>
+              <div class="text-xs muted mt-1">Supportive</div>
+            </div>
+          </div>
+          <p class="text-sm muted leading-6">Risk-on participation remains alive.</p>
+        </div>
+
+        <div class="panel-soft rounded-2xl p-4">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <div class="text-sm muted">Oil</div>
+              <div class="text-lg font-semibold mt-1">21%</div>
+            </div>
+            <div class="text-right">
+              <div class="text-sm font-medium" style="color: var(--positive);">-1.80%</div>
+              <div class="text-xs muted mt-1">Supportive</div>
+            </div>
+          </div>
+          <p class="text-sm muted leading-6">Softer energy reduces macro pressure.</p>
+        </div>
+
+        <div class="panel-soft rounded-2xl p-4">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <div class="text-sm muted">Bonds</div>
+              <div class="text-lg font-semibold mt-1">14%</div>
+            </div>
+            <div class="text-right">
+              <div class="text-sm font-medium" style="color: var(--positive);">+0.41%</div>
+              <div class="text-xs muted mt-1">Supportive</div>
+            </div>
+          </div>
+          <p class="text-sm muted leading-6">Bond stabilization offsets some stress.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Drivers -->
+  <div class="panel rounded-3xl p-6 mb-6">
+    <div class="mb-5">
+      <h3 class="text-xl font-semibold">Core Drivers</h3>
+      <p class="text-sm muted mt-1">Major inputs reflected in the live market engine.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="panel-soft rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm muted">USD Index</span>
+          <span class="text-sm font-medium" style="color: var(--negative);">+0.32%</span>
+        </div>
+        <div class="text-2xl font-semibold mb-2">104.85</div>
+        <p class="text-sm muted leading-6">Broad pressure across risk assets.</p>
+      </div>
+
+      <div class="panel-soft rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm muted">US 10Y Yield</span>
+          <span class="text-sm font-medium" style="color: var(--negative);">+0.14%</span>
+        </div>
+        <div class="text-2xl font-semibold mb-2">4.28%</div>
+        <p class="text-sm muted leading-6">Tighter conditions and valuation pressure.</p>
+      </div>
+
+      <div class="panel-soft rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm muted">Gold</span>
+          <span class="text-sm font-medium" style="color: var(--negative);">+0.90%</span>
+        </div>
+        <div class="text-2xl font-semibold mb-2">$2,652</div>
+        <p class="text-sm muted leading-6">Defensive capital still respected.</p>
+      </div>
+
+      <div class="panel-soft rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm muted">Bitcoin</span>
+          <span class="text-sm font-medium" style="color: var(--positive);">+2.30%</span>
+        </div>
+        <div class="text-2xl font-semibold mb-2">$67,420</div>
+        <p class="text-sm muted leading-6">Risk-on participation remains alive.</p>
+      </div>
+
+      <div class="panel-soft rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm muted">Crude Oil</span>
+          <span class="text-sm font-medium" style="color: var(--positive);">-1.80%</span>
+        </div>
+        <div class="text-2xl font-semibold mb-2">$78.40</div>
+        <p class="text-sm muted leading-6">Softer energy reduces macro pressure.</p>
+      </div>
+
+      <div class="panel-soft rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm muted">Treasury Bonds</span>
+          <span class="text-sm font-medium" style="color: var(--positive);">+0.41%</span>
+        </div>
+        <div class="text-2xl font-semibold mb-2">TLT 91.62</div>
+        <p class="text-sm muted leading-6">Bond stabilization offsets some stress.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Market Assets -->
+  <div class="panel rounded-3xl p-6">
+    <div class="mb-5">
+      <h3 class="text-xl font-semibold">Market Assets</h3>
+      <p class="text-sm muted mt-1">Compact reads for additional context outside the core engine.</p>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="panel-soft rounded-2xl p-4">
+        <div class="text-sm muted mb-2">Nasdaq Futures</div>
+        <div class="text-2xl font-semibold">18,942</div>
+        <div class="text-sm mt-2" style="color: var(--positive);">+0.48%</div>
+      </div>
+
+      <div class="panel-soft rounded-2xl p-4">
+        <div class="text-sm muted mb-2">S&amp;P 500 Futures</div>
+        <div class="text-2xl font-semibold">5,830</div>
+        <div class="text-sm mt-2" style="color: var(--positive);">+0.43%</div>
+      </div>
+
+      <div class="panel-soft rounded-2xl p-4">
+        <div class="text-sm muted mb-2">Dow Futures</div>
+        <div class="text-2xl font-semibold">42,350</div>
+        <div class="text-sm mt-2" style="color: var(--positive);">+0.28%</div>
+      </div>
+
+      <div class="panel-soft rounded-2xl p-4">
+        <div class="text-sm muted mb-2">VIX</div>
+        <div class="text-2xl font-semibold">18.45</div>
+        <div class="text-sm mt-2" style="color: var(--negative);">-0.85</div>
+      </div>
+    </div>
+  </div>
+</section>
