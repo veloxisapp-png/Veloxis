@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Veloxis - Market Pulse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --panel: #ffffff;
+      --panel-2: #f5f5f5;
+      --border: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --positive: #16a34a;
+      --negative: #dc2626;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    body.dark {
+      --bg: #09090b;
+      --panel: #111827;
+      --panel-2: #18181b;
+      --border: #27272a;
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+      --accent: #60a5fa;
+      --positive: #22c55e;
+      --negative: #ef4444;
+      --shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .panel-soft {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+    }
+
+    .nav-link {
+      position: relative;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.96rem;
+      font-weight: 500;
+      padding: 0.4rem 0;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--text);
+    }
+
+    .nav-link.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.9rem;
+      width: 100%;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 999px;
+    }
+
+    .metric-card,
+    .driver-card {
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .metric-card:hover,
+    .driver-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(96, 165, 250, 0.35);
+    }
+
+    .muted { color: var(--muted); }
+
+    .thin-scroll::-webkit-scrollbar {
+      height: 8px;
+      width: 8px;
+    }
+
+    .thin-scroll::-webkit-scrollbar-thumb {
+      background: #3f3f46;
+      border-radius: 999px;
+    }
+
+    .desktop-only { display: block; }
+    .mobile-only { display: none; }
+
+    .mobile-drawer {
+      transform: translateX(100%);
+      transition: transform 0.22s ease;
+    }
+
+    .mobile-drawer.open {
+      transform: translateX(0);
+    }
+
+    @media (max-width: 1023px) {
+      .desktop-only { display: none; }
+      .mobile-only { display: block; }
+    }
+  </style>
+</head>
+<body class="dark" id="main-body">
+
+  <header class="sticky top-0 z-50 border-b backdrop-blur supports-[backdrop-filter]:bg-black/10" style="border-color: var(--border); background: color-mix(in srgb, var(--bg) 88%, transparent);">
+    <div class="max-w-7xl mx-auto px-4 lg:px-8">
+      <div class="h-16 flex items-center justify-between gap-4">
+        <!-- Logo -->
+        <div class="flex items-center min-w-fit gap-3">
+          <img
+            src="/mnt/data/8478C569-50B4-4693-9D56-5F10688E24B3.jpeg"
+            alt="Veloxis logo"
+            class="h-8 lg:h-9 w-auto object-contain"
+            onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='flex';"
+          />
+          <div id="fallback-logo" class="hidden h-8 w-8 items-center justify-center rounded-lg panel-soft text-sm font-bold">V</div>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="desktop-only flex items-center gap-7 flex-1 justify-center thin-scroll">
+          <a href="#" class="nav-link active">Market Pulse</a>
+          <a href="analysis.html" class="nav-link">Analysis</a>
+          <a href="strategy.html" class="nav-link">Strategy Lab</a>
+          <a href="news.html" class="nav-link">News</a>
+          <a href="top-movers.html" class="nav-link">Top Movers</a>
+        </nav>
+
+        <!-- Desktop Theme -->
+        <div class="desktop-only min-w-fit">
+          <button
+            onclick="toggleTheme()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color: var(--text);"
+            aria-label="Toggle theme"
+          >
+            Theme
+          </button>
+        </div>
+
+        <!-- Mobile Actions -->
+        <div class="mobile-only flex items-center gap-2">
+          <button
+            onclick="toggleTheme()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color: var(--text);"
+          >
+            Theme
+          </button>
+          <button
+            onclick="toggleMobileMenu()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color: var(--text);"
+          >
+            Menu
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileMenuWrap" class="mobile-only fixed inset-0 z-50 hidden">
+      <div class="absolute inset-0 bg-black/40" onclick="toggleMobileMenu()"></div>
+      <div id="mobileDrawer" class="mobile-drawer absolute right-0 top-0 h-full w-[82%] max-w-[340px] panel p-5">
+        <div class="flex items-center justify-between mb-6">
+          <div class="font-semibold text-lg">Navigation</div>
+          <button onclick="toggleMobileMenu()" class="panel-soft rounded-xl px-3 py-2 text-sm">Close</button>
+        </div>
+        <div class="flex flex-col gap-4">
+          <a href="#" class="nav-link active">Market Pulse</a>
+          <a href="analysis.html" class="nav-link">Analysis</a>
+          <a href="strategy.html" class="nav-link">Strategy Lab</a>
+          <a href="news.html" class="nav-link">News</a>
+          <a href="top-movers.html" class="nav-link">Top Movers</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 lg:px-8 py-5 lg:py-8">
+
+    <!-- DESKTOP VERSION -->
+    <section class="desktop-only">
+      <!-- Top strip -->
+      <div class="panel rounded-2xl px-4 py-3 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
+            <span class="muted">Sentiment Ratio</span>
+            <span class="font-semibold">62%</span>
+          </div>
+          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
+            <span class="muted">Risk Tone</span>
+            <span class="font-semibold">Mixed</span>
+          </div>
+          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
+            <span class="muted">Session Bias</span>
+            <span class="font-semibold">Defensive Rotation</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero -->
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
+        <div class="xl:col-span-7 panel rounded-3xl p-6 lg:p-8">
+          <div class="max-w-2xl">
+            <p class="text-sm font-medium mb-3" style="color: var(--accent);">Cross-Asset Market View</p>
+            <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Market Pulse</h1>
+            <p class="text-base lg:text-lg leading-8 muted mb-5">
+              A real-time view of cross-asset pressure using major macro signals, alternative risk assets,
+              bond yields, and treasury behavior in one compact market framework.
+            </p>
+            <div class="panel-soft rounded-2xl px-4 py-4">
+              <p class="text-sm lg:text-[15px] leading-7">
+                Veloxis reads the market through a live weighted ratio. The wheel reflects the current balance
+                of key signals, while the insight card explains what is driving the move.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="xl:col-span-5 panel rounded-3xl p-6 lg:p-8">
+          <div class="flex items-start justify-between gap-4 mb-6">
+            <div>
+              <p class="text-sm muted mb-1">Live Market Ratio</p>
+              <h2 class="text-2xl font-semibold">Composite Wheel</h2>
+            </div>
+            <div class="text-right">
+              <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
+              <p class="text-sm font-medium">Now</p>
+            </div>
+          </div>
+
+          <div class="flex justify-center mb-6">
+            <div class="relative w-64 h-64">
+              <svg viewBox="0 0 220 220" class="w-full h-full">
+                <circle cx="110" cy="110" r="78" fill="none" stroke="rgba(113,113,122,0.18)" stroke-width="26" />
+                <circle
+                  cx="110"
+                  cy="110"
+                  r="78"
+                  fill="none"
+                  stroke="var(--positive)"
+                  stroke-width="26"
+                  stroke-linecap="round"
+                  stroke-dasharray="302 490"
+                  stroke-dashoffset="0"
+                  transform="rotate(-90 110 110)"
+                />
+                <circle
+                  cx="110"
+                  cy="110"
+                  r="78"
+                  fill="none"
+                  stroke="var(--negative)"
+                  stroke-width="26"
+                  stroke-linecap="round"
+                  stroke-dasharray="188 490"
+                  stroke-dashoffset="-314"
+                  transform="rotate(-90 110 110)"
+                />
+              </svg>
+
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="text-center">
+                  <div class="text-5xl font-semibold tracking-tight">62%</div>
+                  <div class="text-xs uppercase tracking-[0.18em] mt-2 muted">Live Ratio</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="panel-soft rounded-2xl px-4 py-3">
+              <div class="muted mb-1">Primary Inputs</div>
+              <div class="font-semibold">6 Active Signals</div>
+            </div>
+            <div class="panel-soft rounded-2xl px-4 py-3">
+              <div class="muted mb-1">Method</div>
+              <div class="font-semibold">Inverse Live Read</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Drivers + Insight -->
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
+        <div class="xl:col-span-8 panel rounded-3xl p-6">
+          <div class="flex items-center justify-between mb-5">
+            <div>
+              <h3 class="text-xl font-semibold">Core Drivers</h3>
+              <p class="text-sm muted mt-1">Major inputs reflected in the live market wheel.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="driver-card panel-soft rounded-2xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm muted">USD Index</span>
+                <span class="text-sm font-medium" style="color: var(--negative);">+0.32%</span>
+              </div>
+              <div class="text-2xl font-semibold mb-2">104.85</div>
+              <p class="text-sm muted leading-6">Dollar strength adds broad pressure and tightens upside participation across risk assets.</p>
+            </div>
+
+            <div class="driver-card panel-soft rounded-2xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm muted">Crude Oil</span>
+                <span class="text-sm font-medium" style="color: var(--positive);">-1.80%</span>
+              </div>
+              <div class="text-2xl font-semibold mb-2">$78.40</div>
+              <p class="text-sm muted leading-6">Oil weakness eases inflation pressure and changes the immediate macro pressure mix.</p>
+            </div>
+
+            <div class="driver-card panel-soft rounded-2xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm muted">Gold</span>
+                <span class="text-sm font-medium" style="color: var(--negative);">+0.90%</span>
+              </div>
+              <div class="text-2xl font-semibold mb-2">$2,652</div>
+              <p class="text-sm muted leading-6">Firm gold suggests capital is still respecting defensive exposure beneath headline stability.</p>
+            </div>
+
+            <div class="driver-card panel-soft rounded-2xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm muted">Bitcoin</span>
+                <span class="text-sm font-medium" style="color: var(--positive);">+2.30%</span>
+              </div>
+              <div class="text-2xl font-semibold mb-2">$67,420</div>
+              <p class="text-sm muted leading-6">Crypto strength keeps a risk-on layer in the mix, preventing a fully defensive signal.</p>
+            </div>
+
+            <div class="driver-card panel-soft rounded-2xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm muted">US 10Y Yield</span>
+                <span class="text-sm font-medium" style="color: var(--negative);">+0.14%</span>
+              </div>
+              <div class="text-2xl font-semibold mb-2">4.28%</div>
+              <p class="text-sm muted leading-6">Higher yields keep financial conditions firm and matter directly for equity valuation pressure.</p>
+            </div>
+
+            <div class="driver-card panel-soft rounded-2xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm muted">Treasury Bonds</span>
+                <span class="text-sm font-medium" style="color: var(--positive);">+0.41%</span>
+              </div>
+              <div class="text-2xl font-semibold mb-2">TLT 91.62</div>
+              <p class="text-sm muted leading-6">Bond stabilization slightly offsets yield pressure and adds nuance to the current market ratio.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="xl:col-span-4 panel rounded-3xl p-6">
+          <div class="mb-5">
+            <h3 class="text-xl font-semibold">Veloxis Insight</h3>
+            <p class="text-sm muted mt-1">Interpretation of the current cross-asset read.</p>
+          </div>
+
+          <div class="panel-soft rounded-2xl p-5 mb-4">
+            <p class="text-sm leading-7">
+              The current live ratio is being pushed primarily by dollar firmness and higher yields, while
+              Bitcoin strength and softer crude prevent the structure from becoming one-sided. Bonds are
+              helping smooth the reading rather than reversing it.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 gap-3">
+            <div class="panel-soft rounded-2xl px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Main Pressure</div>
+              <div class="font-semibold">Dollar + Yields</div>
+            </div>
+            <div class="panel-soft rounded-2xl px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Offsetting Factors</div>
+              <div class="font-semibold">Crypto + Softer Energy</div>
+            </div>
+            <div class="panel-soft rounded-2xl px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Interpretation Style</div>
+              <div class="font-semibold">Probabilistic, Not Directive</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Market Assets -->
+      <div class="panel rounded-3xl p-6">
+        <div class="mb-5">
+          <h3 class="text-xl font-semibold">Market Assets</h3>
+          <p class="text-sm muted mt-1">Compact reads for additional context outside the wheel.</p>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="metric-card panel-soft rounded-2xl p-4">
+            <div class="text-sm muted mb-2">Nasdaq Futures</div>
+            <div class="text-2xl font-semibold">18,942</div>
+            <div class="text-sm mt-2" style="color: var(--positive);">+0.48%</div>
+          </div>
+
+          <div class="metric-card panel-soft rounded-2xl p-4">
+            <div class="text-sm muted mb-2">S&amp;P 500 Futures</div>
+            <div class="text-2xl font-semibold">5,830</div>
+            <div class="text-sm mt-2" style="color: var(--positive);">+0.43%</div>
+          </div>
+
+          <div class="metric-card panel-soft rounded-2xl p-4">
+            <div class="text-sm muted mb-2">Dow Futures</div>
+            <div class="text-2xl font-semibold">42,350</div>
+            <div class="text-sm mt-2" style="color: var(--positive);">+0.28%</div>
+          </div>
+
+          <div class="metric-card panel-soft rounded-2xl p-4">
+            <div class="text-sm muted mb-2">VIX</div>
+            <div class="text-2xl font-semibold">18.45</div>
+            <div class="text-sm mt-2" style="color: var(--negative);">-0.85</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MOBILE VERSION -->
+    <section class="mobile-only space-y-5">
+      <!-- Top strip -->
+      <div class="panel rounded-2xl p-3">
+        <div class="grid grid-cols-1 gap-3 text-sm">
+          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
+            <span class="muted">Sentiment Ratio</span>
+            <span class="font-semibold">62%</span>
+          </div>
+          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
+            <span class="muted">Risk Tone</span>
+            <span class="font-semibold">Mixed</span>
+          </div>
+          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
+            <span class="muted">Session Bias</span>
+            <span class="font-semibold">Defensive Rotation</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wheel first -->
+      <div class="panel rounded-3xl p-5">
+        <div class="flex items-start justify-between gap-4 mb-5">
+          <div>
+            <p class="text-sm muted mb-1">Live Market Ratio</p>
+            <h2 class="text-2xl font-semibold">Composite Wheel</h2>
+          </div>
+          <div class="text-right">
+            <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
+            <p class="text-sm font-medium">Now</p>
+          </div>
+        </div>
+
+        <div class="flex justify-center mb-5">
+          <div class="relative w-56 h-56">
+            <svg viewBox="0 0 220 220" class="w-full h-full">
+              <circle cx="110" cy="110" r="78" fill="none" stroke="rgba(113,113,122,0.18)" stroke-width="26" />
+              <circle
+                cx="110"
+                cy="110"
+                r="78"
+                fill="none"
+                stroke="var(--positive)"
+                stroke-width="26"
+                stroke-linecap="round"
+                stroke-dasharray="302 490"
+                stroke-dashoffset="0"
+                transform="rotate(-90 110 110)"
+              />
+              <circle
+                cx="110"
+                cy="110"
+                r="78"
+                fill="none"
+                stroke="var(--negative)"
+                stroke-width="26"
+                stroke-linecap="round"
+                stroke-dasharray="188 490"
+                stroke-dashoffset="-314"
+                transform="rotate(-90 110 110)"
+              />
+            </svg>
+
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="text-center">
+                <div class="text-4xl font-semibold tracking-tight">62%</div>
+                <div class="text-xs uppercase tracking-[0.18em] mt-2 muted">Live Ratio</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div class="panel-soft rounded-2xl px-4 py-3">
+            <div class="muted mb-1">Signals</div>
+            <div class="font-semibold">6 Active</div>
+          </div>
+          <div class="panel-soft rounded-2xl px-4 py-3">
+            <div class="muted mb-1">Method</div>
+            <div class="font-semibold">Inverse Live Read</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Headline and short intro -->
+      <div class="panel rounded-3xl p-5">
+        <p class="text-sm font-medium mb-3" style="color: var(--accent);">Cross-Asset Market View</p>
+        <h1 class="text-3xl font-semibold tracking-tight mb-4">Market Pulse</h1>
+        <p class="text-sm leading-7 muted">
+          A real-time view of cross-asset pressure using major macro signals, alternative risk assets,
+          bond yields, and treasury behavior.
+        </p>
+      </div>
+
+      <!-- Insight simplified -->
+      <div class="panel rounded-3xl p-5">
+        <div class="mb-4">
+          <h3 class="text-xl font-semibold">Veloxis Insight</h3>
+          <p class="text-sm muted mt-1">Interpretation of the current cross-asset read.</p>
+        </div>
+
+        <div class="panel-soft rounded-2xl p-4 mb-4">
+          <p class="text-sm leading-7">
+            Dollar firmness and higher yields remain the primary sources of pressure, while crypto strength
+            and softer crude keep the reading from turning fully one-sided.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-3">
+          <div class="panel-soft rounded-2xl px-4 py-3">
+            <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Main Pressure</div>
+            <div class="font-semibold">Dollar + Yields</div>
+          </div>
+          <div class="panel-soft rounded-2xl px-4 py-3">
+            <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Offsetting Factors</div>
+            <div class="font-semibold">Crypto + Softer Energy</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Drivers -->
+      <div class="panel rounded-3xl p-5">
+        <div class="mb-5">
+          <h3 class="text-xl font-semibold">Core Drivers</h3>
+          <p class="text-sm muted mt-1">Major inputs reflected in the live market wheel.</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-3">
+          <div class="driver-card panel-soft rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm muted">USD Index</span>
+              <span class="text-sm font-medium" style="color: var(--negative);">+0.32%</span>
+            </div>
+            <div class="text-xl font-semibold mb-2">104.85</div>
+            <p class="text-sm muted leading-6">Dollar strength adds broad pressure and tightens upside participation across risk assets.</p>
+          </div>
+
+          <div class="driver-card panel-soft rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm muted">Crude Oil</span>
+              <span class="text-sm font-medium" style="color: var(--positive);">-1.80%</span>
+            </div>
+            <div class="text-xl font-semibold mb-2">$78.40</div>
+            <p class="text-sm muted leading-6">Oil weakness eases inflation pressure and changes the immediate macro pressure mix.</p>
+          </div>
+
+          <div class="driver-card panel-soft rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm muted">Gold</span>
+              <span class="text-sm font-medium" style="color: var(--negative);">+0.90%</span>
+            </div>
+            <div class="text-xl font-semibold mb-2">$2,652</div>
+            <p class="text-sm muted leading-6">Firm gold suggests capital is still respecting defensive exposure beneath headline stability.</p>
+          </div>
+
+          <div class="driver-card panel-soft rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm muted">Bitcoin</span>
+              <span class="text-sm font-medium" style="color: var(--positive);">+2.30%</span>
+            </div>
+            <div class="text-xl font-semibold mb-2">$67,420</div>
+            <p class="text-sm muted leading-6">Crypto strength keeps a risk-on layer in the mix, preventing a fully defensive signal.</p>
+          </div>
+
+          <div class="driver-card panel-soft rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm muted">US 10Y Yield</span>
+              <span class="text-sm font-medium" style="color: var(--negative);">+0.14%</span>
+            </div>
+            <div class="text-xl font-semibold mb-2">4.28%</div>
+            <p class="text-sm muted leading-6">Higher yields keep financial conditions firm and matter directly for equity valuation pressure.</p>
+          </div>
+
+          <div class="driver-card panel-soft rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm muted">Treasury Bonds</span>
+              <span class="text-sm font-medium" style="color: var(--positive);">+0.41%</span>
+            </div>
+            <div class="text-xl font-semibold mb-2">TLT 91.62</div>
+            <p class="text-sm muted leading-6">Bond stabilization slightly offsets yield pressure and adds nuance to the current market ratio.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Market assets -->
+      <div class="panel rounded-3xl p-5">
+        <div class="mb-5">
+          <h3 class="text-xl font-semibold">Market Assets</h3>
+          <p class="text-sm muted mt-1">Compact reads for additional context outside the wheel.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="metric-card panel-soft rounded-2xl p-4">
+            <div class="text-sm muted mb-2">Nasdaq Futures</div>
+            <div class="text-xl font-semibold">18,942</div>
+            <div class="text-sm mt-2" style="color: var(--positive);">+0.48%</div>
+          </div>
+
+          <div class="metric-card panel-soft rounded-2xl p-4">
+            <div class="text-sm muted mb-2">S&amp;P 500 Futures</div>
+            <div class="text-xl font-semibold">5,830</div>
+            <div class="text-sm mt-2" style="color: var(--positive);">+0.43%</div>
+          </div>
+
+          <div class="metric-card panel-soft rounded-2xl p-4">
+            <div class="text-sm muted mb-2">Dow Futures</div>
+            <div class="text-xl font-semibold">42,350</div>
+            <div class="text-sm mt-2" style="color: var(--positive);">+0.28%</div>
+          </div>
+
+          <div class="metric-card panel-soft rounded-2xl p-4">
+            <div class="text-sm muted mb-2">VIX</div>
+            <div class="text-xl font-semibold">18.45</div>
+            <div class="text-sm mt-2" style="color: var(--negative);">-0.85</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function toggleTheme() {
+      document.getElementById("main-body").classList.toggle("dark");
+    }
+
+    function toggleMobileMenu() {
+      const wrap = document.getElementById("mobileMenuWrap");
+      const drawer = document.getElementById("mobileDrawer");
+      const isHidden = wrap.classList.contains("hidden");
+
+      if (isHidden) {
+        wrap.classList.remove("hidden");
+        requestAnimationFrame(() => drawer.classList.add("open"));
+      } else {
+        drawer.classList.remove("open");
+        setTimeout(() => wrap.classList.add("hidden"), 220);
+      }
+    }
+  </script>
+</body>
+</html>
