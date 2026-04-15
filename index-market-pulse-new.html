@@ -1,793 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-  />
-  <title>Veloxis — Market Pulse</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Veloxis — نبض السوق</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #07090f;
-      --panel: #0f172a;
-      --panel-2: #111827;
-      --panel-3: #0b1222;
-      --border: #1f2937;
-      --text: #f3f4f6;
-      --muted: #9ca3af;
-      --accent: #60a5fa;
-      --positive: #22c55e;
-      --negative: #ef4444;
-      --warning: #f59e0b;
-      --shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
-      --glow: 0 0 0 1px rgba(96, 165, 250, 0.08), 0 0 30px rgba(37, 99, 235, 0.08);
+      --bg: #05070a; --card: #0f172a; --accent: #3b82f6;
+      --pos: #10b981; --neg: #ef4444; --text: #f8fafc;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top center, rgba(37, 99, 235, 0.10), transparent 28%),
-        linear-gradient(180deg, #05070d 0%, #07090f 100%);
-      color: var(--text);
+      background: radial-gradient(circle at top, #1e293b 0%, var(--bg) 100%);
+      color: var(--text); font-family: 'Inter', sans-serif;
     }
-
-    .panel {
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(10, 16, 30, 0.98));
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: var(--shadow);
+    .glass-card {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 1.5rem;
     }
-
-    .panel-soft {
-      background: linear-gradient(180deg, rgba(17, 24, 39, 0.98), rgba(12, 18, 34, 0.98));
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .muted {
-      color: var(--muted);
-    }
-
-    .nav-link {
-      position: relative;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.96rem;
-      font-weight: 500;
-      padding: 0.4rem 0;
-      transition: color 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-      color: var(--text);
-    }
-
-    .nav-link.active::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -0.9rem;
-      height: 2px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 18px rgba(96, 165, 250, 0.35);
-    }
-
-    .thin-scroll::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-
-    .thin-scroll::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 999px;
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 40px;
-      padding: 0.55rem 0.95rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(10, 16, 30, 0.88);
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      box-shadow: var(--glow);
-    }
-
-    .driver-card,
-    .metric-card,
-    .distribution-card {
-      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .driver-card:hover,
-    .metric-card:hover,
-    .distribution-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(96, 165, 250, 0.22);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .insight-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .drivers-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    .assets-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-    }
-
-    .top-strip {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
-    }
-
-    .gauge-wrap {
-      position: relative;
-      width: 100%;
-      max-width: 520px;
-      margin: 0 auto;
-      aspect-ratio: 1.75 / 1;
-    }
-
-    .gauge-center {
-      position: absolute;
-      left: 50%;
-      bottom: 8%;
-      transform: translateX(-50%);
-      text-align: center;
-      width: 100%;
-      pointer-events: none;
-    }
-
-    .gauge-value {
-      font-size: clamp(3rem, 8vw, 5rem);
-      line-height: 1;
-      font-weight: 800;
-      letter-spacing: -0.05em;
-      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.28);
-    }
-
-    .gauge-sub {
-      margin-top: 0.45rem;
-      font-size: 0.82rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .gauge-scale-label {
-      font-size: 0.82rem;
-      font-weight: 600;
-      fill: #94a3b8;
-      letter-spacing: 0.06em;
-    }
-
     .gauge-needle {
-      transition: transform 0.5s ease;
-      transform-origin: 250px 260px;
-      filter: drop-shadow(0 4px 10px rgba(255,255,255,0.16));
+      transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: 250px 250px;
     }
-
-    .mini-bar-track {
-      width: 100%;
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(148, 163, 184, 0.14);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .mini-bar-fill {
-      height: 100%;
-      border-radius: 999px;
-      transition: width 0.4s ease;
-    }
-
-    .mobile-drawer {
-      transform: translateX(100%);
-      transition: transform 0.22s ease;
-    }
-
-    .mobile-drawer.open {
-      transform: translateX(0);
-    }
-
-    .desktop-nav {
-      overflow-x: auto;
-    }
-
-    .glow-accent {
-      box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.08), 0 0 24px rgba(96, 165, 250, 0.08);
-    }
-
-    @media (min-width: 768px) {
-      .top-strip {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .drivers-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .assets-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-    }
-
-    @media (min-width: 1280px) {
-      .hero-grid {
-        grid-template-columns: 7fr 5fr;
-      }
-
-      .insight-grid {
-        grid-template-columns: 4fr 8fr;
-      }
-    }
+    .mini-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.1); overflow: hidden; }
   </style>
 </head>
-<body id="main-body">
-  <header
-    class="sticky top-0 z-50 border-b backdrop-blur supports-[backdrop-filter]:bg-black/10"
-    style="border-color: rgba(255,255,255,0.06); background: rgba(7, 9, 15, 0.84);"
-  >
-    <div class="max-w-7xl mx-auto px-4 lg:px-8">
-      <div class="h-16 flex items-center justify-between gap-4">
-        <div class="flex items-center min-w-fit gap-3">
-          <img
-            src="/mnt/data/8478C569-50B4-4693-9D56-5F10688E24B3.jpeg"
-            alt="Veloxis logo"
-            class="h-8 lg:h-9 w-auto object-contain"
-            onerror="this.style.display='none';document.getElementById('fallback-logo').style.display='flex';"
-          />
-          <div
-            id="fallback-logo"
-            class="hidden h-8 w-8 items-center justify-center rounded-lg panel-soft text-sm font-bold"
-          >
-            V
-          </div>
-        </div>
+<body class="p-4 md:p-8">
 
-        <nav class="desktop-nav hidden lg:flex items-center gap-7 flex-1 justify-center thin-scroll">
-          <a href="#" class="nav-link active">Market Pulse</a>
-          <a href="analysis.html" class="nav-link">Analysis</a>
-          <a href="strategy.html" class="nav-link">Strategy Lab</a>
-          <a href="news.html" class="nav-link">News</a>
-          <a href="top-movers.html" class="nav-link">Top Movers</a>
-        </nav>
-
-        <div class="hidden lg:flex items-center gap-2">
-          <button
-            onclick="toggleTheme()"
-            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
-            style="color: var(--text);"
-          >
-            Theme
-          </button>
-        </div>
-
-        <div class="flex lg:hidden items-center gap-2">
-          <button
-            onclick="toggleTheme()"
-            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
-            style="color: var(--text);"
-          >
-            Theme
-          </button>
-          <button
-            onclick="toggleMobileMenu()"
-            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
-            style="color: var(--text);"
-          >
-            Menu
-          </button>
-        </div>
-      </div>
+  <header class="max-w-7xl mx-auto flex justify-between items-center mb-10">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-bold text-xl">V</div>
+      <h1 class="text-xl font-bold tracking-tight uppercase">Veloxis</h1>
     </div>
-
-    <div id="mobileMenuWrap" class="fixed inset-0 z-50 hidden lg:hidden">
-      <div class="absolute inset-0 bg-black/40" onclick="toggleMobileMenu()"></div>
-      <div
-        id="mobileDrawer"
-        class="mobile-drawer absolute right-0 top-0 h-full w-[82%] max-w-[340px] panel p-5"
-      >
-        <div class="flex items-center justify-between mb-6">
-          <div class="font-semibold text-lg">Navigation</div>
-          <button onclick="toggleMobileMenu()" class="panel-soft rounded-xl px-3 py-2 text-sm">
-            Close
-          </button>
-        </div>
-        <div class="flex flex-col gap-4">
-          <a href="#" class="nav-link active">Market Pulse</a>
-          <a href="analysis.html" class="nav-link">Analysis</a>
-          <a href="strategy.html" class="nav-link">Strategy Lab</a>
-          <a href="news.html" class="nav-link">News</a>
-          <a href="top-movers.html" class="nav-link">Top Movers</a>
-        </div>
-      </div>
-    </div>
+    <nav class="hidden md:flex gap-6 text-sm text-slate-400">
+      <a href="#" class="text-blue-400">نبض السوق</a>
+      <a href="#" class="hover:text-white">التحليلات</a>
+      <a href="#" class="hover:text-white">المختبر</a>
+    </nav>
+    <div id="live-clock" class="text-xs font-mono text-slate-500">جارِ التحميل...</div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-4 lg:px-8 py-5 lg:py-8">
-    <section class="space-y-6">
-      <!-- Top Strip -->
-      <div class="panel rounded-2xl p-3 lg:p-4">
-        <div class="top-strip text-sm">
-          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
-            <span class="muted">Sentiment Ratio</span>
-            <span class="font-semibold" id="topSentiment">0%</span>
-          </div>
-          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
-            <span class="muted">Risk Tone</span>
-            <span class="font-semibold" id="topRiskTone">Neutral</span>
-          </div>
-          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
-            <span class="muted">Session Bias</span>
-            <span class="font-semibold" id="topBias">Balanced</span>
-          </div>
+  <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+    
+    <div class="lg:col-span-4 space-y-6">
+      <div class="glass-card p-6">
+        <h3 class="text-slate-400 text-sm mb-1">حالة المخاطر</h3>
+        <div id="risk-tone" class="text-3xl font-bold mb-4">-</div>
+        <div class="space-y-3">
+          <div class="flex justify-between text-sm"><span class="text-slate-500">القوة الدافعة</span> <span id="main-driver" class="font-medium">--</span></div>
+          <div class="flex justify-between text-sm"><span class="text-slate-500">عوامل التوازن</span> <span id="offset-driver" class="font-medium">--</span></div>
         </div>
       </div>
 
-      <!-- Hero -->
-      <div class="hero-grid">
-        <div class="panel rounded-3xl p-6 lg:p-8">
-          <div class="max-w-2xl">
-            <p class="text-sm font-medium mb-3" style="color: var(--accent);">Cross-Asset Market View</p>
-            <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Market Pulse</h1>
-            <p class="text-base lg:text-lg leading-8 muted mb-5">
-              A live market engine built from weighted cross-asset inputs. Veloxis converts macro pressure into a cleaner signal for faster decision-making.
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div class="panel-soft rounded-2xl px-4 py-4 glow-accent">
-                <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Market Status</div>
-                <div class="font-semibold text-lg" id="summaryMarketStatus">Balanced</div>
-              </div>
-              <div class="panel-soft rounded-2xl px-4 py-4">
-                <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Primary Pressure</div>
-                <div class="font-semibold text-lg" id="summaryPressure">-</div>
-              </div>
-              <div class="panel-soft rounded-2xl px-4 py-4">
-                <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Primary Support</div>
-                <div class="font-semibold text-lg" id="summarySupport">-</div>
-              </div>
-            </div>
-          </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="glass-card p-4 text-center">
+          <div class="text-xs text-slate-500 mb-1">NASDAQ</div>
+          <div class="font-bold text-emerald-400">+0.52%</div>
         </div>
-
-        <div class="panel rounded-3xl p-6 lg:p-8">
-          <div class="flex items-start justify-between gap-4 mb-5">
-            <div>
-              <p class="text-sm muted mb-1">Live Market Ratio</p>
-              <h2 class="text-2xl font-semibold">Sentiment Gauge</h2>
-            </div>
-            <div class="text-right">
-              <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
-              <p class="text-sm font-medium">Now</p>
-            </div>
-          </div>
-
-          <div class="text-center mb-3">
-            <span class="status-pill" id="statusPill">Neutral</span>
-          </div>
-
-          <div class="gauge-wrap">
-            <svg viewBox="0 0 500 320" class="w-full h-full">
-              <!-- outer subtle track -->
-              <path
-                d="M 70 260 A 180 180 0 0 1 430 260"
-                fill="none"
-                stroke="rgba(148,163,184,0.10)"
-                stroke-width="38"
-                stroke-linecap="round"
-              />
-
-              <!-- main segments -->
-              <path
-                d="M 70 260 A 180 180 0 0 1 145 130"
-                fill="none"
-                stroke="#3f1f25"
-                stroke-width="34"
-                stroke-linecap="round"
-              />
-              <path
-                d="M 145 130 A 180 180 0 0 1 250 80"
-                fill="none"
-                stroke="#5b4a25"
-                stroke-width="34"
-                stroke-linecap="butt"
-              />
-              <path
-                d="M 250 80 A 180 180 0 0 1 355 130"
-                fill="none"
-                stroke="#324e2c"
-                stroke-width="34"
-                stroke-linecap="butt"
-              />
-              <path
-                d="M 355 130 A 180 180 0 0 1 430 260"
-                fill="none"
-                stroke="#1e5137"
-                stroke-width="34"
-                stroke-linecap="round"
-              />
-
-              <!-- needle -->
-              <g id="needleGroup" class="gauge-needle">
-                <line x1="250" y1="260" x2="250" y2="96" stroke="#f8fafc" stroke-width="7" stroke-linecap="round" />
-                <circle cx="250" cy="260" r="18" fill="#e5e7eb" />
-                <circle cx="250" cy="260" r="7" fill="#94a3b8" />
-              </g>
-
-              <!-- labels -->
-              <text x="78" y="286" class="gauge-scale-label">Pressure</text>
-              <text x="215" y="56" class="gauge-scale-label">Balanced</text>
-              <text x="383" y="286" class="gauge-scale-label">Constructive</text>
-            </svg>
-
-            <div class="gauge-center">
-              <div class="gauge-value" id="gaugeValue">0</div>
-              <div class="gauge-sub">Live Read</div>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3 mt-4 text-sm">
-            <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="muted mb-1">Signal Balance</div>
-              <div class="font-semibold" id="balanceText">Balanced</div>
-            </div>
-            <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="muted mb-1">Net Drivers</div>
-              <div class="font-semibold" id="netDrivers">6 Active Inputs</div>
-            </div>
-          </div>
+        <div class="glass-card p-4 text-center">
+          <div class="text-xs text-slate-500 mb-1">VIX</div>
+          <div class="font-bold text-rose-400">18.4</div>
         </div>
       </div>
+    </div>
 
-      <!-- Insight + Distribution -->
-      <div class="insight-grid">
-        <div class="panel rounded-3xl p-6">
-          <div class="mb-5">
-            <h3 class="text-xl font-semibold">Veloxis Insight</h3>
-            <p class="text-sm muted mt-1">Cause and current result.</p>
-          </div>
-
-          <div class="panel-soft rounded-2xl p-5 mb-4">
-            <p class="text-sm leading-7" id="insightText">
-              Live interpretation will appear here.
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 gap-3">
-            <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Main Pressure</div>
-              <div class="font-semibold" id="mainPressure">-</div>
-            </div>
-            <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Offsetting Factors</div>
-              <div class="font-semibold" id="offsettingFactors">-</div>
-            </div>
-            <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Decision Style</div>
-              <div class="font-semibold">Probabilistic, Not Directive</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel rounded-3xl p-6">
-          <div class="mb-5">
-            <h3 class="text-xl font-semibold">Signal Distribution</h3>
-            <p class="text-sm muted mt-1">Live weighted contributors behind the current reading.</p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" id="weightsGrid"></div>
-        </div>
+    <div class="lg:col-span-8 glass-card p-8 flex flex-col items-center justify-center relative overflow-hidden">
+      <div class="absolute top-6 left-6 flex items-center gap-2">
+        <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+        <span class="text-xs text-slate-400 uppercase tracking-widest">Live Engine</span>
       </div>
 
-      <!-- Core Drivers -->
-      <div class="panel rounded-3xl p-6">
-        <div class="mb-5">
-          <h3 class="text-xl font-semibold">Core Drivers</h3>
-          <p class="text-sm muted mt-1">Major inputs reflected in the live market engine.</p>
-        </div>
-
-        <div class="drivers-grid" id="coreDriversGrid"></div>
+      <svg viewBox="0 0 500 300" class="w-full max-w-md">
+        <path d="M 100 250 A 150 150 0 0 1 400 250" fill="none" stroke="#1e293b" stroke-width="25" stroke-linecap="round"/>
+        <path id="gauge-path" d="M 100 250 A 150 150 0 0 1 400 250" fill="none" stroke="url(#gradient)" stroke-width="25" stroke-linecap="round" stroke-dasharray="471" stroke-dashoffset="471"/>
+        <defs>
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ef4444" />
+            <stop offset="50%" stop-color="#eab308" />
+            <stop offset="100%" stop-color="#10b981" />
+          </linearGradient>
+        </defs>
+        <g id="needle" class="gauge-needle">
+          <rect x="248" y="110" width="4" height="140" fill="white" rx="2" />
+          <circle cx="250" cy="250" r="10" fill="white" />
+        </g>
+      </svg>
+      
+      <div class="text-center -mt-10">
+        <div id="gauge-value" class="text-6xl font-black italic">0</div>
+        <div class="text-slate-500 text-sm uppercase tracking-widest mt-2">Sentiment Score</div>
       </div>
+    </div>
 
-      <!-- Market Assets -->
-      <div class="panel rounded-3xl p-6">
-        <div class="mb-5">
-          <h3 class="text-xl font-semibold">Market Assets</h3>
-          <p class="text-sm muted mt-1">Compact reads for additional context outside the core engine.</p>
+    <div class="lg:col-span-12">
+      <h3 class="text-lg font-bold mb-4 px-2">محركات السوق الأساسية</h3>
+      <div id="drivers-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         </div>
-
-        <div class="assets-grid">
-          <div class="metric-card panel-soft rounded-2xl p-4">
-            <div class="text-sm muted mb-2">Nasdaq Futures</div>
-            <div class="text-2xl font-semibold">18,942</div>
-            <div class="text-sm mt-2" style="color: var(--positive);">+0.48%</div>
-          </div>
-
-          <div class="metric-card panel-soft rounded-2xl p-4">
-            <div class="text-sm muted mb-2">S&P 500 Futures</div>
-            <div class="text-2xl font-semibold">5,830</div>
-            <div class="text-sm mt-2" style="color: var(--positive);">+0.43%</div>
-          </div>
-
-          <div class="metric-card panel-soft rounded-2xl p-4">
-            <div class="text-sm muted mb-2">Dow Futures</div>
-            <div class="text-2xl font-semibold">42,350</div>
-            <div class="text-sm mt-2" style="color: var(--positive);">+0.28%</div>
-          </div>
-
-          <div class="metric-card panel-soft rounded-2xl p-4">
-            <div class="text-sm muted mb-2">VIX</div>
-            <div class="text-2xl font-semibold">18.45</div>
-            <div class="text-sm mt-2" style="color: var(--negative);">-0.85</div>
-          </div>
-        </div>
-      </div>
-    </section>
+    </div>
   </main>
 
   <script>
-    function toggleTheme() {
-      document.getElementById("main-body").classList.toggle("dark");
-    }
-
-    function toggleMobileMenu() {
-      const wrap = document.getElementById("mobileMenuWrap");
-      const drawer = document.getElementById("mobileDrawer");
-      const isHidden = wrap.classList.contains("hidden");
-
-      if (isHidden) {
-        wrap.classList.remove("hidden");
-        requestAnimationFrame(() => drawer.classList.add("open"));
-      } else {
-        drawer.classList.remove("open");
-        setTimeout(() => wrap.classList.add("hidden"), 220);
-      }
-    }
-
-    const signals = [
-      {
-        name: "Dollar",
-        symbol: "USD Index",
-        value: "104.85",
-        change: 0.32,
-        weight: 1.35,
-        direction: "negative",
-        impactLabel: "Broad pressure across risk assets"
-      },
-      {
-        name: "Yields",
-        symbol: "US 10Y Yield",
-        value: "4.28%",
-        change: 0.14,
-        weight: 1.25,
-        direction: "negative",
-        impactLabel: "Tighter conditions and valuation pressure"
-      },
-      {
-        name: "Gold",
-        symbol: "Gold",
-        value: "$2,652",
-        change: 0.90,
-        weight: 0.70,
-        direction: "negative",
-        impactLabel: "Defensive capital still respected"
-      },
-      {
-        name: "Bitcoin",
-        symbol: "Bitcoin",
-        value: "$67,420",
-        change: 2.30,
-        weight: 0.95,
-        direction: "positive",
-        impactLabel: "Risk-on participation remains alive"
-      },
-      {
-        name: "Oil",
-        symbol: "Crude Oil",
-        value: "$78.40",
-        change: -1.80,
-        weight: 0.85,
-        direction: "positive",
-        impactLabel: "Softer energy reduces macro pressure"
-      },
-      {
-        name: "Bonds",
-        symbol: "Treasury Bonds",
-        value: "TLT 91.62",
-        change: 0.41,
-        weight: 0.65,
-        direction: "positive",
-        impactLabel: "Bond stabilization offsets some stress"
-      }
+    const marketData = [
+      { name: "الدولار", val: "104.2", chg: -0.15, weight: 30, impact: "ايجابي للأسهم" },
+      { name: "عائد السندات", val: "4.25%", chg: 0.05, weight: 25, impact: "ضغط طفيف" },
+      { name: "الذهب", val: "$2340", chg: 1.2, weight: 20, impact: "طلب دفاعي" },
+      { name: "البيتكوين", val: "$67k", chg: 2.5, weight: 25, impact: "شهية مخاطرة" }
     ];
 
-    function contribution(signal) {
-      return Math.abs(signal.change) * signal.weight;
-    }
+    function updateDashboard() {
+      const driversContainer = document.getElementById('drivers-list');
+      let totalScore = 0;
 
-    function buildEngine() {
-      const negatives = signals.filter(s => s.direction === "negative");
-      const positives = signals.filter(s => s.direction === "positive");
-
-      const negativeRaw = negatives.reduce((sum, s) => sum + contribution(s), 0);
-      const positiveRaw = positives.reduce((sum, s) => sum + contribution(s), 0);
-      const totalRaw = negativeRaw + positiveRaw;
-
-      const positivePercent = totalRaw ? Math.round((positiveRaw / totalRaw) * 100) : 50;
-      const negativePercent = 100 - positivePercent;
-
-      const sortedNegative = [...negatives].sort((a, b) => contribution(b) - contribution(a));
-      const sortedPositive = [...positives].sort((a, b) => contribution(b) - contribution(a));
-
-      let riskTone = "Mixed";
-      let bias = "Balanced";
-      let status = "Neutral";
-
-      if (positivePercent >= 75) {
-        riskTone = "Risk-On";
-        bias = "Constructive Advance";
-        status = "Constructive";
-      } else if (positivePercent >= 58) {
-        riskTone = "Mixed";
-        bias = "Constructive Tilt";
-        status = "Balanced Positive";
-      } else if (positivePercent <= 30) {
-        riskTone = "Defensive";
-        bias = "Pressure Dominant";
-        status = "High Stress";
-      } else if (positivePercent <= 42) {
-        riskTone = "Mixed";
-        bias = "Defensive Rotation";
-        status = "Balanced Defensive";
-      }
-
-      return {
-        positivePercent,
-        negativePercent,
-        riskTone,
-        bias,
-        status,
-        mainPressure: sortedNegative.slice(0, 2).map(s => s.name).join(" + "),
-        offsetting: sortedPositive.slice(0, 2).map(s => s.name).join(" + ")
-      };
-    }
-
-    function setNeedle(value) {
-      // -78deg to 78deg for cleaner premium look
-      const angle = -78 + (value / 100) * 156;
-      document.getElementById("needleGroup").style.transform = `rotate(${angle}deg)`;
-    }
-
-    function statusColor(status) {
-      const s = status.toLowerCase();
-      if (s.includes("constructive")) return "var(--positive)";
-      if (s.includes("stress")) return "var(--negative)";
-      if (s.includes("defensive")) return "var(--warning)";
-      return "var(--accent)";
-    }
-
-    function renderTop(engine) {
-      document.getElementById("topSentiment").textContent = `${engine.positivePercent}%`;
-      document.getElementById("topRiskTone").textContent = engine.riskTone;
-      document.getElementById("topBias").textContent = engine.bias;
-
-      document.getElementById("summaryMarketStatus").textContent = engine.status;
-      document.getElementById("summaryPressure").textContent = engine.mainPressure;
-      document.getElementById("summarySupport").textContent = engine.offsetting;
-
-      document.getElementById("gaugeValue").textContent = engine.positivePercent;
-      document.getElementById("balanceText").textContent = engine.status;
-      document.getElementById("netDrivers").textContent = `${signals.length} Active Inputs`;
-
-      const pill = document.getElementById("statusPill");
-      pill.textContent = engine.status;
-      pill.style.color = statusColor(engine.status);
-
-      setNeedle(engine.positivePercent);
-    }
-
-    function renderInsight(engine) {
-      document.getElementById("mainPressure").textContent = engine.mainPressure;
-      document.getElementById("offsettingFactors").textContent = engine.offsetting;
-
-      document.getElementById("insightText").textContent =
-        `${engine.mainPressure} remain the main sources of market pressure, while ${engine.offsetting} keep the structure from becoming fully one-sided. The current read is ${engine.status.toLowerCase()}.`;
-    }
-
-    function renderDistribution() {
-      const total = signals.reduce((sum, s) => sum + contribution(s), 0);
-      const grid = document.getElementById("weightsGrid");
-
-      grid.innerHTML = signals.map(signal => {
-        const share = total ? (contribution(signal) / total) * 100 : 0;
-        const pct = Math.round(share);
-        const color = signal.direction === "positive" ? "var(--positive)" : "var(--negative)";
-        const tone = signal.direction === "positive" ? "Supportive" : "Pressure";
-
+      driversContainer.innerHTML = marketData.map(item => {
+        const isPos = item.chg > 0;
+        totalScore += isPos ? item.weight : 0;
         return `
-          <div class="distribution-card panel-soft rounded-2xl p-4">
-            <div class="flex items-start justify-between gap-3 mb-3">
-              <div>
-                <div class="text-sm muted">${signal.name}</div>
-                <div class="text-lg font-semibold mt-1">${pct}%</div>
-              </div>
-              <div class="text-right">
-                <div class="text-sm font-medium" style="color:${color}">
-                  ${signal.change > 0 ? "+" : ""}${signal.change.toFixed(2)}%
-                </div>
-                <div class="text-xs muted mt-1">${tone}</div>
-              </div>
+          <div class="glass-card p-5 border-l-4 ${isPos ? 'border-emerald-500' : 'border-rose-500'}">
+            <div class="flex justify-between mb-2">
+              <span class="text-slate-400 text-sm">${item.name}</span>
+              <span class="${isPos ? 'text-emerald-400' : 'text-rose-400'} text-xs font-bold">${isPos?'+':''}${item.chg}%</span>
             </div>
-            <div class="mini-bar-track mb-3">
-              <div class="mini-bar-fill" style="width:${pct}%; background:${color};"></div>
-            </div>
-            <div class="text-sm muted leading-6">${signal.impactLabel}</div>
+            <div class="text-xl font-bold mb-1">${item.val}</div>
+            <div class="mini-bar"><div class="h-full ${isPos?'bg-emerald-500':'bg-rose-500'}" style="width:${item.weight}%"></div></div>
           </div>
         `;
-      }).join("");
+      }).join('');
+
+      // Update Gauge
+      const score = Math.round(totalScore);
+      document.getElementById('gauge-value').innerText = score;
+      const angle = (score / 100) * 180 - 90;
+      document.getElementById('needle').style.transform = `rotate(${angle}deg)`;
+      
+      // Update Summary
+      document.getElementById('risk-tone').innerText = score > 50 ? "متفائل (Risk-On)" : "حذر (Risk-Off)";
+      document.getElementById('main-driver').innerText = marketData[3].name;
+      document.getElementById('offset-driver').innerText = marketData[1].name;
+      
+      // Clock
+      document.getElementById('live-clock').innerText = new Date().toLocaleTimeString();
     }
 
-    function renderDrivers() {
-      const grid = document.getElementById("coreDriversGrid");
-      grid.innerHTML = signals.map(signal => {
-        const color = signal.direction === "positive" ? "var(--positive)" : "var(--negative)";
-        return `
-          <div class="driver-card panel-soft rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm muted">${signal.symbol}</span>
-              <span class="text-sm font-medium" style="color:${color}">
-                ${signal.change > 0 ? "+" : ""}${signal.change.toFixed(2)}%
-              </span>
-            </div>
-            <div class="text-2xl font-semibold mb-2">${signal.value}</div>
-            <p class="text-sm muted leading-6">${signal.impactLabel}</p>
-          </div>
-        `;
-      }).join("");
-    }
-
-    const engine = buildEngine();
-    renderTop(engine);
-    renderInsight(engine);
-    renderDistribution();
-    renderDrivers();
+    updateDashboard();
+    setInterval(updateDashboard, 5000);
   </script>
 </body>
 </html>
