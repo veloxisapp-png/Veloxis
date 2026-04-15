@@ -2,60 +2,60 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Veloxis - Market Pulse</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+  />
+  <title>Veloxis — Market Pulse</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --bg: #fafafa;
-      --panel: #ffffff;
-      --panel-2: #f5f5f5;
-      --border: #e5e7eb;
-      --text: #111827;
-      --muted: #6b7280;
-      --accent: #2563eb;
-      --positive: #16a34a;
-      --negative: #dc2626;
-      --warning: #d97706;
-      --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-    }
-
-    body.dark {
-      --bg: #09090b;
-      --panel: #111827;
-      --panel-2: #18181b;
-      --border: #27272a;
-      --text: #f4f4f5;
-      --muted: #a1a1aa;
+      --bg: #07090f;
+      --panel: #0f172a;
+      --panel-2: #111827;
+      --panel-3: #0b1222;
+      --border: #1f2937;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
       --accent: #60a5fa;
       --positive: #22c55e;
       --negative: #ef4444;
       --warning: #f59e0b;
-      --shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
+      --glow: 0 0 0 1px rgba(96, 165, 250, 0.08), 0 0 30px rgba(37, 99, 235, 0.08);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
+      background:
+        radial-gradient(circle at top center, rgba(37, 99, 235, 0.10), transparent 28%),
+        linear-gradient(180deg, #05070d 0%, #07090f 100%);
       color: var(--text);
-      transition: background 0.2s ease, color 0.2s ease;
     }
 
     .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(10, 16, 30, 0.98));
+      border: 1px solid rgba(255, 255, 255, 0.06);
       box-shadow: var(--shadow);
     }
 
     .panel-soft {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.98), rgba(12, 18, 34, 0.98));
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    .muted { color: var(--muted); }
+    .muted {
+      color: var(--muted);
+    }
 
     .nav-link {
       position: relative;
@@ -65,6 +65,7 @@
       font-weight: 500;
       padding: 0.4rem 0;
       transition: color 0.2s ease;
+      white-space: nowrap;
     }
 
     .nav-link:hover,
@@ -76,28 +77,144 @@
       content: "";
       position: absolute;
       left: 0;
+      right: 0;
       bottom: -0.9rem;
-      width: 100%;
       height: 2px;
+      border-radius: 999px;
       background: var(--accent);
+      box-shadow: 0 0 18px rgba(96, 165, 250, 0.35);
+    }
+
+    .thin-scroll::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .thin-scroll::-webkit-scrollbar-thumb {
+      background: #334155;
       border-radius: 999px;
     }
 
-    .metric-card,
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0.55rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(10, 16, 30, 0.88);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      box-shadow: var(--glow);
+    }
+
     .driver-card,
-    .weight-card {
-      transition: transform 0.2s ease, border-color 0.2s ease;
+    .metric-card,
+    .distribution-card {
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
     }
 
-    .metric-card:hover,
     .driver-card:hover,
-    .weight-card:hover {
+    .metric-card:hover,
+    .distribution-card:hover {
       transform: translateY(-2px);
-      border-color: rgba(96, 165, 250, 0.35);
+      border-color: rgba(96, 165, 250, 0.22);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
     }
 
-    .desktop-only { display: block; }
-    .mobile-only { display: none; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .drivers-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .assets-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .top-strip {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .gauge-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      aspect-ratio: 1.75 / 1;
+    }
+
+    .gauge-center {
+      position: absolute;
+      left: 50%;
+      bottom: 8%;
+      transform: translateX(-50%);
+      text-align: center;
+      width: 100%;
+      pointer-events: none;
+    }
+
+    .gauge-value {
+      font-size: clamp(3rem, 8vw, 5rem);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.28);
+    }
+
+    .gauge-sub {
+      margin-top: 0.45rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .gauge-scale-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      fill: #94a3b8;
+      letter-spacing: 0.06em;
+    }
+
+    .gauge-needle {
+      transition: transform 0.5s ease;
+      transform-origin: 250px 260px;
+      filter: drop-shadow(0 4px 10px rgba(255,255,255,0.16));
+    }
+
+    .mini-bar-track {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.14);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mini-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
 
     .mobile-drawer {
       transform: translateX(100%);
@@ -108,93 +225,44 @@
       transform: translateX(0);
     }
 
-    .thin-scroll::-webkit-scrollbar {
-      height: 8px;
-      width: 8px;
+    .desktop-nav {
+      overflow-x: auto;
     }
 
-    .thin-scroll::-webkit-scrollbar-thumb {
-      background: #3f3f46;
-      border-radius: 999px;
+    .glow-accent {
+      box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.08), 0 0 24px rgba(96, 165, 250, 0.08);
     }
 
-    .gauge-shell {
-      position: relative;
-      width: 100%;
-      max-width: 440px;
-      margin: 0 auto;
-      aspect-ratio: 1.7 / 1;
-    }
-
-    .gauge-center {
-      position: absolute;
-      left: 50%;
-      bottom: 10%;
-      transform: translateX(-50%);
-      text-align: center;
-    }
-
-    .gauge-value {
-      font-size: 4rem;
-      line-height: 1;
-      font-weight: 700;
-      letter-spacing: -0.04em;
-    }
-
-    .gauge-label {
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-top: 0.6rem;
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.45rem 0.8rem;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-    }
-
-    .mini-bar-track {
-      width: 100%;
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(113, 113, 122, 0.18);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .mini-bar-fill {
-      height: 100%;
-      border-radius: 999px;
-    }
-
-    .text-balance {
-      text-wrap: balance;
-    }
-
-    @media (max-width: 1023px) {
-      .desktop-only { display: none; }
-      .mobile-only { display: block; }
-
-      .gauge-shell {
-        max-width: 340px;
+    @media (min-width: 768px) {
+      .top-strip {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
-      .gauge-value {
-        font-size: 3.15rem;
+      .drivers-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .assets-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .hero-grid {
+        grid-template-columns: 7fr 5fr;
+      }
+
+      .insight-grid {
+        grid-template-columns: 4fr 8fr;
       }
     }
   </style>
 </head>
-<body class="dark" id="main-body">
-  <header class="sticky top-0 z-50 border-b backdrop-blur supports-[backdrop-filter]:bg-black/10" style="border-color: var(--border); background: color-mix(in srgb, var(--bg) 88%, transparent);">
+<body id="main-body">
+  <header
+    class="sticky top-0 z-50 border-b backdrop-blur supports-[backdrop-filter]:bg-black/10"
+    style="border-color: rgba(255,255,255,0.06); background: rgba(7, 9, 15, 0.84);"
+  >
     <div class="max-w-7xl mx-auto px-4 lg:px-8">
       <div class="h-16 flex items-center justify-between gap-4">
         <div class="flex items-center min-w-fit gap-3">
@@ -202,12 +270,17 @@
             src="/mnt/data/8478C569-50B4-4693-9D56-5F10688E24B3.jpeg"
             alt="Veloxis logo"
             class="h-8 lg:h-9 w-auto object-contain"
-            onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='flex';"
+            onerror="this.style.display='none';document.getElementById('fallback-logo').style.display='flex';"
           />
-          <div id="fallback-logo" class="hidden h-8 w-8 items-center justify-center rounded-lg panel-soft text-sm font-bold">V</div>
+          <div
+            id="fallback-logo"
+            class="hidden h-8 w-8 items-center justify-center rounded-lg panel-soft text-sm font-bold"
+          >
+            V
+          </div>
         </div>
 
-        <nav class="desktop-only flex items-center gap-7 flex-1 justify-center thin-scroll">
+        <nav class="desktop-nav hidden lg:flex items-center gap-7 flex-1 justify-center thin-scroll">
           <a href="#" class="nav-link active">Market Pulse</a>
           <a href="analysis.html" class="nav-link">Analysis</a>
           <a href="strategy.html" class="nav-link">Strategy Lab</a>
@@ -215,7 +288,7 @@
           <a href="top-movers.html" class="nav-link">Top Movers</a>
         </nav>
 
-        <div class="desktop-only min-w-fit">
+        <div class="hidden lg:flex items-center gap-2">
           <button
             onclick="toggleTheme()"
             class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
@@ -225,7 +298,7 @@
           </button>
         </div>
 
-        <div class="mobile-only flex items-center gap-2">
+        <div class="flex lg:hidden items-center gap-2">
           <button
             onclick="toggleTheme()"
             class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
@@ -244,12 +317,17 @@
       </div>
     </div>
 
-    <div id="mobileMenuWrap" class="mobile-only fixed inset-0 z-50 hidden">
+    <div id="mobileMenuWrap" class="fixed inset-0 z-50 hidden lg:hidden">
       <div class="absolute inset-0 bg-black/40" onclick="toggleMobileMenu()"></div>
-      <div id="mobileDrawer" class="mobile-drawer absolute right-0 top-0 h-full w-[82%] max-w-[340px] panel p-5">
+      <div
+        id="mobileDrawer"
+        class="mobile-drawer absolute right-0 top-0 h-full w-[82%] max-w-[340px] panel p-5"
+      >
         <div class="flex items-center justify-between mb-6">
           <div class="font-semibold text-lg">Navigation</div>
-          <button onclick="toggleMobileMenu()" class="panel-soft rounded-xl px-3 py-2 text-sm">Close</button>
+          <button onclick="toggleMobileMenu()" class="panel-soft rounded-xl px-3 py-2 text-sm">
+            Close
+          </button>
         </div>
         <div class="flex flex-col gap-4">
           <a href="#" class="nav-link active">Market Pulse</a>
@@ -264,10 +342,9 @@
 
   <main class="max-w-7xl mx-auto px-4 lg:px-8 py-5 lg:py-8">
     <section class="space-y-6">
-
       <!-- Top Strip -->
       <div class="panel rounded-2xl p-3 lg:p-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+        <div class="top-strip text-sm">
           <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
             <span class="muted">Sentiment Ratio</span>
             <span class="font-semibold" id="topSentiment">0%</span>
@@ -283,34 +360,34 @@
         </div>
       </div>
 
-      <!-- Desktop Hero -->
-      <div class="desktop-only grid grid-cols-1 xl:grid-cols-12 gap-6">
-        <div class="xl:col-span-7 panel rounded-3xl p-6 lg:p-8">
+      <!-- Hero -->
+      <div class="hero-grid">
+        <div class="panel rounded-3xl p-6 lg:p-8">
           <div class="max-w-2xl">
             <p class="text-sm font-medium mb-3" style="color: var(--accent);">Cross-Asset Market View</p>
             <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Market Pulse</h1>
-            <p class="text-base lg:text-lg leading-8 muted mb-5 text-balance">
-              A live market read built from weighted cross-asset inputs. Veloxis converts macro pressure into a cleaner signal for faster decision-making.
+            <p class="text-base lg:text-lg leading-8 muted mb-5">
+              A live market engine built from weighted cross-asset inputs. Veloxis converts macro pressure into a cleaner signal for faster decision-making.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div class="panel-soft rounded-2xl px-4 py-4">
+              <div class="panel-soft rounded-2xl px-4 py-4 glow-accent">
                 <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Market Status</div>
-                <div class="font-semibold text-lg" id="desktopMarketStatus">Balanced</div>
+                <div class="font-semibold text-lg" id="summaryMarketStatus">Balanced</div>
               </div>
               <div class="panel-soft rounded-2xl px-4 py-4">
                 <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Primary Pressure</div>
-                <div class="font-semibold text-lg" id="desktopPressure">-</div>
+                <div class="font-semibold text-lg" id="summaryPressure">-</div>
               </div>
               <div class="panel-soft rounded-2xl px-4 py-4">
                 <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Primary Support</div>
-                <div class="font-semibold text-lg" id="desktopSupport">-</div>
+                <div class="font-semibold text-lg" id="summarySupport">-</div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="xl:col-span-5 panel rounded-3xl p-6 lg:p-8">
+        <div class="panel rounded-3xl p-6 lg:p-8">
           <div class="flex items-start justify-between gap-4 mb-5">
             <div>
               <p class="text-sm muted mb-1">Live Market Ratio</p>
@@ -323,112 +400,85 @@
           </div>
 
           <div class="text-center mb-3">
-            <div class="status-pill" id="desktopStatusPill">Neutral</div>
+            <span class="status-pill" id="statusPill">Neutral</span>
           </div>
 
-          <div class="gauge-shell">
-            <svg id="desktopGauge" viewBox="0 0 500 300" class="w-full h-full">
-              <!-- base -->
-              <path d="M 70 250 A 180 180 0 0 1 430 250"
-                    fill="none" stroke="rgba(113,113,122,0.16)" stroke-width="42" stroke-linecap="round"/>
-              <!-- segments -->
-              <path d="M 70 250 A 180 180 0 0 1 145 123"
-                    fill="none" stroke="#ef4444" stroke-width="42" stroke-linecap="butt"/>
-              <path d="M 145 123 A 180 180 0 0 1 250 70"
-                    fill="none" stroke="#f59e0b" stroke-width="42" stroke-linecap="butt"/>
-              <path d="M 250 70 A 180 180 0 0 1 355 123"
-                    fill="none" stroke="#84cc16" stroke-width="42" stroke-linecap="butt"/>
-              <path d="M 355 123 A 180 180 0 0 1 430 250"
-                    fill="none" stroke="#22c55e" stroke-width="42" stroke-linecap="butt"/>
+          <div class="gauge-wrap">
+            <svg viewBox="0 0 500 320" class="w-full h-full">
+              <!-- outer subtle track -->
+              <path
+                d="M 70 260 A 180 180 0 0 1 430 260"
+                fill="none"
+                stroke="rgba(148,163,184,0.10)"
+                stroke-width="38"
+                stroke-linecap="round"
+              />
+
+              <!-- main segments -->
+              <path
+                d="M 70 260 A 180 180 0 0 1 145 130"
+                fill="none"
+                stroke="#3f1f25"
+                stroke-width="34"
+                stroke-linecap="round"
+              />
+              <path
+                d="M 145 130 A 180 180 0 0 1 250 80"
+                fill="none"
+                stroke="#5b4a25"
+                stroke-width="34"
+                stroke-linecap="butt"
+              />
+              <path
+                d="M 250 80 A 180 180 0 0 1 355 130"
+                fill="none"
+                stroke="#324e2c"
+                stroke-width="34"
+                stroke-linecap="butt"
+              />
+              <path
+                d="M 355 130 A 180 180 0 0 1 430 260"
+                fill="none"
+                stroke="#1e5137"
+                stroke-width="34"
+                stroke-linecap="round"
+              />
 
               <!-- needle -->
-              <line id="desktopNeedle" x1="250" y1="250" x2="250" y2="95" stroke="#f4f4f5" stroke-width="8" stroke-linecap="round"/>
-              <circle cx="250" cy="250" r="18" fill="#f4f4f5"/>
+              <g id="needleGroup" class="gauge-needle">
+                <line x1="250" y1="260" x2="250" y2="96" stroke="#f8fafc" stroke-width="7" stroke-linecap="round" />
+                <circle cx="250" cy="260" r="18" fill="#e5e7eb" />
+                <circle cx="250" cy="260" r="7" fill="#94a3b8" />
+              </g>
+
+              <!-- labels -->
+              <text x="78" y="286" class="gauge-scale-label">Pressure</text>
+              <text x="215" y="56" class="gauge-scale-label">Balanced</text>
+              <text x="383" y="286" class="gauge-scale-label">Constructive</text>
             </svg>
 
             <div class="gauge-center">
-              <div class="gauge-value" id="desktopGaugeValue">0</div>
-              <div class="gauge-label">Live Read</div>
+              <div class="gauge-value" id="gaugeValue">0</div>
+              <div class="gauge-sub">Live Read</div>
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3 mt-4 text-sm">
             <div class="panel-soft rounded-2xl px-4 py-3">
               <div class="muted mb-1">Signal Balance</div>
-              <div class="font-semibold" id="desktopBalanceText">Balanced</div>
+              <div class="font-semibold" id="balanceText">Balanced</div>
             </div>
             <div class="panel-soft rounded-2xl px-4 py-3">
               <div class="muted mb-1">Net Drivers</div>
-              <div class="font-semibold" id="desktopNetDrivers">6 Active Inputs</div>
+              <div class="font-semibold" id="netDrivers">6 Active Inputs</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Mobile Hero -->
-      <div class="mobile-only space-y-5">
-        <div class="panel rounded-3xl p-5">
-          <div class="flex items-start justify-between gap-4 mb-4">
-            <div>
-              <p class="text-sm muted mb-1">Live Market Ratio</p>
-              <h2 class="text-2xl font-semibold">Sentiment Gauge</h2>
-            </div>
-            <div class="text-right">
-              <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
-              <p class="text-sm font-medium">Now</p>
-            </div>
-          </div>
-
-          <div class="text-center mb-3">
-            <div class="status-pill" id="mobileStatusPill">Neutral</div>
-          </div>
-
-          <div class="gauge-shell">
-            <svg id="mobileGauge" viewBox="0 0 500 300" class="w-full h-full">
-              <path d="M 70 250 A 180 180 0 0 1 430 250"
-                    fill="none" stroke="rgba(113,113,122,0.16)" stroke-width="42" stroke-linecap="round"/>
-              <path d="M 70 250 A 180 180 0 0 1 145 123"
-                    fill="none" stroke="#ef4444" stroke-width="42" />
-              <path d="M 145 123 A 180 180 0 0 1 250 70"
-                    fill="none" stroke="#f59e0b" stroke-width="42" />
-              <path d="M 250 70 A 180 180 0 0 1 355 123"
-                    fill="none" stroke="#84cc16" stroke-width="42" />
-              <path d="M 355 123 A 180 180 0 0 1 430 250"
-                    fill="none" stroke="#22c55e" stroke-width="42" />
-              <line id="mobileNeedle" x1="250" y1="250" x2="250" y2="95" stroke="#f4f4f5" stroke-width="8" stroke-linecap="round"/>
-              <circle cx="250" cy="250" r="18" fill="#f4f4f5"/>
-            </svg>
-
-            <div class="gauge-center">
-              <div class="gauge-value" id="mobileGaugeValue">0</div>
-              <div class="gauge-label">Live Read</div>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3 mt-4 text-sm">
-            <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="muted mb-1">Signal Balance</div>
-              <div class="font-semibold" id="mobileBalanceText">Balanced</div>
-            </div>
-            <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="muted mb-1">Net Drivers</div>
-              <div class="font-semibold" id="mobileNetDrivers">6 Active Inputs</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel rounded-3xl p-5">
-          <p class="text-sm font-medium mb-3" style="color: var(--accent);">Cross-Asset Market View</p>
-          <h1 class="text-3xl font-semibold tracking-tight mb-4">Market Pulse</h1>
-          <p class="text-sm leading-7 muted">
-            A live market read built from weighted cross-asset inputs. Veloxis converts macro pressure into a cleaner signal for faster decision-making.
-          </p>
-        </div>
-      </div>
-
-      <!-- Insight -->
-      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
-        <div class="xl:col-span-4 panel rounded-3xl p-6">
+      <!-- Insight + Distribution -->
+      <div class="insight-grid">
+        <div class="panel rounded-3xl p-6">
           <div class="mb-5">
             <h3 class="text-xl font-semibold">Veloxis Insight</h3>
             <p class="text-sm muted mt-1">Cause and current result.</p>
@@ -450,22 +500,19 @@
               <div class="font-semibold" id="offsettingFactors">-</div>
             </div>
             <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Market Status</div>
-              <div class="font-semibold" id="marketStatus">-</div>
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Decision Style</div>
+              <div class="font-semibold">Probabilistic, Not Directive</div>
             </div>
           </div>
         </div>
 
-        <!-- Dynamic weights -->
-        <div class="xl:col-span-8 panel rounded-3xl p-6">
+        <div class="panel rounded-3xl p-6">
           <div class="mb-5">
             <h3 class="text-xl font-semibold">Signal Distribution</h3>
             <p class="text-sm muted mt-1">Live weighted contributors behind the current reading.</p>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" id="weightsGrid">
-            <!-- injected -->
-          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" id="weightsGrid"></div>
         </div>
       </div>
 
@@ -476,9 +523,7 @@
           <p class="text-sm muted mt-1">Major inputs reflected in the live market engine.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="coreDriversGrid">
-          <!-- injected -->
-        </div>
+        <div class="drivers-grid" id="coreDriversGrid"></div>
       </div>
 
       <!-- Market Assets -->
@@ -488,7 +533,7 @@
           <p class="text-sm muted mt-1">Compact reads for additional context outside the core engine.</p>
         </div>
 
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="assets-grid">
           <div class="metric-card panel-soft rounded-2xl p-4">
             <div class="text-sm muted mb-2">Nasdaq Futures</div>
             <div class="text-2xl font-semibold">18,942</div>
@@ -518,6 +563,24 @@
   </main>
 
   <script>
+    function toggleTheme() {
+      document.getElementById("main-body").classList.toggle("dark");
+    }
+
+    function toggleMobileMenu() {
+      const wrap = document.getElementById("mobileMenuWrap");
+      const drawer = document.getElementById("mobileDrawer");
+      const isHidden = wrap.classList.contains("hidden");
+
+      if (isHidden) {
+        wrap.classList.remove("hidden");
+        requestAnimationFrame(() => drawer.classList.add("open"));
+      } else {
+        drawer.classList.remove("open");
+        setTimeout(() => wrap.classList.add("hidden"), 220);
+      }
+    }
+
     const signals = [
       {
         name: "Dollar",
@@ -575,31 +638,8 @@
       }
     ];
 
-    function toggleTheme() {
-      document.getElementById("main-body").classList.toggle("dark");
-    }
-
-    function toggleMobileMenu() {
-      const wrap = document.getElementById("mobileMenuWrap");
-      const drawer = document.getElementById("mobileDrawer");
-      const isHidden = wrap.classList.contains("hidden");
-
-      if (isHidden) {
-        wrap.classList.remove("hidden");
-        requestAnimationFrame(() => drawer.classList.add("open"));
-      } else {
-        drawer.classList.remove("open");
-        setTimeout(() => wrap.classList.add("hidden"), 220);
-      }
-    }
-
-    function clamp(value, min, max) {
-      return Math.max(min, Math.min(max, value));
-    }
-
     function contribution(signal) {
-      const magnitude = Math.abs(signal.change) * signal.weight;
-      return magnitude;
+      return Math.abs(signal.change) * signal.weight;
     }
 
     function buildEngine() {
@@ -616,16 +656,13 @@
       const sortedNegative = [...negatives].sort((a, b) => contribution(b) - contribution(a));
       const sortedPositive = [...positives].sort((a, b) => contribution(b) - contribution(a));
 
-      const mainPressure = sortedNegative.slice(0, 2).map(s => s.name).join(" + ");
-      const offsetting = sortedPositive.slice(0, 2).map(s => s.name).join(" + ");
-
       let riskTone = "Mixed";
       let bias = "Balanced";
       let status = "Neutral";
 
-      if (positivePercent >= 70) {
+      if (positivePercent >= 75) {
         riskTone = "Risk-On";
-        bias = "Greed Tilt";
+        bias = "Constructive Advance";
         status = "Constructive";
       } else if (positivePercent >= 58) {
         riskTone = "Mixed";
@@ -644,29 +681,25 @@
       return {
         positivePercent,
         negativePercent,
-        mainPressure,
-        offsetting,
         riskTone,
         bias,
-        status
+        status,
+        mainPressure: sortedNegative.slice(0, 2).map(s => s.name).join(" + "),
+        offsetting: sortedPositive.slice(0, 2).map(s => s.name).join(" + ")
       };
     }
 
-    function gaugeAngle(value) {
-      // 0 -> -90deg, 100 -> 90deg
-      return -90 + (value * 180 / 100);
+    function setNeedle(value) {
+      // -78deg to 78deg for cleaner premium look
+      const angle = -78 + (value / 100) * 156;
+      document.getElementById("needleGroup").style.transform = `rotate(${angle}deg)`;
     }
 
-    function setNeedle(id, value) {
-      const needle = document.getElementById(id);
-      const angle = gaugeAngle(value);
-      needle.setAttribute("transform", `rotate(${angle} 250 250)`);
-    }
-
-    function statusPillColor(status) {
-      if (status.toLowerCase().includes("constructive")) return "var(--positive)";
-      if (status.toLowerCase().includes("stress")) return "var(--negative)";
-      if (status.toLowerCase().includes("defensive")) return "var(--warning)";
+    function statusColor(status) {
+      const s = status.toLowerCase();
+      if (s.includes("constructive")) return "var(--positive)";
+      if (s.includes("stress")) return "var(--negative)";
+      if (s.includes("defensive")) return "var(--warning)";
       return "var(--accent)";
     }
 
@@ -675,64 +708,55 @@
       document.getElementById("topRiskTone").textContent = engine.riskTone;
       document.getElementById("topBias").textContent = engine.bias;
 
-      document.getElementById("desktopMarketStatus").textContent = engine.status;
-      document.getElementById("desktopPressure").textContent = engine.mainPressure;
-      document.getElementById("desktopSupport").textContent = engine.offsetting;
+      document.getElementById("summaryMarketStatus").textContent = engine.status;
+      document.getElementById("summaryPressure").textContent = engine.mainPressure;
+      document.getElementById("summarySupport").textContent = engine.offsetting;
 
-      document.getElementById("desktopGaugeValue").textContent = engine.positivePercent;
-      document.getElementById("mobileGaugeValue").textContent = engine.positivePercent;
+      document.getElementById("gaugeValue").textContent = engine.positivePercent;
+      document.getElementById("balanceText").textContent = engine.status;
+      document.getElementById("netDrivers").textContent = `${signals.length} Active Inputs`;
 
-      document.getElementById("desktopBalanceText").textContent = engine.status;
-      document.getElementById("mobileBalanceText").textContent = engine.status;
+      const pill = document.getElementById("statusPill");
+      pill.textContent = engine.status;
+      pill.style.color = statusColor(engine.status);
 
-      document.getElementById("desktopNetDrivers").textContent = `${signals.length} Active Inputs`;
-      document.getElementById("mobileNetDrivers").textContent = `${signals.length} Active Inputs`;
-
-      const desktopPill = document.getElementById("desktopStatusPill");
-      const mobilePill = document.getElementById("mobileStatusPill");
-      desktopPill.textContent = engine.status;
-      mobilePill.textContent = engine.status;
-      desktopPill.style.color = statusPillColor(engine.status);
-      mobilePill.style.color = statusPillColor(engine.status);
-
-      setNeedle("desktopNeedle", engine.positivePercent);
-      setNeedle("mobileNeedle", engine.positivePercent);
+      setNeedle(engine.positivePercent);
     }
 
     function renderInsight(engine) {
       document.getElementById("mainPressure").textContent = engine.mainPressure;
       document.getElementById("offsettingFactors").textContent = engine.offsetting;
-      document.getElementById("marketStatus").textContent = engine.status;
 
       document.getElementById("insightText").textContent =
         `${engine.mainPressure} remain the main sources of market pressure, while ${engine.offsetting} keep the structure from becoming fully one-sided. The current read is ${engine.status.toLowerCase()}.`;
     }
 
-    function renderWeights() {
+    function renderDistribution() {
       const total = signals.reduce((sum, s) => sum + contribution(s), 0);
       const grid = document.getElementById("weightsGrid");
 
       grid.innerHTML = signals.map(signal => {
         const share = total ? (contribution(signal) / total) * 100 : 0;
-        const barColor = signal.direction === "positive" ? "var(--positive)" : "var(--negative)";
-        const pct = share.toFixed(0);
+        const pct = Math.round(share);
+        const color = signal.direction === "positive" ? "var(--positive)" : "var(--negative)";
+        const tone = signal.direction === "positive" ? "Supportive" : "Pressure";
 
         return `
-          <div class="weight-card panel-soft rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-3">
+          <div class="distribution-card panel-soft rounded-2xl p-4">
+            <div class="flex items-start justify-between gap-3 mb-3">
               <div>
                 <div class="text-sm muted">${signal.name}</div>
                 <div class="text-lg font-semibold mt-1">${pct}%</div>
               </div>
               <div class="text-right">
-                <div class="text-sm font-medium" style="color:${barColor}">
+                <div class="text-sm font-medium" style="color:${color}">
                   ${signal.change > 0 ? "+" : ""}${signal.change.toFixed(2)}%
                 </div>
-                <div class="text-xs muted mt-1">${signal.direction === "positive" ? "Supportive" : "Pressure"}</div>
+                <div class="text-xs muted mt-1">${tone}</div>
               </div>
             </div>
             <div class="mini-bar-track mb-3">
-              <div class="mini-bar-fill" style="width:${pct}%; background:${barColor}"></div>
+              <div class="mini-bar-fill" style="width:${pct}%; background:${color};"></div>
             </div>
             <div class="text-sm muted leading-6">${signal.impactLabel}</div>
           </div>
@@ -742,7 +766,6 @@
 
     function renderDrivers() {
       const grid = document.getElementById("coreDriversGrid");
-
       grid.innerHTML = signals.map(signal => {
         const color = signal.direction === "positive" ? "var(--positive)" : "var(--negative)";
         return `
@@ -763,7 +786,7 @@
     const engine = buildEngine();
     renderTop(engine);
     renderInsight(engine);
-    renderWeights();
+    renderDistribution();
     renderDrivers();
   </script>
 </body>
