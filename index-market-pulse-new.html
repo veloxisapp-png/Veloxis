@@ -16,6 +16,7 @@
       --accent: #2563eb;
       --positive: #16a34a;
       --negative: #dc2626;
+      --warning: #d97706;
       --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
     }
 
@@ -29,6 +30,7 @@
       --accent: #60a5fa;
       --positive: #22c55e;
       --negative: #ef4444;
+      --warning: #f59e0b;
       --shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
     }
 
@@ -52,6 +54,8 @@
       background: var(--panel-2);
       border: 1px solid var(--border);
     }
+
+    .muted { color: var(--muted); }
 
     .nav-link {
       position: relative;
@@ -80,26 +84,16 @@
     }
 
     .metric-card,
-    .driver-card {
+    .driver-card,
+    .weight-card {
       transition: transform 0.2s ease, border-color 0.2s ease;
     }
 
     .metric-card:hover,
-    .driver-card:hover {
+    .driver-card:hover,
+    .weight-card:hover {
       transform: translateY(-2px);
       border-color: rgba(96, 165, 250, 0.35);
-    }
-
-    .muted { color: var(--muted); }
-
-    .thin-scroll::-webkit-scrollbar {
-      height: 8px;
-      width: 8px;
-    }
-
-    .thin-scroll::-webkit-scrollbar-thumb {
-      background: #3f3f46;
-      border-radius: 999px;
     }
 
     .desktop-only { display: block; }
@@ -114,18 +108,95 @@
       transform: translateX(0);
     }
 
+    .thin-scroll::-webkit-scrollbar {
+      height: 8px;
+      width: 8px;
+    }
+
+    .thin-scroll::-webkit-scrollbar-thumb {
+      background: #3f3f46;
+      border-radius: 999px;
+    }
+
+    .gauge-shell {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      aspect-ratio: 1.7 / 1;
+    }
+
+    .gauge-center {
+      position: absolute;
+      left: 50%;
+      bottom: 10%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .gauge-value {
+      font-size: 4rem;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .gauge-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+    }
+
+    .mini-bar-track {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(113, 113, 122, 0.18);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mini-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .text-balance {
+      text-wrap: balance;
+    }
+
     @media (max-width: 1023px) {
       .desktop-only { display: none; }
       .mobile-only { display: block; }
+
+      .gauge-shell {
+        max-width: 340px;
+      }
+
+      .gauge-value {
+        font-size: 3.15rem;
+      }
     }
   </style>
 </head>
 <body class="dark" id="main-body">
-
   <header class="sticky top-0 z-50 border-b backdrop-blur supports-[backdrop-filter]:bg-black/10" style="border-color: var(--border); background: color-mix(in srgb, var(--bg) 88%, transparent);">
     <div class="max-w-7xl mx-auto px-4 lg:px-8">
       <div class="h-16 flex items-center justify-between gap-4">
-        <!-- Logo -->
         <div class="flex items-center min-w-fit gap-3">
           <img
             src="/mnt/data/8478C569-50B4-4693-9D56-5F10688E24B3.jpeg"
@@ -136,7 +207,6 @@
           <div id="fallback-logo" class="hidden h-8 w-8 items-center justify-center rounded-lg panel-soft text-sm font-bold">V</div>
         </div>
 
-        <!-- Desktop Navigation -->
         <nav class="desktop-only flex items-center gap-7 flex-1 justify-center thin-scroll">
           <a href="#" class="nav-link active">Market Pulse</a>
           <a href="analysis.html" class="nav-link">Analysis</a>
@@ -145,19 +215,16 @@
           <a href="top-movers.html" class="nav-link">Top Movers</a>
         </nav>
 
-        <!-- Desktop Theme -->
         <div class="desktop-only min-w-fit">
           <button
             onclick="toggleTheme()"
             class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
             style="color: var(--text);"
-            aria-label="Toggle theme"
           >
             Theme
           </button>
         </div>
 
-        <!-- Mobile Actions -->
         <div class="mobile-only flex items-center gap-2">
           <button
             onclick="toggleTheme()"
@@ -177,7 +244,6 @@
       </div>
     </div>
 
-    <!-- Mobile Drawer -->
     <div id="mobileMenuWrap" class="mobile-only fixed inset-0 z-50 hidden">
       <div class="absolute inset-0 bg-black/40" onclick="toggleMobileMenu()"></div>
       <div id="mobileDrawer" class="mobile-drawer absolute right-0 top-0 h-full w-[82%] max-w-[340px] panel p-5">
@@ -197,51 +263,58 @@
   </header>
 
   <main class="max-w-7xl mx-auto px-4 lg:px-8 py-5 lg:py-8">
+    <section class="space-y-6">
 
-    <!-- DESKTOP VERSION -->
-    <section class="desktop-only">
-      <!-- Top strip -->
-      <div class="panel rounded-2xl px-4 py-3 mb-6">
+      <!-- Top Strip -->
+      <div class="panel rounded-2xl p-3 lg:p-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
           <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
             <span class="muted">Sentiment Ratio</span>
-            <span class="font-semibold">62%</span>
+            <span class="font-semibold" id="topSentiment">0%</span>
           </div>
           <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
             <span class="muted">Risk Tone</span>
-            <span class="font-semibold">Mixed</span>
+            <span class="font-semibold" id="topRiskTone">Neutral</span>
           </div>
           <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
             <span class="muted">Session Bias</span>
-            <span class="font-semibold">Defensive Rotation</span>
+            <span class="font-semibold" id="topBias">Balanced</span>
           </div>
         </div>
       </div>
 
-      <!-- Hero -->
-      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
+      <!-- Desktop Hero -->
+      <div class="desktop-only grid grid-cols-1 xl:grid-cols-12 gap-6">
         <div class="xl:col-span-7 panel rounded-3xl p-6 lg:p-8">
           <div class="max-w-2xl">
             <p class="text-sm font-medium mb-3" style="color: var(--accent);">Cross-Asset Market View</p>
             <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Market Pulse</h1>
-            <p class="text-base lg:text-lg leading-8 muted mb-5">
-              A real-time view of cross-asset pressure using major macro signals, alternative risk assets,
-              bond yields, and treasury behavior in one compact market framework.
+            <p class="text-base lg:text-lg leading-8 muted mb-5 text-balance">
+              A live market read built from weighted cross-asset inputs. Veloxis converts macro pressure into a cleaner signal for faster decision-making.
             </p>
-            <div class="panel-soft rounded-2xl px-4 py-4">
-              <p class="text-sm lg:text-[15px] leading-7">
-                Veloxis reads the market through a live weighted ratio. The wheel reflects the current balance
-                of key signals, while the insight card explains what is driving the move.
-              </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="panel-soft rounded-2xl px-4 py-4">
+                <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Market Status</div>
+                <div class="font-semibold text-lg" id="desktopMarketStatus">Balanced</div>
+              </div>
+              <div class="panel-soft rounded-2xl px-4 py-4">
+                <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Primary Pressure</div>
+                <div class="font-semibold text-lg" id="desktopPressure">-</div>
+              </div>
+              <div class="panel-soft rounded-2xl px-4 py-4">
+                <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Primary Support</div>
+                <div class="font-semibold text-lg" id="desktopSupport">-</div>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="xl:col-span-5 panel rounded-3xl p-6 lg:p-8">
-          <div class="flex items-start justify-between gap-4 mb-6">
+          <div class="flex items-start justify-between gap-4 mb-5">
             <div>
               <p class="text-sm muted mb-1">Live Market Ratio</p>
-              <h2 class="text-2xl font-semibold">Composite Wheel</h2>
+              <h2 class="text-2xl font-semibold">Sentiment Gauge</h2>
             </div>
             <div class="text-right">
               <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
@@ -249,153 +322,162 @@
             </div>
           </div>
 
-          <div class="flex justify-center mb-6">
-            <div class="relative w-64 h-64">
-              <svg viewBox="0 0 220 220" class="w-full h-full">
-                <circle cx="110" cy="110" r="78" fill="none" stroke="rgba(113,113,122,0.18)" stroke-width="26" />
-                <circle
-                  cx="110"
-                  cy="110"
-                  r="78"
-                  fill="none"
-                  stroke="var(--positive)"
-                  stroke-width="26"
-                  stroke-linecap="round"
-                  stroke-dasharray="302 490"
-                  stroke-dashoffset="0"
-                  transform="rotate(-90 110 110)"
-                />
-                <circle
-                  cx="110"
-                  cy="110"
-                  r="78"
-                  fill="none"
-                  stroke="var(--negative)"
-                  stroke-width="26"
-                  stroke-linecap="round"
-                  stroke-dasharray="188 490"
-                  stroke-dashoffset="-314"
-                  transform="rotate(-90 110 110)"
-                />
-              </svg>
+          <div class="text-center mb-3">
+            <div class="status-pill" id="desktopStatusPill">Neutral</div>
+          </div>
 
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div class="text-center">
-                  <div class="text-5xl font-semibold tracking-tight">62%</div>
-                  <div class="text-xs uppercase tracking-[0.18em] mt-2 muted">Live Ratio</div>
-                </div>
-              </div>
+          <div class="gauge-shell">
+            <svg id="desktopGauge" viewBox="0 0 500 300" class="w-full h-full">
+              <!-- base -->
+              <path d="M 70 250 A 180 180 0 0 1 430 250"
+                    fill="none" stroke="rgba(113,113,122,0.16)" stroke-width="42" stroke-linecap="round"/>
+              <!-- segments -->
+              <path d="M 70 250 A 180 180 0 0 1 145 123"
+                    fill="none" stroke="#ef4444" stroke-width="42" stroke-linecap="butt"/>
+              <path d="M 145 123 A 180 180 0 0 1 250 70"
+                    fill="none" stroke="#f59e0b" stroke-width="42" stroke-linecap="butt"/>
+              <path d="M 250 70 A 180 180 0 0 1 355 123"
+                    fill="none" stroke="#84cc16" stroke-width="42" stroke-linecap="butt"/>
+              <path d="M 355 123 A 180 180 0 0 1 430 250"
+                    fill="none" stroke="#22c55e" stroke-width="42" stroke-linecap="butt"/>
+
+              <!-- needle -->
+              <line id="desktopNeedle" x1="250" y1="250" x2="250" y2="95" stroke="#f4f4f5" stroke-width="8" stroke-linecap="round"/>
+              <circle cx="250" cy="250" r="18" fill="#f4f4f5"/>
+            </svg>
+
+            <div class="gauge-center">
+              <div class="gauge-value" id="desktopGaugeValue">0</div>
+              <div class="gauge-label">Live Read</div>
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3 text-sm">
+          <div class="grid grid-cols-2 gap-3 mt-4 text-sm">
             <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="muted mb-1">Primary Inputs</div>
-              <div class="font-semibold">6 Active Signals</div>
+              <div class="muted mb-1">Signal Balance</div>
+              <div class="font-semibold" id="desktopBalanceText">Balanced</div>
             </div>
             <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="muted mb-1">Method</div>
-              <div class="font-semibold">Inverse Live Read</div>
+              <div class="muted mb-1">Net Drivers</div>
+              <div class="font-semibold" id="desktopNetDrivers">6 Active Inputs</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Drivers + Insight -->
-      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
-        <div class="xl:col-span-8 panel rounded-3xl p-6">
-          <div class="flex items-center justify-between mb-5">
+      <!-- Mobile Hero -->
+      <div class="mobile-only space-y-5">
+        <div class="panel rounded-3xl p-5">
+          <div class="flex items-start justify-between gap-4 mb-4">
             <div>
-              <h3 class="text-xl font-semibold">Core Drivers</h3>
-              <p class="text-sm muted mt-1">Major inputs reflected in the live market wheel.</p>
+              <p class="text-sm muted mb-1">Live Market Ratio</p>
+              <h2 class="text-2xl font-semibold">Sentiment Gauge</h2>
+            </div>
+            <div class="text-right">
+              <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
+              <p class="text-sm font-medium">Now</p>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="driver-card panel-soft rounded-2xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm muted">USD Index</span>
-                <span class="text-sm font-medium" style="color: var(--negative);">+0.32%</span>
-              </div>
-              <div class="text-2xl font-semibold mb-2">104.85</div>
-              <p class="text-sm muted leading-6">Dollar strength adds broad pressure and tightens upside participation across risk assets.</p>
-            </div>
+          <div class="text-center mb-3">
+            <div class="status-pill" id="mobileStatusPill">Neutral</div>
+          </div>
 
-            <div class="driver-card panel-soft rounded-2xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm muted">Crude Oil</span>
-                <span class="text-sm font-medium" style="color: var(--positive);">-1.80%</span>
-              </div>
-              <div class="text-2xl font-semibold mb-2">$78.40</div>
-              <p class="text-sm muted leading-6">Oil weakness eases inflation pressure and changes the immediate macro pressure mix.</p>
-            </div>
+          <div class="gauge-shell">
+            <svg id="mobileGauge" viewBox="0 0 500 300" class="w-full h-full">
+              <path d="M 70 250 A 180 180 0 0 1 430 250"
+                    fill="none" stroke="rgba(113,113,122,0.16)" stroke-width="42" stroke-linecap="round"/>
+              <path d="M 70 250 A 180 180 0 0 1 145 123"
+                    fill="none" stroke="#ef4444" stroke-width="42" />
+              <path d="M 145 123 A 180 180 0 0 1 250 70"
+                    fill="none" stroke="#f59e0b" stroke-width="42" />
+              <path d="M 250 70 A 180 180 0 0 1 355 123"
+                    fill="none" stroke="#84cc16" stroke-width="42" />
+              <path d="M 355 123 A 180 180 0 0 1 430 250"
+                    fill="none" stroke="#22c55e" stroke-width="42" />
+              <line id="mobileNeedle" x1="250" y1="250" x2="250" y2="95" stroke="#f4f4f5" stroke-width="8" stroke-linecap="round"/>
+              <circle cx="250" cy="250" r="18" fill="#f4f4f5"/>
+            </svg>
 
-            <div class="driver-card panel-soft rounded-2xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm muted">Gold</span>
-                <span class="text-sm font-medium" style="color: var(--negative);">+0.90%</span>
-              </div>
-              <div class="text-2xl font-semibold mb-2">$2,652</div>
-              <p class="text-sm muted leading-6">Firm gold suggests capital is still respecting defensive exposure beneath headline stability.</p>
+            <div class="gauge-center">
+              <div class="gauge-value" id="mobileGaugeValue">0</div>
+              <div class="gauge-label">Live Read</div>
             </div>
+          </div>
 
-            <div class="driver-card panel-soft rounded-2xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm muted">Bitcoin</span>
-                <span class="text-sm font-medium" style="color: var(--positive);">+2.30%</span>
-              </div>
-              <div class="text-2xl font-semibold mb-2">$67,420</div>
-              <p class="text-sm muted leading-6">Crypto strength keeps a risk-on layer in the mix, preventing a fully defensive signal.</p>
+          <div class="grid grid-cols-2 gap-3 mt-4 text-sm">
+            <div class="panel-soft rounded-2xl px-4 py-3">
+              <div class="muted mb-1">Signal Balance</div>
+              <div class="font-semibold" id="mobileBalanceText">Balanced</div>
             </div>
-
-            <div class="driver-card panel-soft rounded-2xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm muted">US 10Y Yield</span>
-                <span class="text-sm font-medium" style="color: var(--negative);">+0.14%</span>
-              </div>
-              <div class="text-2xl font-semibold mb-2">4.28%</div>
-              <p class="text-sm muted leading-6">Higher yields keep financial conditions firm and matter directly for equity valuation pressure.</p>
-            </div>
-
-            <div class="driver-card panel-soft rounded-2xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm muted">Treasury Bonds</span>
-                <span class="text-sm font-medium" style="color: var(--positive);">+0.41%</span>
-              </div>
-              <div class="text-2xl font-semibold mb-2">TLT 91.62</div>
-              <p class="text-sm muted leading-6">Bond stabilization slightly offsets yield pressure and adds nuance to the current market ratio.</p>
+            <div class="panel-soft rounded-2xl px-4 py-3">
+              <div class="muted mb-1">Net Drivers</div>
+              <div class="font-semibold" id="mobileNetDrivers">6 Active Inputs</div>
             </div>
           </div>
         </div>
 
+        <div class="panel rounded-3xl p-5">
+          <p class="text-sm font-medium mb-3" style="color: var(--accent);">Cross-Asset Market View</p>
+          <h1 class="text-3xl font-semibold tracking-tight mb-4">Market Pulse</h1>
+          <p class="text-sm leading-7 muted">
+            A live market read built from weighted cross-asset inputs. Veloxis converts macro pressure into a cleaner signal for faster decision-making.
+          </p>
+        </div>
+      </div>
+
+      <!-- Insight -->
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
         <div class="xl:col-span-4 panel rounded-3xl p-6">
           <div class="mb-5">
             <h3 class="text-xl font-semibold">Veloxis Insight</h3>
-            <p class="text-sm muted mt-1">Interpretation of the current cross-asset read.</p>
+            <p class="text-sm muted mt-1">Cause and current result.</p>
           </div>
 
           <div class="panel-soft rounded-2xl p-5 mb-4">
-            <p class="text-sm leading-7">
-              The current live ratio is being pushed primarily by dollar firmness and higher yields, while
-              Bitcoin strength and softer crude prevent the structure from becoming one-sided. Bonds are
-              helping smooth the reading rather than reversing it.
+            <p class="text-sm leading-7" id="insightText">
+              Live interpretation will appear here.
             </p>
           </div>
 
           <div class="grid grid-cols-1 gap-3">
             <div class="panel-soft rounded-2xl px-4 py-3">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Main Pressure</div>
-              <div class="font-semibold">Dollar + Yields</div>
+              <div class="font-semibold" id="mainPressure">-</div>
             </div>
             <div class="panel-soft rounded-2xl px-4 py-3">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Offsetting Factors</div>
-              <div class="font-semibold">Crypto + Softer Energy</div>
+              <div class="font-semibold" id="offsettingFactors">-</div>
             </div>
             <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Interpretation Style</div>
-              <div class="font-semibold">Probabilistic, Not Directive</div>
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Market Status</div>
+              <div class="font-semibold" id="marketStatus">-</div>
             </div>
           </div>
+        </div>
+
+        <!-- Dynamic weights -->
+        <div class="xl:col-span-8 panel rounded-3xl p-6">
+          <div class="mb-5">
+            <h3 class="text-xl font-semibold">Signal Distribution</h3>
+            <p class="text-sm muted mt-1">Live weighted contributors behind the current reading.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" id="weightsGrid">
+            <!-- injected -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Core Drivers -->
+      <div class="panel rounded-3xl p-6">
+        <div class="mb-5">
+          <h3 class="text-xl font-semibold">Core Drivers</h3>
+          <p class="text-sm muted mt-1">Major inputs reflected in the live market engine.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="coreDriversGrid">
+          <!-- injected -->
         </div>
       </div>
 
@@ -403,7 +485,7 @@
       <div class="panel rounded-3xl p-6">
         <div class="mb-5">
           <h3 class="text-xl font-semibold">Market Assets</h3>
-          <p class="text-sm muted mt-1">Compact reads for additional context outside the wheel.</p>
+          <p class="text-sm muted mt-1">Compact reads for additional context outside the core engine.</p>
         </div>
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -414,7 +496,7 @@
           </div>
 
           <div class="metric-card panel-soft rounded-2xl p-4">
-            <div class="text-sm muted mb-2">S&amp;P 500 Futures</div>
+            <div class="text-sm muted mb-2">S&P 500 Futures</div>
             <div class="text-2xl font-semibold">5,830</div>
             <div class="text-sm mt-2" style="color: var(--positive);">+0.43%</div>
           </div>
@@ -433,229 +515,66 @@
         </div>
       </div>
     </section>
-
-    <!-- MOBILE VERSION -->
-    <section class="mobile-only space-y-5">
-      <!-- Top strip -->
-      <div class="panel rounded-2xl p-3">
-        <div class="grid grid-cols-1 gap-3 text-sm">
-          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
-            <span class="muted">Sentiment Ratio</span>
-            <span class="font-semibold">62%</span>
-          </div>
-          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
-            <span class="muted">Risk Tone</span>
-            <span class="font-semibold">Mixed</span>
-          </div>
-          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
-            <span class="muted">Session Bias</span>
-            <span class="font-semibold">Defensive Rotation</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Wheel first -->
-      <div class="panel rounded-3xl p-5">
-        <div class="flex items-start justify-between gap-4 mb-5">
-          <div>
-            <p class="text-sm muted mb-1">Live Market Ratio</p>
-            <h2 class="text-2xl font-semibold">Composite Wheel</h2>
-          </div>
-          <div class="text-right">
-            <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
-            <p class="text-sm font-medium">Now</p>
-          </div>
-        </div>
-
-        <div class="flex justify-center mb-5">
-          <div class="relative w-56 h-56">
-            <svg viewBox="0 0 220 220" class="w-full h-full">
-              <circle cx="110" cy="110" r="78" fill="none" stroke="rgba(113,113,122,0.18)" stroke-width="26" />
-              <circle
-                cx="110"
-                cy="110"
-                r="78"
-                fill="none"
-                stroke="var(--positive)"
-                stroke-width="26"
-                stroke-linecap="round"
-                stroke-dasharray="302 490"
-                stroke-dashoffset="0"
-                transform="rotate(-90 110 110)"
-              />
-              <circle
-                cx="110"
-                cy="110"
-                r="78"
-                fill="none"
-                stroke="var(--negative)"
-                stroke-width="26"
-                stroke-linecap="round"
-                stroke-dasharray="188 490"
-                stroke-dashoffset="-314"
-                transform="rotate(-90 110 110)"
-              />
-            </svg>
-
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="text-center">
-                <div class="text-4xl font-semibold tracking-tight">62%</div>
-                <div class="text-xs uppercase tracking-[0.18em] mt-2 muted">Live Ratio</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 text-sm">
-          <div class="panel-soft rounded-2xl px-4 py-3">
-            <div class="muted mb-1">Signals</div>
-            <div class="font-semibold">6 Active</div>
-          </div>
-          <div class="panel-soft rounded-2xl px-4 py-3">
-            <div class="muted mb-1">Method</div>
-            <div class="font-semibold">Inverse Live Read</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Headline and short intro -->
-      <div class="panel rounded-3xl p-5">
-        <p class="text-sm font-medium mb-3" style="color: var(--accent);">Cross-Asset Market View</p>
-        <h1 class="text-3xl font-semibold tracking-tight mb-4">Market Pulse</h1>
-        <p class="text-sm leading-7 muted">
-          A real-time view of cross-asset pressure using major macro signals, alternative risk assets,
-          bond yields, and treasury behavior.
-        </p>
-      </div>
-
-      <!-- Insight simplified -->
-      <div class="panel rounded-3xl p-5">
-        <div class="mb-4">
-          <h3 class="text-xl font-semibold">Veloxis Insight</h3>
-          <p class="text-sm muted mt-1">Interpretation of the current cross-asset read.</p>
-        </div>
-
-        <div class="panel-soft rounded-2xl p-4 mb-4">
-          <p class="text-sm leading-7">
-            Dollar firmness and higher yields remain the primary sources of pressure, while crypto strength
-            and softer crude keep the reading from turning fully one-sided.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 gap-3">
-          <div class="panel-soft rounded-2xl px-4 py-3">
-            <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Main Pressure</div>
-            <div class="font-semibold">Dollar + Yields</div>
-          </div>
-          <div class="panel-soft rounded-2xl px-4 py-3">
-            <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Offsetting Factors</div>
-            <div class="font-semibold">Crypto + Softer Energy</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Drivers -->
-      <div class="panel rounded-3xl p-5">
-        <div class="mb-5">
-          <h3 class="text-xl font-semibold">Core Drivers</h3>
-          <p class="text-sm muted mt-1">Major inputs reflected in the live market wheel.</p>
-        </div>
-
-        <div class="grid grid-cols-1 gap-3">
-          <div class="driver-card panel-soft rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm muted">USD Index</span>
-              <span class="text-sm font-medium" style="color: var(--negative);">+0.32%</span>
-            </div>
-            <div class="text-xl font-semibold mb-2">104.85</div>
-            <p class="text-sm muted leading-6">Dollar strength adds broad pressure and tightens upside participation across risk assets.</p>
-          </div>
-
-          <div class="driver-card panel-soft rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm muted">Crude Oil</span>
-              <span class="text-sm font-medium" style="color: var(--positive);">-1.80%</span>
-            </div>
-            <div class="text-xl font-semibold mb-2">$78.40</div>
-            <p class="text-sm muted leading-6">Oil weakness eases inflation pressure and changes the immediate macro pressure mix.</p>
-          </div>
-
-          <div class="driver-card panel-soft rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm muted">Gold</span>
-              <span class="text-sm font-medium" style="color: var(--negative);">+0.90%</span>
-            </div>
-            <div class="text-xl font-semibold mb-2">$2,652</div>
-            <p class="text-sm muted leading-6">Firm gold suggests capital is still respecting defensive exposure beneath headline stability.</p>
-          </div>
-
-          <div class="driver-card panel-soft rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm muted">Bitcoin</span>
-              <span class="text-sm font-medium" style="color: var(--positive);">+2.30%</span>
-            </div>
-            <div class="text-xl font-semibold mb-2">$67,420</div>
-            <p class="text-sm muted leading-6">Crypto strength keeps a risk-on layer in the mix, preventing a fully defensive signal.</p>
-          </div>
-
-          <div class="driver-card panel-soft rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm muted">US 10Y Yield</span>
-              <span class="text-sm font-medium" style="color: var(--negative);">+0.14%</span>
-            </div>
-            <div class="text-xl font-semibold mb-2">4.28%</div>
-            <p class="text-sm muted leading-6">Higher yields keep financial conditions firm and matter directly for equity valuation pressure.</p>
-          </div>
-
-          <div class="driver-card panel-soft rounded-2xl p-4">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm muted">Treasury Bonds</span>
-              <span class="text-sm font-medium" style="color: var(--positive);">+0.41%</span>
-            </div>
-            <div class="text-xl font-semibold mb-2">TLT 91.62</div>
-            <p class="text-sm muted leading-6">Bond stabilization slightly offsets yield pressure and adds nuance to the current market ratio.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Market assets -->
-      <div class="panel rounded-3xl p-5">
-        <div class="mb-5">
-          <h3 class="text-xl font-semibold">Market Assets</h3>
-          <p class="text-sm muted mt-1">Compact reads for additional context outside the wheel.</p>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div class="metric-card panel-soft rounded-2xl p-4">
-            <div class="text-sm muted mb-2">Nasdaq Futures</div>
-            <div class="text-xl font-semibold">18,942</div>
-            <div class="text-sm mt-2" style="color: var(--positive);">+0.48%</div>
-          </div>
-
-          <div class="metric-card panel-soft rounded-2xl p-4">
-            <div class="text-sm muted mb-2">S&amp;P 500 Futures</div>
-            <div class="text-xl font-semibold">5,830</div>
-            <div class="text-sm mt-2" style="color: var(--positive);">+0.43%</div>
-          </div>
-
-          <div class="metric-card panel-soft rounded-2xl p-4">
-            <div class="text-sm muted mb-2">Dow Futures</div>
-            <div class="text-xl font-semibold">42,350</div>
-            <div class="text-sm mt-2" style="color: var(--positive);">+0.28%</div>
-          </div>
-
-          <div class="metric-card panel-soft rounded-2xl p-4">
-            <div class="text-sm muted mb-2">VIX</div>
-            <div class="text-xl font-semibold">18.45</div>
-            <div class="text-sm mt-2" style="color: var(--negative);">-0.85</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </main>
 
   <script>
+    const signals = [
+      {
+        name: "Dollar",
+        symbol: "USD Index",
+        value: "104.85",
+        change: 0.32,
+        weight: 1.35,
+        direction: "negative",
+        impactLabel: "Broad pressure across risk assets"
+      },
+      {
+        name: "Yields",
+        symbol: "US 10Y Yield",
+        value: "4.28%",
+        change: 0.14,
+        weight: 1.25,
+        direction: "negative",
+        impactLabel: "Tighter conditions and valuation pressure"
+      },
+      {
+        name: "Gold",
+        symbol: "Gold",
+        value: "$2,652",
+        change: 0.90,
+        weight: 0.70,
+        direction: "negative",
+        impactLabel: "Defensive capital still respected"
+      },
+      {
+        name: "Bitcoin",
+        symbol: "Bitcoin",
+        value: "$67,420",
+        change: 2.30,
+        weight: 0.95,
+        direction: "positive",
+        impactLabel: "Risk-on participation remains alive"
+      },
+      {
+        name: "Oil",
+        symbol: "Crude Oil",
+        value: "$78.40",
+        change: -1.80,
+        weight: 0.85,
+        direction: "positive",
+        impactLabel: "Softer energy reduces macro pressure"
+      },
+      {
+        name: "Bonds",
+        symbol: "Treasury Bonds",
+        value: "TLT 91.62",
+        change: 0.41,
+        weight: 0.65,
+        direction: "positive",
+        impactLabel: "Bond stabilization offsets some stress"
+      }
+    ];
+
     function toggleTheme() {
       document.getElementById("main-body").classList.toggle("dark");
     }
@@ -673,6 +592,179 @@
         setTimeout(() => wrap.classList.add("hidden"), 220);
       }
     }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function contribution(signal) {
+      const magnitude = Math.abs(signal.change) * signal.weight;
+      return magnitude;
+    }
+
+    function buildEngine() {
+      const negatives = signals.filter(s => s.direction === "negative");
+      const positives = signals.filter(s => s.direction === "positive");
+
+      const negativeRaw = negatives.reduce((sum, s) => sum + contribution(s), 0);
+      const positiveRaw = positives.reduce((sum, s) => sum + contribution(s), 0);
+      const totalRaw = negativeRaw + positiveRaw;
+
+      const positivePercent = totalRaw ? Math.round((positiveRaw / totalRaw) * 100) : 50;
+      const negativePercent = 100 - positivePercent;
+
+      const sortedNegative = [...negatives].sort((a, b) => contribution(b) - contribution(a));
+      const sortedPositive = [...positives].sort((a, b) => contribution(b) - contribution(a));
+
+      const mainPressure = sortedNegative.slice(0, 2).map(s => s.name).join(" + ");
+      const offsetting = sortedPositive.slice(0, 2).map(s => s.name).join(" + ");
+
+      let riskTone = "Mixed";
+      let bias = "Balanced";
+      let status = "Neutral";
+
+      if (positivePercent >= 70) {
+        riskTone = "Risk-On";
+        bias = "Greed Tilt";
+        status = "Constructive";
+      } else if (positivePercent >= 58) {
+        riskTone = "Mixed";
+        bias = "Constructive Tilt";
+        status = "Balanced Positive";
+      } else if (positivePercent <= 30) {
+        riskTone = "Defensive";
+        bias = "Pressure Dominant";
+        status = "High Stress";
+      } else if (positivePercent <= 42) {
+        riskTone = "Mixed";
+        bias = "Defensive Rotation";
+        status = "Balanced Defensive";
+      }
+
+      return {
+        positivePercent,
+        negativePercent,
+        mainPressure,
+        offsetting,
+        riskTone,
+        bias,
+        status
+      };
+    }
+
+    function gaugeAngle(value) {
+      // 0 -> -90deg, 100 -> 90deg
+      return -90 + (value * 180 / 100);
+    }
+
+    function setNeedle(id, value) {
+      const needle = document.getElementById(id);
+      const angle = gaugeAngle(value);
+      needle.setAttribute("transform", `rotate(${angle} 250 250)`);
+    }
+
+    function statusPillColor(status) {
+      if (status.toLowerCase().includes("constructive")) return "var(--positive)";
+      if (status.toLowerCase().includes("stress")) return "var(--negative)";
+      if (status.toLowerCase().includes("defensive")) return "var(--warning)";
+      return "var(--accent)";
+    }
+
+    function renderTop(engine) {
+      document.getElementById("topSentiment").textContent = `${engine.positivePercent}%`;
+      document.getElementById("topRiskTone").textContent = engine.riskTone;
+      document.getElementById("topBias").textContent = engine.bias;
+
+      document.getElementById("desktopMarketStatus").textContent = engine.status;
+      document.getElementById("desktopPressure").textContent = engine.mainPressure;
+      document.getElementById("desktopSupport").textContent = engine.offsetting;
+
+      document.getElementById("desktopGaugeValue").textContent = engine.positivePercent;
+      document.getElementById("mobileGaugeValue").textContent = engine.positivePercent;
+
+      document.getElementById("desktopBalanceText").textContent = engine.status;
+      document.getElementById("mobileBalanceText").textContent = engine.status;
+
+      document.getElementById("desktopNetDrivers").textContent = `${signals.length} Active Inputs`;
+      document.getElementById("mobileNetDrivers").textContent = `${signals.length} Active Inputs`;
+
+      const desktopPill = document.getElementById("desktopStatusPill");
+      const mobilePill = document.getElementById("mobileStatusPill");
+      desktopPill.textContent = engine.status;
+      mobilePill.textContent = engine.status;
+      desktopPill.style.color = statusPillColor(engine.status);
+      mobilePill.style.color = statusPillColor(engine.status);
+
+      setNeedle("desktopNeedle", engine.positivePercent);
+      setNeedle("mobileNeedle", engine.positivePercent);
+    }
+
+    function renderInsight(engine) {
+      document.getElementById("mainPressure").textContent = engine.mainPressure;
+      document.getElementById("offsettingFactors").textContent = engine.offsetting;
+      document.getElementById("marketStatus").textContent = engine.status;
+
+      document.getElementById("insightText").textContent =
+        `${engine.mainPressure} remain the main sources of market pressure, while ${engine.offsetting} keep the structure from becoming fully one-sided. The current read is ${engine.status.toLowerCase()}.`;
+    }
+
+    function renderWeights() {
+      const total = signals.reduce((sum, s) => sum + contribution(s), 0);
+      const grid = document.getElementById("weightsGrid");
+
+      grid.innerHTML = signals.map(signal => {
+        const share = total ? (contribution(signal) / total) * 100 : 0;
+        const barColor = signal.direction === "positive" ? "var(--positive)" : "var(--negative)";
+        const pct = share.toFixed(0);
+
+        return `
+          <div class="weight-card panel-soft rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <div class="text-sm muted">${signal.name}</div>
+                <div class="text-lg font-semibold mt-1">${pct}%</div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm font-medium" style="color:${barColor}">
+                  ${signal.change > 0 ? "+" : ""}${signal.change.toFixed(2)}%
+                </div>
+                <div class="text-xs muted mt-1">${signal.direction === "positive" ? "Supportive" : "Pressure"}</div>
+              </div>
+            </div>
+            <div class="mini-bar-track mb-3">
+              <div class="mini-bar-fill" style="width:${pct}%; background:${barColor}"></div>
+            </div>
+            <div class="text-sm muted leading-6">${signal.impactLabel}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderDrivers() {
+      const grid = document.getElementById("coreDriversGrid");
+
+      grid.innerHTML = signals.map(signal => {
+        const color = signal.direction === "positive" ? "var(--positive)" : "var(--negative)";
+        return `
+          <div class="driver-card panel-soft rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm muted">${signal.symbol}</span>
+              <span class="text-sm font-medium" style="color:${color}">
+                ${signal.change > 0 ? "+" : ""}${signal.change.toFixed(2)}%
+              </span>
+            </div>
+            <div class="text-2xl font-semibold mb-2">${signal.value}</div>
+            <p class="text-sm muted leading-6">${signal.impactLabel}</p>
+          </div>
+        `;
+      }).join("");
+    }
+
+    const engine = buildEngine();
+    renderTop(engine);
+    renderInsight(engine);
+    renderWeights();
+    renderDrivers();
   </script>
 </body>
 </html>
