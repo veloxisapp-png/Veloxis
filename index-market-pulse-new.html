@@ -214,16 +214,13 @@
 .rect-gauge-marker {
   position: absolute;
   top: 50%;
-  width: 16px;
-  height: 16px;
-  border-radius: 999px;
-  background: var(--panel);
-  border: 2px solid rgba(255,255,255,0.72);
+  width: 2px;
+  height: 28px;
+  border-radius: 2px;
+  background: currentColor;
   transform: translate(-50%, -50%);
-  box-shadow:
-    0 0 0 3px rgba(255,255,255,0.05),
-    0 4px 10px rgba(0,0,0,0.28);
-  transition: left .35s ease;
+  box-shadow: 0 0 6px currentColor;
+  transition: left .35s ease, background .3s ease;
 }
 
     .rect-gauge-marker::after {
