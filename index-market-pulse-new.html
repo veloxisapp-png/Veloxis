@@ -2,77 +2,73 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Veloxis — Market Pulse</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
     :root {
-      --bg: #06080f;
-      --bg-2: #0a1020;
-      --panel: rgba(10, 17, 32, 0.96);
-      --panel-soft: rgba(13, 20, 38, 0.96);
-      --border: rgba(255, 255, 255, 0.07);
-      --text: #f3f4f6;
-      --muted: #9ca3af;
-      --accent: #6ea8ff;
-      --positive: #3ccf91;
-      --negative: #ff6b6b;
-      --warning: #d7b16d;
-
-      --gauge-left: #4a2830;
-      --gauge-mid-left: #61502d;
-      --gauge-mid-right: #405b38;
-      --gauge-right: #234d3b;
-
-      --shadow: 0 14px 40px rgba(0, 0, 0, 0.30);
-      --glow: 0 0 0 1px rgba(110, 168, 255, 0.06), 0 0 28px rgba(110, 168, 255, 0.06);
+      --bg: #f5f7fb;
+      --bg-soft: #eef2f7;
+      --panel: #ffffff;
+      --panel-soft: #f8fafc;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --positive: #16a34a;
+      --negative: #dc2626;
+      --warning: #b45309;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
     }
 
-    * {
-      box-sizing: border-box;
+    body.dark {
+      --bg: #070b14;
+      --bg-soft: #0b1120;
+      --panel: #0f172a;
+      --panel-soft: #111827;
+      --border: rgba(255,255,255,0.08);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #60a5fa;
+      --positive: #22c55e;
+      --negative: #f87171;
+      --warning: #f59e0b;
+      --shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
       background:
-        radial-gradient(circle at top center, rgba(82, 123, 255, 0.08), transparent 28%),
-        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+        radial-gradient(circle at top center, rgba(37,99,235,0.06), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      transition: background .2s ease, color .2s ease;
     }
 
     .panel {
-      background: linear-gradient(180deg, rgba(10, 17, 32, 0.98), rgba(8, 13, 26, 0.98));
+      background: var(--panel);
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
     }
 
     .panel-soft {
-      background: linear-gradient(180deg, rgba(13, 20, 38, 0.98), rgba(10, 16, 30, 0.98));
+      background: var(--panel-soft);
       border: 1px solid var(--border);
     }
 
-    .muted {
-      color: var(--muted);
-    }
+    .muted { color: var(--muted); }
 
     .nav-link {
       position: relative;
       color: var(--muted);
       text-decoration: none;
-      font-size: 0.96rem;
+      font-size: .96rem;
       font-weight: 500;
-      padding: 0.4rem 0;
-      transition: color 0.2s ease;
+      padding: .4rem 0;
+      transition: color .2s ease;
       white-space: nowrap;
     }
 
@@ -86,36 +82,53 @@
       position: absolute;
       left: 0;
       right: 0;
-      bottom: -0.9rem;
+      bottom: -.9rem;
       height: 2px;
-      border-radius: 999px;
       background: var(--accent);
-      box-shadow: 0 0 18px rgba(110, 168, 255, 0.28);
+      border-radius: 999px;
     }
 
     .metric-card,
     .driver-card,
-    .distribution-card,
+    .dist-card,
     .summary-card {
-      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
     }
 
     .metric-card:hover,
     .driver-card:hover,
-    .distribution-card:hover,
+    .dist-card:hover,
     .summary-card:hover {
       transform: translateY(-2px);
-      border-color: rgba(110, 168, 255, 0.18);
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+      border-color: rgba(96,165,250,0.22);
+      box-shadow: 0 12px 28px rgba(15,23,42,0.10);
     }
 
-    .thin-scroll::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+    .top-strip,
+    .hero-grid,
+    .mid-grid,
+    .drivers-grid,
+    .distribution-grid,
+    .assets-grid {
+      display: grid;
+      gap: 1rem;
     }
 
-    .thin-scroll::-webkit-scrollbar-thumb {
-      background: #334155;
+    .top-strip,
+    .hero-grid,
+    .mid-grid,
+    .drivers-grid,
+    .distribution-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .assets-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .desktop-nav::-webkit-scrollbar { height: 8px; }
+    .desktop-nav::-webkit-scrollbar-thumb {
+      background: #475569;
       border-radius: 999px;
     }
 
@@ -123,142 +136,80 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 42px;
-      padding: 0.55rem 1rem;
+      min-height: 40px;
+      padding: .55rem .95rem;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(8, 13, 26, 0.9);
-      font-size: 0.92rem;
+      background: var(--panel-soft);
+      font-size: .88rem;
       font-weight: 700;
-      letter-spacing: 0.01em;
-      box-shadow: var(--glow);
     }
 
-    .top-strip {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .mid-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .drivers-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    .distribution-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    .assets-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-    }
-
-    .gauge-wrap {
+    .gauge-shell {
       position: relative;
       width: 100%;
       max-width: 520px;
       margin: 0 auto;
-      aspect-ratio: 1.7 / 1;
-    }
-
-    .gauge-center {
-      position: absolute;
-      left: 50%;
-      bottom: 10%;
-      transform: translateX(-50%);
-      text-align: center;
-      width: 100%;
-      pointer-events: none;
+      padding-top: .5rem;
     }
 
     .gauge-value {
-      font-size: clamp(3rem, 8vw, 5rem);
+      font-size: clamp(3rem, 8vw, 4.8rem);
       line-height: 1;
       font-weight: 800;
-      letter-spacing: -0.05em;
-      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.24);
+      letter-spacing: -.05em;
     }
 
     .gauge-sub {
-      margin-top: 0.45rem;
-      font-size: 0.82rem;
-      letter-spacing: 0.22em;
+      font-size: .8rem;
+      letter-spacing: .18em;
       text-transform: uppercase;
       color: var(--muted);
+      margin-top: .45rem;
     }
 
     .gauge-label {
-      font-size: 0.82rem;
+      font-size: .8rem;
+      fill: var(--muted);
       font-weight: 600;
-      fill: #94a3b8;
-      letter-spacing: 0.04em;
+      letter-spacing: .03em;
     }
 
     .needle-group {
       transform-origin: 260px 250px;
-      transition: transform 0.45s ease;
-      filter: drop-shadow(0 6px 14px rgba(255, 255, 255, 0.12));
+      transition: transform .45s ease;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.18));
     }
 
-    .needle-line {
-      stroke: #f8fafc;
-      stroke-width: 5;
+    .needle-main {
+      stroke: var(--text);
+      stroke-width: 4.5;
       stroke-linecap: round;
     }
 
     .needle-tail {
-      stroke: rgba(255, 255, 255, 0.42);
+      stroke: color-mix(in srgb, var(--text) 35%, transparent);
       stroke-width: 2;
       stroke-linecap: round;
     }
 
-    .needle-cap {
-      fill: #e5e7eb;
-    }
-
-    .needle-cap-inner {
-      fill: #94a3b8;
-    }
-
     .mini-bar-track {
       width: 100%;
-      height: 9px;
+      height: 8px;
       border-radius: 999px;
-      background: rgba(148, 163, 184, 0.15);
+      background: color-mix(in srgb, var(--muted) 18%, transparent);
       overflow: hidden;
-      position: relative;
     }
 
     .mini-bar-fill {
       height: 100%;
       border-radius: 999px;
-      transition: width 0.35s ease;
-    }
-
-    .glow-accent {
-      box-shadow: 0 0 0 1px rgba(110, 168, 255, 0.05), 0 0 22px rgba(110, 168, 255, 0.05);
+      transition: width .35s ease;
     }
 
     .mobile-drawer {
       transform: translateX(100%);
-      transition: transform 0.22s ease;
+      transition: transform .22s ease;
     }
 
     .mobile-drawer.open {
@@ -266,42 +217,23 @@
     }
 
     @media (min-width: 768px) {
-      .top-strip {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .drivers-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .distribution-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .assets-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
+      .top-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .drivers-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .distribution-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .assets-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
 
     @media (min-width: 1280px) {
-      .hero-grid {
-        grid-template-columns: 7fr 5fr;
-      }
-
-      .mid-grid {
-        grid-template-columns: 4fr 8fr;
-      }
-
-      .distribution-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
+      .hero-grid { grid-template-columns: 7fr 5fr; }
+      .mid-grid { grid-template-columns: 4fr 8fr; }
+      .distribution-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
   </style>
 </head>
-<body>
+<body class="dark" id="main-body">
   <header
-    class="sticky top-0 z-50 border-b backdrop-blur supports-[backdrop-filter]:bg-black/10"
-    style="border-color: var(--border); background: rgba(6, 8, 15, 0.84);"
+    class="sticky top-0 z-50 border-b backdrop-blur"
+    style="border-color: var(--border); background: color-mix(in srgb, var(--bg) 88%, transparent);"
   >
     <div class="max-w-7xl mx-auto px-4 lg:px-8">
       <div class="h-16 flex items-center justify-between gap-4">
@@ -312,15 +244,10 @@
             class="h-8 lg:h-9 w-auto object-contain"
             onerror="this.style.display='none';document.getElementById('fallback-logo').style.display='flex';"
           />
-          <div
-            id="fallback-logo"
-            class="hidden h-8 w-8 items-center justify-center rounded-lg panel-soft text-sm font-bold"
-          >
-            V
-          </div>
+          <div id="fallback-logo" class="hidden h-8 w-8 items-center justify-center rounded-lg panel-soft text-sm font-bold">V</div>
         </div>
 
-        <nav class="hidden lg:flex items-center gap-7 flex-1 justify-center thin-scroll">
+        <nav class="desktop-nav hidden lg:flex items-center gap-7 flex-1 justify-center overflow-x-auto">
           <a href="#" class="nav-link active">Market Pulse</a>
           <a href="analysis.html" class="nav-link">Analysis</a>
           <a href="strategy.html" class="nav-link">Strategy Lab</a>
@@ -330,6 +257,7 @@
 
         <div class="hidden lg:flex items-center gap-2">
           <button
+            onclick="toggleTheme()"
             class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
             style="color: var(--text);"
           >
@@ -339,6 +267,7 @@
 
         <div class="flex lg:hidden items-center gap-2">
           <button
+            onclick="toggleTheme()"
             class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
             style="color: var(--text);"
           >
@@ -363,9 +292,7 @@
       >
         <div class="flex items-center justify-between mb-6">
           <div class="font-semibold text-lg">Navigation</div>
-          <button onclick="toggleMobileMenu()" class="panel-soft rounded-xl px-3 py-2 text-sm">
-            Close
-          </button>
+          <button onclick="toggleMobileMenu()" class="panel-soft rounded-xl px-3 py-2 text-sm">Close</button>
         </div>
 
         <div class="flex flex-col gap-4">
@@ -381,8 +308,7 @@
 
   <main class="max-w-7xl mx-auto px-4 lg:px-8 py-5 lg:py-8">
     <section class="space-y-6">
-
-      <!-- Top Strip -->
+      <!-- Top strip -->
       <div class="panel rounded-2xl p-3 lg:p-4">
         <div class="top-strip text-sm">
           <div class="summary-card panel-soft rounded-xl px-4 py-3 flex items-center justify-between">
@@ -410,19 +336,17 @@
           </p>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div class="summary-card panel-soft rounded-2xl px-4 py-4 glow-accent">
+            <div class="summary-card panel-soft rounded-2xl px-4 py-4">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Market Status</div>
-              <div class="text-lg font-semibold" id="summaryMarketStatus">Constructive</div>
+              <div class="text-lg font-semibold" id="summaryMarketStatus">Balanced</div>
             </div>
-
             <div class="summary-card panel-soft rounded-2xl px-4 py-4">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Primary Pressure</div>
-              <div class="text-lg font-semibold" id="summaryPressure">Gold + Dollar</div>
+              <div class="text-lg font-semibold" id="summaryPressure">-</div>
             </div>
-
             <div class="summary-card panel-soft rounded-2xl px-4 py-4">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Primary Support</div>
-              <div class="text-lg font-semibold" id="summarySupport">Bitcoin + Oil</div>
+              <div class="text-lg font-semibold" id="summarySupport">-</div>
             </div>
           </div>
         </div>
@@ -443,52 +367,51 @@
             <span class="status-pill" id="statusPill">Balanced</span>
           </div>
 
-          <div class="gauge-wrap">
+          <div class="gauge-shell">
             <svg viewBox="0 0 520 320" class="w-full h-full" aria-label="Veloxis Gauge">
-              <!-- outer base -->
+              <defs>
+                <linearGradient id="gaugeTrack" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#44252d"></stop>
+                  <stop offset="35%" stop-color="#61502d"></stop>
+                  <stop offset="65%" stop-color="#49603b"></stop>
+                  <stop offset="100%" stop-color="#285140"></stop>
+                </linearGradient>
+              </defs>
+
+              <!-- outer guide -->
               <path
                 d="M 70 250 A 190 190 0 0 1 450 250"
                 fill="none"
-                stroke="rgba(148,163,184,0.10)"
+                stroke="rgba(148,163,184,0.12)"
                 stroke-width="30"
                 stroke-linecap="round"
               />
 
               <!-- main arc -->
               <path
-                d="M 80 250 A 180 180 0 0 1 440 250"
+                d="M 82 250 A 178 178 0 0 1 438 250"
                 fill="none"
-                stroke="url(#gaugeGradient)"
+                stroke="url(#gaugeTrack)"
                 stroke-width="24"
                 stroke-linecap="round"
               />
 
-              <!-- defs -->
-              <defs>
-                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="var(--gauge-left)" />
-                  <stop offset="34%" stop-color="var(--gauge-mid-left)" />
-                  <stop offset="66%" stop-color="var(--gauge-mid-right)" />
-                  <stop offset="100%" stop-color="var(--gauge-right)" />
-                </linearGradient>
-              </defs>
-
               <!-- separators -->
-              <line x1="156" y1="116" x2="167" y2="132" stroke="rgba(255,255,255,0.16)" stroke-width="2" />
-              <line x1="260" y1="70" x2="260" y2="90" stroke="rgba(255,255,255,0.16)" stroke-width="2" />
-              <line x1="364" y1="116" x2="353" y2="132" stroke="rgba(255,255,255,0.16)" stroke-width="2" />
+              <line x1="156" y1="116" x2="167" y2="132" stroke="rgba(255,255,255,0.16)" stroke-width="2"></line>
+              <line x1="260" y1="70" x2="260" y2="90" stroke="rgba(255,255,255,0.16)" stroke-width="2"></line>
+              <line x1="364" y1="116" x2="353" y2="132" stroke="rgba(255,255,255,0.16)" stroke-width="2"></line>
 
               <!-- labels -->
-              <text x="92" y="278" class="gauge-label">Pressure</text>
+              <text x="94" y="278" class="gauge-label">Pressure</text>
               <text x="226" y="58" class="gauge-label">Balance</text>
               <text x="360" y="278" class="gauge-label">Momentum</text>
 
               <!-- needle -->
               <g id="needleGroup" class="needle-group">
-                <line class="needle-line" x1="260" y1="250" x2="260" y2="104"></line>
+                <line class="needle-main" x1="260" y1="250" x2="260" y2="106"></line>
                 <line class="needle-tail" x1="260" y1="250" x2="260" y2="272"></line>
-                <circle class="needle-cap" cx="260" cy="250" r="15"></circle>
-                <circle class="needle-cap-inner" cx="260" cy="250" r="6"></circle>
+                <circle cx="260" cy="250" r="14" fill="var(--text)"></circle>
+                <circle cx="260" cy="250" r="6" fill="var(--muted)"></circle>
               </g>
             </svg>
 
@@ -530,12 +453,10 @@
               <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Main Pressure</div>
               <div class="font-semibold" id="mainPressure">-</div>
             </div>
-
             <div class="summary-card panel-soft rounded-2xl px-4 py-3">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Offsetting Factors</div>
               <div class="font-semibold" id="offsettingFactors">-</div>
             </div>
-
             <div class="summary-card panel-soft rounded-2xl px-4 py-3">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Decision Style</div>
               <div class="font-semibold">Probabilistic, Not Directive</div>
@@ -576,19 +497,16 @@
             <div class="text-2xl font-semibold">18,942</div>
             <div class="text-sm mt-2" style="color: var(--positive);">+0.48%</div>
           </div>
-
           <div class="metric-card panel-soft rounded-2xl p-4">
             <div class="text-sm muted mb-2">S&amp;P 500 Futures</div>
             <div class="text-2xl font-semibold">5,830</div>
             <div class="text-sm mt-2" style="color: var(--positive);">+0.43%</div>
           </div>
-
           <div class="metric-card panel-soft rounded-2xl p-4">
             <div class="text-sm muted mb-2">Dow Futures</div>
             <div class="text-2xl font-semibold">42,350</div>
             <div class="text-sm mt-2" style="color: var(--positive);">+0.28%</div>
           </div>
-
           <div class="metric-card panel-soft rounded-2xl p-4">
             <div class="text-sm muted mb-2">VIX</div>
             <div class="text-2xl font-semibold">18.45</div>
@@ -600,6 +518,10 @@
   </main>
 
   <script>
+    function toggleTheme() {
+      document.getElementById("main-body").classList.toggle("dark");
+    }
+
     function toggleMobileMenu() {
       const wrap = document.getElementById("mobileMenuWrap");
       const drawer = document.getElementById("mobileDrawer");
@@ -720,17 +642,17 @@
       };
     }
 
-    function setGaugeNeedle(value) {
-      const angle = -78 + (value / 100) * 156;
-      document.getElementById("needleGroup").style.transform = `rotate(${angle}deg)`;
-    }
-
     function statusColor(status) {
       const s = status.toLowerCase();
       if (s.includes("constructive")) return "var(--positive)";
       if (s.includes("stress")) return "var(--negative)";
       if (s.includes("defensive")) return "var(--warning)";
       return "var(--accent)";
+    }
+
+    function setGaugeNeedle(value) {
+      const angle = -78 + (value / 100) * 156;
+      document.getElementById("needleGroup").style.transform = `rotate(${angle}deg)`;
     }
 
     function renderSummary(engine) {
@@ -771,7 +693,7 @@
         const tone = signal.direction === "positive" ? "Supportive" : "Pressure";
 
         return `
-          <div class="distribution-card panel-soft rounded-2xl p-4">
+          <div class="dist-card panel-soft rounded-2xl p-4">
             <div class="flex items-start justify-between gap-3 mb-3">
               <div>
                 <div class="text-sm muted">${signal.name}</div>
