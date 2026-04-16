@@ -308,12 +308,6 @@
   height: 44px;
   margin-bottom: 12px;
 }
-
-.mini-chart {
-  width: 100% !important;
-  height: 44px !important;
-  display: block;
-}
   </style>
 </head>
 <body class="dark" id="main-body">
@@ -796,9 +790,7 @@ if (engine.positivePercent >= 75) {
                 <div class="text-xs muted mt-1">${tone}</div>
               </div>
             </div>
-            <div class="mini-chart-wrap">
-  <canvas class="mini-chart" id="chart-${signal.name.replace(/\s+/g, '-')}" height="40"></canvas>
-</div>
+         
             <div class="mini-bar-track mb-3">
               <div class="mini-bar-fill" style="width:${pct}%; background:${color};"></div>
             </div>
@@ -828,37 +820,7 @@ if (engine.positivePercent >= 75) {
         `;
       }).join("");
     }
-function createMiniChart(id, data, color) {
-  const el = document.getElementById(id);
-  if (!el) return;
 
-  new Chart(el, {
-    type: "line",
-    data: {
-      labels: data.map((_, i) => i + 1),
-      datasets: [{
-        data,
-        borderColor: color,
-        borderWidth: 2,
-        pointRadius: 0,
-        tension: 0.35,
-        fill: false
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: false }
-      },
-      scales: {
-        x: { display: false },
-        y: { display: false }
-      }
-    }
-  });
-}
 
 
     const engine = buildEngine();
