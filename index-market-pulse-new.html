@@ -584,67 +584,133 @@
     }
 
     const signals = [
-  { name: "USD", change: 0.32, weight: 1.5, type: "negative" },
-  { name: "2Y", change: 0.12, weight: 1.6, type: "negative" },
-  { name: "10Y", change: 0.14, weight: 1.4, type: "negative" },
-  { name: "Gold", change: 0.90, weight: 0.8, type: "negative" },
-  { name: "Oil", change: -1.80, weight: 0.7, type: "positive" },
-  { name: "Bonds", change: 0.41, weight: 0.9, type: "positive" },
-  { name: "Bitcoin", change: 2.30, weight: 1.0, type: "positive" }
+  {
+    name: "USD",
+    symbol: "USD Index",
+    value: "104.85",
+    change: 0.32,
+    weight: 1.5,
+    direction: "negative",
+    impactLabel: "Broad pressure across risk assets"
+  },
+  {
+    name: "2Y Yield",
+    symbol: "US 2Y Yield",
+    value: "4.65%",
+    change: 0.12,
+    weight: 1.6,
+    direction: "negative",
+    impactLabel: "Fed-sensitive front-end pressure"
+  },
+  {
+    name: "10Y Yield",
+    symbol: "US 10Y Yield",
+    value: "4.28%",
+    change: 0.14,
+    weight: 1.4,
+    direction: "negative",
+    impactLabel: "Tighter conditions and valuation pressure"
+  },
+  {
+    name: "Gold",
+    symbol: "Gold",
+    value: "$2,652",
+    change: 0.90,
+    weight: 0.8,
+    direction: "negative",
+    impactLabel: "Defensive capital still respected"
+  },
+  {
+    name: "Oil",
+    symbol: "Crude Oil",
+    value: "$78.40",
+    change: -1.80,
+    weight: 0.7,
+    direction: "positive",
+    impactLabel: "Softer energy reduces macro pressure"
+  },
+  {
+    name: "Bonds",
+    symbol: "Treasury Bonds",
+    value: "TLT 91.62",
+    change: 0.41,
+    weight: 0.9,
+    direction: "positive",
+    impactLabel: "Bond stabilization offsets some stress"
+  },
+  {
+    name: "Bitcoin",
+    symbol: "Bitcoin",
+    value: "$67,420",
+    change: 2.30,
+    weight: 1.0,
+    direction: "positive",
+    impactLabel: "Risk-on participation remains alive"
+  }
 ];
 
     function contribution(signal) {
       return Math.abs(signal.change) * signal.weight;
     }
 
-    function buildEngine() {
-      let positive = 0;
-let negative = 0;
+function buildEngine() {
+  let positive = 0;
+  let negative = 0;
 
-signals.forEach(s => {
-  const impact = Math.abs(s.change) * s.weight;
+  const negatives = signals.filter(s => s.direction === "negative");
+  const positives = signals.filter(s => s.direction === "positive");
 
-  if (s.direction === "positive") {
-    positive += impact;
-  } else {
-    negative += impact;
-  }
-});
+  signals.forEach(s => {
+    const impact = Math.abs(s.change) * s.weight;
 
-const totalRaw = positive + negative;
-const positivePercent = totalRaw ? Math.round((positive / totalRaw) * 100) : 50;
-
-      let riskTone = "Mixed";
-      let bias = "Balanced";
-      let status = "Balanced";
-
-      if (positivePercent >= 75) {
-        riskTone = "Risk-On";
-        bias = "Constructive Advance";
-        status = "Constructive";
-      } else if (positivePercent >= 58) {
-        riskTone = "Mixed";
-        bias = "Constructive Tilt";
-        status = "Balanced Positive";
-      } else if (positivePercent <= 30) {
-        riskTone = "Defensive";
-        bias = "Pressure Dominant";
-        status = "High Stress";
-      } else if (positivePercent <= 42) {
-        riskTone = "Mixed";
-        bias = "Defensive Rotation";
-        status = "Balanced Defensive";
-      }
-
-      return {
-        positivePercent,
-        riskTone,
-        bias,
-        status,
-        mainPressure: sortedNegative.slice(0, 2).map(s => s.name).join(" + "),
-        offsetting: sortedPositive.slice(0, 2).map(s => s.name).join(" + ")
-      };
+    if (s.direction === "positive") {
+      positive += impact;
+    } else {
+      negative += impact;
     }
+  });
+
+  const totalRaw = positive + negative;
+  const positivePercent = totalRaw ? Math.round((positive / totalRaw) * 100) : 50;
+
+  const sortedNegative = [...negatives].sort(
+    (a, b) => (Math.abs(b.change) * b.weight) - (Math.abs(a.change) * a.weight)
+  );
+  const sortedPositive = [...positives].sort(
+    (a, b) => (Math.abs(b.change) * b.weight) - (Math.abs(a.change) * a.weight)
+  );
+
+  let riskTone = "Mixed";
+  let bias = "Balanced";
+  let status = "Balanced";
+
+  if (positivePercent >= 75) {
+    riskTone = "Risk-On";
+    bias = "Constructive Advance";
+    status = "Constructive";
+  } else if (positivePercent >= 58) {
+    riskTone = "Mixed";
+    bias = "Constructive Tilt";
+    status = "Balanced Positive";
+  } else if (positivePercent <= 30) {
+    riskTone = "Defensive";
+    bias = "Pressure Dominant";
+    status = "High Stress";
+  } else if (positivePercent <= 42) {
+    riskTone = "Mixed";
+    bias = "Defensive Rotation";
+    status = "Balanced Defensive";
+  }
+
+  return {
+    positivePercent,
+    riskTone,
+    bias,
+    status,
+    mainPressure: sortedNegative.slice(0, 2).map(s => s.name).join(" + "),
+    offsetting: sortedPositive.slice(0, 2).map(s => s.name).join(" + ")
+  };
+}
 
     function statusColor(status) {
       const s = status.toLowerCase();
