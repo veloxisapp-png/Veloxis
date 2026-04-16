@@ -304,6 +304,16 @@
       .mid-grid { grid-template-columns: 4fr 8fr; }
       .distribution-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
+    .mini-chart-wrap {
+  height: 44px;
+  margin-bottom: 12px;
+}
+
+.mini-chart {
+  width: 100% !important;
+  height: 44px !important;
+  display: block;
+}
   </style>
 </head>
 <body class="dark" id="main-body">
@@ -786,7 +796,9 @@ if (engine.positivePercent >= 75) {
                 <div class="text-xs muted mt-1">${tone}</div>
               </div>
             </div>
-            <canvas id="chart-${signal.name.replace(/\s+/g, '-')}" height="40"></canvas>
+            <div class="mini-chart-wrap">
+  <canvas class="mini-chart" id="chart-${signal.name.replace(/\s+/g, '-')}" height="40"></canvas>
+</div>
             <div class="mini-bar-track mb-3">
               <div class="mini-bar-fill" style="width:${pct}%; background:${color};"></div>
             </div>
