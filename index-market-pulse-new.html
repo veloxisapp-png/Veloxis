@@ -150,67 +150,124 @@
       font-weight: 700;
     }
 
-    .gauge-shell {
-      position: relative;
+    .rect-gauge-shell {
       width: 100%;
-      max-width: 520px;
+      max-width: 560px;
       margin: 0 auto;
-      padding-top: .2rem;
     }
 
-    .gauge-center {
-      position: absolute;
-      left: 50%;
-      bottom: 15%;
-      transform: translateX(-50%);
-      text-align: center;
-      width: 100%;
-      pointer-events: none;
+    .rect-gauge-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
     }
 
-    .gauge-value {
-      font-size: clamp(2rem, 4vw, 2.6rem);
+    .rect-gauge-value {
+      font-size: clamp(1.4rem, 2.6vw, 1.9rem);
       line-height: 1;
       font-weight: 700;
-      letter-spacing: -0.03em;
-      color: color-mix(in srgb, var(--text) 72%, var(--muted));
+      letter-spacing: -0.02em;
+      color: color-mix(in srgb, var(--text) 75%, var(--muted));
       opacity: 0.92;
     }
 
-    .gauge-sub {
+    .rect-gauge-sub {
       font-size: .72rem;
       letter-spacing: .18em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-top: .45rem;
+      margin-top: .4rem;
     }
 
-    .gauge-label {
-      font-size: .78rem;
-      fill: var(--muted);
+    .rect-gauge-track-wrap {
+      position: relative;
+      padding: 10px 0 4px 0;
+    }
+
+    .rect-gauge-track {
+      position: relative;
+      width: 100%;
+      height: 18px;
+      border-radius: 999px;
+      background:
+        linear-gradient(
+          90deg,
+          var(--gauge-left) 0%,
+          var(--gauge-mid-left) 34%,
+          var(--gauge-mid-right) 66%,
+          var(--gauge-right) 100%
+        );
+      border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+      overflow: visible;
+    }
+
+    .rect-gauge-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      pointer-events: none;
+    }
+
+    .rect-gauge-marker {
+      position: absolute;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--panel);
+      border: 3px solid var(--text);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--panel) 82%, transparent);
+      transition: left .35s ease;
+    }
+
+    .rect-gauge-marker::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 18px;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 14px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--text) 40%, transparent);
+    }
+
+    .rect-gauge-scale {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      gap: .5rem;
+      margin-top: .85rem;
+      font-size: .8rem;
       font-weight: 600;
-      letter-spacing: .03em;
+      color: var(--muted);
     }
 
-    .needle-group {
-      transform-origin: 260px 248px;
-      transition: transform .45s ease;
+    .rect-gauge-scale span {
+      white-space: nowrap;
     }
 
-    .needle-body {
-      fill: color-mix(in srgb, var(--text) 96%, transparent);
-      stroke: color-mix(in srgb, var(--text) 35%, transparent);
-      stroke-width: 1.2;
+    .rect-gauge-ticks {
+      position: absolute;
+      top: 2px;
+      left: 0;
+      right: 0;
+      height: 26px;
+      pointer-events: none;
     }
 
-    .needle-cap {
-      fill: color-mix(in srgb, var(--text) 92%, transparent);
-      stroke: color-mix(in srgb, var(--text) 18%, transparent);
-      stroke-width: 2;
-    }
-
-    .needle-cap-inner {
-      fill: color-mix(in srgb, var(--muted) 85%, transparent);
+    .rect-gauge-tick {
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      transform: translateX(-50%);
     }
 
     .mini-bar-track {
@@ -373,7 +430,7 @@
           <div class="flex items-start justify-between gap-4 mb-5">
             <div>
               <p class="text-sm muted mb-1">Live Market Ratio</p>
-              <h2 class="text-2xl font-semibold">Signature Gauge</h2>
+              <h2 class="text-2xl font-semibold">Signal Gauge</h2>
             </div>
             <div class="text-right">
               <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
@@ -385,63 +442,38 @@
             <span class="status-pill" id="statusPill">Balanced</span>
           </div>
 
-          <div class="gauge-shell">
-            <svg viewBox="0 0 520 320" class="w-full h-full" aria-label="Veloxis Gauge">
-              <defs>
-                <linearGradient id="gaugeTrack" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="var(--gauge-left)"></stop>
-                  <stop offset="34%" stop-color="var(--gauge-mid-left)"></stop>
-                  <stop offset="66%" stop-color="var(--gauge-mid-right)"></stop>
-                  <stop offset="100%" stop-color="var(--gauge-right)"></stop>
-                </linearGradient>
-              </defs>
+          <div class="rect-gauge-shell">
+            <div class="rect-gauge-head">
+              <div>
+                <div class="rect-gauge-value" id="gaugeValue">0</div>
+                <div class="rect-gauge-sub">Live Read</div>
+              </div>
+              <div class="text-right text-sm muted">
+                <div class="font-medium" id="gaugeStateText">Balanced</div>
+              </div>
+            </div>
 
-              <path
-                d="M 70 248 A 190 190 0 0 1 450 248"
-                fill="none"
-                stroke="rgba(148,163,184,0.10)"
-                stroke-width="30"
-                stroke-linecap="round"
-              />
+            <div class="rect-gauge-track-wrap">
+              <div class="rect-gauge-ticks">
+                <span class="rect-gauge-tick" style="left: 16.5%;"></span>
+                <span class="rect-gauge-tick" style="left: 50%;"></span>
+                <span class="rect-gauge-tick" style="left: 83.5%;"></span>
+              </div>
 
-              <path
-                d="M 82 248 A 178 178 0 0 1 438 248"
-                fill="none"
-                stroke="url(#gaugeTrack)"
-                stroke-width="24"
-                stroke-linecap="round"
-              />
+              <div class="rect-gauge-track">
+                <div class="rect-gauge-overlay"></div>
+                <div class="rect-gauge-marker" id="gaugeMarker" style="left: 50%;"></div>
+              </div>
+            </div>
 
-              <line x1="156" y1="116" x2="167" y2="132" stroke="rgba(255,255,255,0.14)" stroke-width="2"></line>
-              <line x1="260" y1="70" x2="260" y2="90" stroke="rgba(255,255,255,0.14)" stroke-width="2"></line>
-              <line x1="364" y1="116" x2="353" y2="132" stroke="rgba(255,255,255,0.14)" stroke-width="2"></line>
-
-              <text x="94" y="278" class="gauge-label">Pressure</text>
-              <text x="226" y="58" class="gauge-label">Balance</text>
-              <text x="360" y="278" class="gauge-label">Momentum</text>
-
-              <g id="needleGroup" class="needle-group">
-                <!-- Sharp mechanical needle -->
-                <polygon
-                  class="needle-body"
-                  points="260,105 266,248 260,255 254,248"
-                ></polygon>
-                <polygon
-                  class="needle-body"
-                  points="260,108 328,248 260,244"
-                ></polygon>
-                <circle class="needle-cap" cx="260" cy="248" r="14"></circle>
-                <circle class="needle-cap-inner" cx="260" cy="248" r="5.5"></circle>
-              </g>
-            </svg>
-
-            <div class="gauge-center">
-              <div class="gauge-value" id="gaugeValue">0</div>
-              <div class="gauge-sub">Live Read</div>
+            <div class="rect-gauge-scale">
+              <span>Pressure</span>
+              <span>Balance</span>
+              <span>Momentum</span>
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3 mt-4 text-sm">
+          <div class="grid grid-cols-2 gap-3 mt-6 text-sm">
             <div class="summary-card panel-soft rounded-2xl px-4 py-3">
               <div class="muted mb-1">Signal Balance</div>
               <div class="font-semibold" id="balanceText">Balanced</div>
@@ -619,9 +651,8 @@
       return "var(--accent)";
     }
 
-    function setGaugeNeedle(value) {
-      const angle = -78 + (value / 100) * 156;
-      document.getElementById("needleGroup").style.transform = `rotate(${angle}deg)`;
+    function setGaugeMarker(value) {
+      document.getElementById("gaugeMarker").style.left = `${value}%`;
     }
 
     function renderSummary(engine) {
@@ -635,12 +666,13 @@
 
       document.getElementById("gaugeValue").textContent = engine.positivePercent;
       document.getElementById("balanceText").textContent = engine.status;
+      document.getElementById("gaugeStateText").textContent = engine.status;
 
       const pill = document.getElementById("statusPill");
       pill.textContent = engine.status;
       pill.style.color = statusColor(engine.status);
 
-      setGaugeNeedle(engine.positivePercent);
+      setGaugeMarker(engine.positivePercent);
     }
 
     function renderInsight(engine) {
