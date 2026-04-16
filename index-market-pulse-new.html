@@ -7,8 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --bg: #f5f7fb;
-      --bg-soft: #eef2f7;
+      --bg: #f4f7fb;
+      --bg-soft: #edf2f8;
       --panel: #ffffff;
       --panel-soft: #f8fafc;
       --border: #e5e7eb;
@@ -18,7 +18,12 @@
       --positive: #16a34a;
       --negative: #dc2626;
       --warning: #b45309;
-      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+
+      --gauge-left: #6b2d37;
+      --gauge-mid-left: #7b6230;
+      --gauge-mid-right: #5d7440;
+      --gauge-right: #295c45;
     }
 
     body.dark {
@@ -42,7 +47,7 @@
       margin: 0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(circle at top center, rgba(37,99,235,0.06), transparent 25%),
+        radial-gradient(circle at top center, rgba(37,99,235,0.05), transparent 24%),
         var(--bg);
       color: var(--text);
       transition: background .2s ease, color .2s ease;
@@ -100,8 +105,8 @@
     .dist-card:hover,
     .summary-card:hover {
       transform: translateY(-2px);
-      border-color: rgba(96,165,250,0.22);
-      box-shadow: 0 12px 28px rgba(15,23,42,0.10);
+      border-color: rgba(96,165,250,0.20);
+      box-shadow: 0 12px 24px rgba(15,23,42,0.10);
     }
 
     .top-strip,
@@ -150,18 +155,30 @@
       width: 100%;
       max-width: 520px;
       margin: 0 auto;
-      padding-top: .5rem;
+      padding-top: .2rem;
+    }
+
+    .gauge-center {
+      position: absolute;
+      left: 50%;
+      bottom: 15%;
+      transform: translateX(-50%);
+      text-align: center;
+      width: 100%;
+      pointer-events: none;
     }
 
     .gauge-value {
-      font-size: clamp(3rem, 8vw, 4.8rem);
+      font-size: clamp(2rem, 4vw, 2.6rem);
       line-height: 1;
-      font-weight: 800;
-      letter-spacing: -.05em;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: color-mix(in srgb, var(--text) 72%, var(--muted));
+      opacity: 0.92;
     }
 
     .gauge-sub {
-      font-size: .8rem;
+      font-size: .72rem;
       letter-spacing: .18em;
       text-transform: uppercase;
       color: var(--muted);
@@ -169,28 +186,31 @@
     }
 
     .gauge-label {
-      font-size: .8rem;
+      font-size: .78rem;
       fill: var(--muted);
       font-weight: 600;
       letter-spacing: .03em;
     }
 
     .needle-group {
-      transform-origin: 260px 250px;
+      transform-origin: 260px 248px;
       transition: transform .45s ease;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.18));
     }
 
-    .needle-main {
-      stroke: var(--text);
-      stroke-width: 4.5;
-      stroke-linecap: round;
-    }
-
-    .needle-tail {
+    .needle-body {
+      fill: color-mix(in srgb, var(--text) 96%, transparent);
       stroke: color-mix(in srgb, var(--text) 35%, transparent);
+      stroke-width: 1.2;
+    }
+
+    .needle-cap {
+      fill: color-mix(in srgb, var(--text) 92%, transparent);
+      stroke: color-mix(in srgb, var(--text) 18%, transparent);
       stroke-width: 2;
-      stroke-linecap: round;
+    }
+
+    .needle-cap-inner {
+      fill: color-mix(in srgb, var(--muted) 85%, transparent);
     }
 
     .mini-bar-track {
@@ -308,7 +328,6 @@
 
   <main class="max-w-7xl mx-auto px-4 lg:px-8 py-5 lg:py-8">
     <section class="space-y-6">
-      <!-- Top strip -->
       <div class="panel rounded-2xl p-3 lg:p-4">
         <div class="top-strip text-sm">
           <div class="summary-card panel-soft rounded-xl px-4 py-3 flex items-center justify-between">
@@ -326,7 +345,6 @@
         </div>
       </div>
 
-      <!-- Hero -->
       <div class="hero-grid">
         <div class="panel rounded-3xl p-6 lg:p-8">
           <p class="text-sm font-medium mb-3" style="color: var(--accent);">Cross-Asset Market View</p>
@@ -371,47 +389,49 @@
             <svg viewBox="0 0 520 320" class="w-full h-full" aria-label="Veloxis Gauge">
               <defs>
                 <linearGradient id="gaugeTrack" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#44252d"></stop>
-                  <stop offset="35%" stop-color="#61502d"></stop>
-                  <stop offset="65%" stop-color="#49603b"></stop>
-                  <stop offset="100%" stop-color="#285140"></stop>
+                  <stop offset="0%" stop-color="var(--gauge-left)"></stop>
+                  <stop offset="34%" stop-color="var(--gauge-mid-left)"></stop>
+                  <stop offset="66%" stop-color="var(--gauge-mid-right)"></stop>
+                  <stop offset="100%" stop-color="var(--gauge-right)"></stop>
                 </linearGradient>
               </defs>
 
-              <!-- outer guide -->
               <path
-                d="M 70 250 A 190 190 0 0 1 450 250"
+                d="M 70 248 A 190 190 0 0 1 450 248"
                 fill="none"
-                stroke="rgba(148,163,184,0.12)"
+                stroke="rgba(148,163,184,0.10)"
                 stroke-width="30"
                 stroke-linecap="round"
               />
 
-              <!-- main arc -->
               <path
-                d="M 82 250 A 178 178 0 0 1 438 250"
+                d="M 82 248 A 178 178 0 0 1 438 248"
                 fill="none"
                 stroke="url(#gaugeTrack)"
                 stroke-width="24"
                 stroke-linecap="round"
               />
 
-              <!-- separators -->
-              <line x1="156" y1="116" x2="167" y2="132" stroke="rgba(255,255,255,0.16)" stroke-width="2"></line>
-              <line x1="260" y1="70" x2="260" y2="90" stroke="rgba(255,255,255,0.16)" stroke-width="2"></line>
-              <line x1="364" y1="116" x2="353" y2="132" stroke="rgba(255,255,255,0.16)" stroke-width="2"></line>
+              <line x1="156" y1="116" x2="167" y2="132" stroke="rgba(255,255,255,0.14)" stroke-width="2"></line>
+              <line x1="260" y1="70" x2="260" y2="90" stroke="rgba(255,255,255,0.14)" stroke-width="2"></line>
+              <line x1="364" y1="116" x2="353" y2="132" stroke="rgba(255,255,255,0.14)" stroke-width="2"></line>
 
-              <!-- labels -->
               <text x="94" y="278" class="gauge-label">Pressure</text>
               <text x="226" y="58" class="gauge-label">Balance</text>
               <text x="360" y="278" class="gauge-label">Momentum</text>
 
-              <!-- needle -->
               <g id="needleGroup" class="needle-group">
-                <line class="needle-main" x1="260" y1="250" x2="260" y2="106"></line>
-                <line class="needle-tail" x1="260" y1="250" x2="260" y2="272"></line>
-                <circle cx="260" cy="250" r="14" fill="var(--text)"></circle>
-                <circle cx="260" cy="250" r="6" fill="var(--muted)"></circle>
+                <!-- Sharp mechanical needle -->
+                <polygon
+                  class="needle-body"
+                  points="260,105 266,248 260,255 254,248"
+                ></polygon>
+                <polygon
+                  class="needle-body"
+                  points="260,108 328,248 260,244"
+                ></polygon>
+                <circle class="needle-cap" cx="260" cy="248" r="14"></circle>
+                <circle class="needle-cap-inner" cx="260" cy="248" r="5.5"></circle>
               </g>
             </svg>
 
@@ -434,7 +454,6 @@
         </div>
       </div>
 
-      <!-- Insight + Distribution -->
       <div class="mid-grid">
         <div class="panel rounded-3xl p-6">
           <div class="mb-5">
@@ -474,7 +493,6 @@
         </div>
       </div>
 
-      <!-- Core Drivers -->
       <div class="panel rounded-3xl p-6">
         <div class="mb-5">
           <h3 class="text-xl font-semibold">Core Drivers</h3>
@@ -484,7 +502,6 @@
         <div class="drivers-grid" id="driversGrid"></div>
       </div>
 
-      <!-- Market Assets -->
       <div class="panel rounded-3xl p-6">
         <div class="mb-5">
           <h3 class="text-xl font-semibold">Market Assets</h3>
@@ -537,60 +554,12 @@
     }
 
     const signals = [
-      {
-        name: "Dollar",
-        symbol: "USD Index",
-        value: "104.85",
-        change: 0.32,
-        weight: 1.35,
-        direction: "negative",
-        impactLabel: "Broad pressure across risk assets"
-      },
-      {
-        name: "Yields",
-        symbol: "US 10Y Yield",
-        value: "4.28%",
-        change: 0.14,
-        weight: 1.25,
-        direction: "negative",
-        impactLabel: "Tighter conditions and valuation pressure"
-      },
-      {
-        name: "Gold",
-        symbol: "Gold",
-        value: "$2,652",
-        change: 0.90,
-        weight: 0.70,
-        direction: "negative",
-        impactLabel: "Defensive capital still respected"
-      },
-      {
-        name: "Bitcoin",
-        symbol: "Bitcoin",
-        value: "$67,420",
-        change: 2.30,
-        weight: 0.95,
-        direction: "positive",
-        impactLabel: "Risk-on participation remains alive"
-      },
-      {
-        name: "Oil",
-        symbol: "Crude Oil",
-        value: "$78.40",
-        change: -1.80,
-        weight: 0.85,
-        direction: "positive",
-        impactLabel: "Softer energy reduces macro pressure"
-      },
-      {
-        name: "Bonds",
-        symbol: "Treasury Bonds",
-        value: "TLT 91.62",
-        change: 0.41,
-        weight: 0.65,
-        direction: "positive",
-        impactLabel: "Bond stabilization offsets some stress"
-      }
+      { name: "Dollar", symbol: "USD Index", value: "104.85", change: 0.32, weight: 1.35, direction: "negative", impactLabel: "Broad pressure across risk assets" },
+      { name: "Yields", symbol: "US 10Y Yield", value: "4.28%", change: 0.14, weight: 1.25, direction: "negative", impactLabel: "Tighter conditions and valuation pressure" },
+      { name: "Gold", symbol: "Gold", value: "$2,652", change: 0.90, weight: 0.70, direction: "negative", impactLabel: "Defensive capital still respected" },
+      { name: "Bitcoin", symbol: "Bitcoin", value: "$67,420", change: 2.30, weight: 0.95, direction: "positive", impactLabel: "Risk-on participation remains alive" },
+      { name: "Oil", symbol: "Crude Oil", value: "$78.40", change: -1.80, weight: 0.85, direction: "positive", impactLabel: "Softer energy reduces macro pressure" },
+      { name: "Bonds", symbol: "Treasury Bonds", value: "TLT 91.62", change: 0.41, weight: 0.65, direction: "positive", impactLabel: "Bond stabilization offsets some stress" }
     ];
 
     function contribution(signal) {
