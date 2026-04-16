@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Veloxis — Market Pulse</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
       --bg: #f4f7fb;
@@ -772,6 +773,7 @@ if (engine.positivePercent >= 75) {
 
         return `
           <div class="dist-card panel-soft rounded-2xl p-4">
+           
             <div class="flex items-start justify-between gap-3 mb-3">
               <div>
                 <div class="text-sm muted">${signal.name}</div>
@@ -784,6 +786,7 @@ if (engine.positivePercent >= 75) {
                 <div class="text-xs muted mt-1">${tone}</div>
               </div>
             </div>
+            <canvas id="chart-${signal.name.replace(/\s+/g, '-')}" height="40"></canvas>
             <div class="mini-bar-track mb-3">
               <div class="mini-bar-fill" style="width:${pct}%; background:${color};"></div>
             </div>
