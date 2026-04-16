@@ -672,11 +672,11 @@
 const gaugeValue = document.getElementById("gaugeValue");
 
 if (engine.positivePercent >= 75) {
-  gaugeValue.style.color = "var(--positive)";
+  gaugeValue.style.color = "color-mix(in srgb, var(--positive) 75%, white 25%)";
 } else if (engine.positivePercent <= 42) {
-  gaugeValue.style.color = "var(--negative)";
+  gaugeValue.style.color = "color-mix(in srgb, var(--negative) 75%, white 25%)";
 } else {
-  gaugeValue.style.color = "var(--warning)";
+  gaugeValue.style.color = "color-mix(in srgb, var(--warning) 75%, white 25%)";
 }
       const pill = document.getElementById("statusPill");
       pill.textContent = engine.status;
