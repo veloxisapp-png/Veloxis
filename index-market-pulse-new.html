@@ -584,30 +584,35 @@
     }
 
     const signals = [
-      { name: "Dollar", symbol: "USD Index", value: "104.85", change: 0.32, weight: 1.35, direction: "negative", impactLabel: "Broad pressure across risk assets" },
-      { name: "Yields", symbol: "US 10Y Yield", value: "4.28%", change: 0.14, weight: 1.25, direction: "negative", impactLabel: "Tighter conditions and valuation pressure" },
-      { name: "Gold", symbol: "Gold", value: "$2,652", change: 0.90, weight: 0.70, direction: "negative", impactLabel: "Defensive capital still respected" },
-      { name: "Bitcoin", symbol: "Bitcoin", value: "$67,420", change: 2.30, weight: 0.95, direction: "positive", impactLabel: "Risk-on participation remains alive" },
-      { name: "Oil", symbol: "Crude Oil", value: "$78.40", change: -1.80, weight: 0.85, direction: "positive", impactLabel: "Softer energy reduces macro pressure" },
-      { name: "Bonds", symbol: "Treasury Bonds", value: "TLT 91.62", change: 0.41, weight: 0.65, direction: "positive", impactLabel: "Bond stabilization offsets some stress" }
-    ];
+  { name: "USD", change: 0.32, weight: 1.5, type: "negative" },
+  { name: "2Y", change: 0.12, weight: 1.6, type: "negative" },
+  { name: "10Y", change: 0.14, weight: 1.4, type: "negative" },
+  { name: "Gold", change: 0.90, weight: 0.8, type: "negative" },
+  { name: "Oil", change: -1.80, weight: 0.7, type: "positive" },
+  { name: "Bonds", change: 0.41, weight: 0.9, type: "positive" },
+  { name: "Bitcoin", change: 2.30, weight: 1.0, type: "positive" }
+];
 
     function contribution(signal) {
       return Math.abs(signal.change) * signal.weight;
     }
 
     function buildEngine() {
-      const negatives = signals.filter(s => s.direction === "negative");
-      const positives = signals.filter(s => s.direction === "positive");
+      let positive = 0;
+let negative = 0;
 
-      const negativeRaw = negatives.reduce((sum, s) => sum + contribution(s), 0);
-      const positiveRaw = positives.reduce((sum, s) => sum + contribution(s), 0);
-      const totalRaw = negativeRaw + positiveRaw;
+signals.forEach(s => {
+  const impact = Math.abs(s.change) * s.weight;
 
-      const positivePercent = totalRaw ? Math.round((positiveRaw / totalRaw) * 100) : 50;
+  if (s.direction === "positive") {
+    positive += impact;
+  } else {
+    negative += impact;
+  }
+});
 
-      const sortedNegative = [...negatives].sort((a, b) => contribution(b) - contribution(a));
-      const sortedPositive = [...positives].sort((a, b) => contribution(b) - contribution(a));
+const totalRaw = positive + negative;
+const positivePercent = totalRaw ? Math.round((positive / totalRaw) * 100) : 50;
 
       let riskTone = "Mixed";
       let bias = "Balanced";
