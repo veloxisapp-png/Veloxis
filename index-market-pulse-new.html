@@ -848,7 +848,13 @@ function createMiniChart(id, data, color) {
   });
 }
 
-signals.forEach(signal => {
+
+    const engine = buildEngine();
+    renderSummary(engine);
+    renderInsight(engine);
+    renderDistribution();
+    renderDrivers();
+    signals.forEach(signal => {
   const chartId = `chart-${signal.name.replace(/\s+/g, '-')}`;
   const color = signal.direction === "positive" ? "#22c55e" : "#f97316";
 
@@ -864,11 +870,6 @@ signals.forEach(signal => {
 
   createMiniChart(chartId, data, color);
 });
-    const engine = buildEngine();
-    renderSummary(engine);
-    renderInsight(engine);
-    renderDistribution();
-    renderDrivers();
   </script>
 </body>
 </html>
