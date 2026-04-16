@@ -110,6 +110,10 @@
       box-shadow: 0 12px 24px rgba(15,23,42,0.10);
     }
 
+    .dist-card {
+      cursor: pointer;
+    }
+
     .top-strip,
     .hero-grid,
     .mid-grid,
@@ -212,27 +216,20 @@
       pointer-events: none;
     }
 
-.rect-gauge-marker {
-  position: absolute;
-  top: 14px;
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 8px solid #9ca3af;
-  transform: translateX(-50%);
-  transition: left .35s ease;
-}
-    .rect-gauge-marker::after {
-      content: non;
+    .rect-gauge-marker {
       position: absolute;
-      left: 50%;
-      top: 18px;
+      top: 14px;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 8px solid #9ca3af;
       transform: translateX(-50%);
-      width: 2px;
-      height: 14px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--text) 40%, transparent);
+      transition: left .35s ease;
+    }
+
+    .rect-gauge-marker::after {
+      content: none;
     }
 
     .rect-gauge-scale {
@@ -292,6 +289,14 @@
       transform: translateX(0);
     }
 
+    .modal-hidden {
+      display: none;
+    }
+
+    .modal-visible {
+      display: flex;
+    }
+
     @media (min-width: 768px) {
       .top-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .drivers-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -304,10 +309,6 @@
       .mid-grid { grid-template-columns: 4fr 8fr; }
       .distribution-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
-    .mini-chart-wrap {
-  height: 44px;
-  margin-bottom: 12px;
-}
   </style>
 </head>
 <body class="dark" id="main-body">
@@ -483,7 +484,7 @@
             </div>
             <div class="summary-card panel-soft rounded-2xl px-4 py-3">
               <div class="muted mb-1">Net Drivers</div>
-              <div class="font-semibold">6 Active Inputs</div>
+              <div class="font-semibold">7 Active Inputs</div>
             </div>
           </div>
         </div>
@@ -569,6 +570,28 @@
     </section>
   </main>
 
+  <div id="miniChartModal" class="modal-hidden fixed inset-0 z-[999] bg-black/60 items-center justify-center px-4">
+    <div class="panel rounded-3xl w-full max-w-md p-5 relative">
+      <button
+        onclick="closeMiniChart()"
+        class="absolute top-3 right-3 panel-soft rounded-lg px-3 py-1 text-sm"
+        style="color: var(--text);"
+      >
+        Close
+      </button>
+
+      <div class="mb-4">
+        <div class="text-sm muted mb-1" id="miniChartLabel">Signal</div>
+        <div class="text-xl font-semibold" id="miniChartTitle">Mini Chart</div>
+        <div class="text-sm muted mt-2" id="miniChartNote">1H fixed view</div>
+      </div>
+
+      <div style="height: 220px;">
+        <canvas id="miniChartCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+
   <script>
     function toggleTheme() {
       document.getElementById("main-body").classList.toggle("dark");
@@ -589,133 +612,133 @@
     }
 
     const signals = [
-  {
-    name: "USD",
-    symbol: "USD Index",
-    value: "104.85",
-    change: 0.32,
-    weight: 1.5,
-    direction: "negative",
-    impactLabel: "Broad pressure across risk assets"
-  },
-  {
-    name: "2Y Yield",
-    symbol: "US 2Y Yield",
-    value: "4.65%",
-    change: 0.12,
-    weight: 1.6,
-    direction: "negative",
-    impactLabel: "Fed-sensitive front-end pressure"
-  },
-  {
-    name: "10Y Yield",
-    symbol: "US 10Y Yield",
-    value: "4.28%",
-    change: 0.14,
-    weight: 1.4,
-    direction: "negative",
-    impactLabel: "Tighter conditions and valuation pressure"
-  },
-  {
-    name: "Gold",
-    symbol: "Gold",
-    value: "$2,652",
-    change: 0.90,
-    weight: 0.8,
-    direction: "negative",
-    impactLabel: "Defensive capital still respected"
-  },
-  {
-    name: "Oil",
-    symbol: "Crude Oil",
-    value: "$78.40",
-    change: -1.80,
-    weight: 0.7,
-    direction: "positive",
-    impactLabel: "Softer energy reduces macro pressure"
-  },
-  {
-    name: "Bonds",
-    symbol: "Treasury Bonds",
-    value: "TLT 91.62",
-    change: 0.41,
-    weight: 0.9,
-    direction: "positive",
-    impactLabel: "Bond stabilization offsets some stress"
-  },
-  {
-    name: "Bitcoin",
-    symbol: "Bitcoin",
-    value: "$67,420",
-    change: 2.30,
-    weight: 1.0,
-    direction: "positive",
-    impactLabel: "Risk-on participation remains alive"
-  }
-];
+      {
+        name: "USD",
+        symbol: "USD Index",
+        value: "104.85",
+        change: 0.32,
+        weight: 1.5,
+        direction: "negative",
+        impactLabel: "Broad pressure across risk assets"
+      },
+      {
+        name: "2Y Yield",
+        symbol: "US 2Y Yield",
+        value: "4.65%",
+        change: 0.12,
+        weight: 1.6,
+        direction: "negative",
+        impactLabel: "Fed-sensitive front-end pressure"
+      },
+      {
+        name: "10Y Yield",
+        symbol: "US 10Y Yield",
+        value: "4.28%",
+        change: 0.14,
+        weight: 1.4,
+        direction: "negative",
+        impactLabel: "Tighter conditions and valuation pressure"
+      },
+      {
+        name: "Gold",
+        symbol: "Gold",
+        value: "$2,652",
+        change: 0.90,
+        weight: 0.8,
+        direction: "negative",
+        impactLabel: "Defensive capital still respected"
+      },
+      {
+        name: "Oil",
+        symbol: "Crude Oil",
+        value: "$78.40",
+        change: -1.80,
+        weight: 0.7,
+        direction: "positive",
+        impactLabel: "Softer energy reduces macro pressure"
+      },
+      {
+        name: "Bonds",
+        symbol: "Treasury Bonds",
+        value: "TLT 91.62",
+        change: 0.41,
+        weight: 0.9,
+        direction: "positive",
+        impactLabel: "Bond stabilization offsets some stress"
+      },
+      {
+        name: "Bitcoin",
+        symbol: "Bitcoin",
+        value: "$67,420",
+        change: 2.30,
+        weight: 1.0,
+        direction: "positive",
+        impactLabel: "Risk-on participation remains alive"
+      }
+    ];
 
     function contribution(signal) {
       return Math.abs(signal.change) * signal.weight;
     }
 
-function buildEngine() {
-  let positive = 0;
-  let negative = 0;
+    function buildEngine() {
+      let positive = 0;
+      let negative = 0;
 
-  const negatives = signals.filter(s => s.direction === "negative");
-  const positives = signals.filter(s => s.direction === "positive");
+      const negatives = signals.filter(s => s.direction === "negative");
+      const positives = signals.filter(s => s.direction === "positive");
 
-  signals.forEach(s => {
-    const impact = Math.abs(s.change) * s.weight;
+      signals.forEach(s => {
+        const impact = Math.abs(s.change) * s.weight;
 
-    if (s.direction === "positive") {
-      positive += impact;
-    } else {
-      negative += impact;
+        if (s.direction === "positive") {
+          positive += impact;
+        } else {
+          negative += impact;
+        }
+      });
+
+      const totalRaw = positive + negative;
+      const positivePercent = totalRaw ? Math.round((positive / totalRaw) * 100) : 50;
+
+      const sortedNegative = [...negatives].sort(
+        (a, b) => (Math.abs(b.change) * b.weight) - (Math.abs(a.change) * a.weight)
+      );
+      const sortedPositive = [...positives].sort(
+        (a, b) => (Math.abs(b.change) * b.weight) - (Math.abs(a.change) * a.weight)
+      );
+
+      let riskTone = "Mixed";
+      let bias = "Balanced";
+      let status = "Balanced";
+
+      if (positivePercent >= 75) {
+        riskTone = "Risk-On";
+        bias = "Constructive Advance";
+        status = "Constructive";
+      } else if (positivePercent >= 58) {
+        riskTone = "Mixed";
+        bias = "Constructive Tilt";
+        status = "Balanced Positive";
+      } else if (positivePercent <= 30) {
+        riskTone = "Defensive";
+        bias = "Pressure Dominant";
+        status = "High Stress";
+      } else if (positivePercent <= 42) {
+        riskTone = "Mixed";
+        bias = "Defensive Rotation";
+        status = "Balanced Defensive";
+      }
+
+      return {
+        positivePercent,
+        riskTone,
+        bias,
+        status,
+        mainPressure: sortedNegative.slice(0, 2).map(s => s.name).join(" + "),
+        offsetting: sortedPositive.slice(0, 2).map(s => s.name).join(" + ")
+      };
     }
-  });
-
-  const totalRaw = positive + negative;
-  const positivePercent = totalRaw ? Math.round((positive / totalRaw) * 100) : 50;
-
-  const sortedNegative = [...negatives].sort(
-    (a, b) => (Math.abs(b.change) * b.weight) - (Math.abs(a.change) * a.weight)
-  );
-  const sortedPositive = [...positives].sort(
-    (a, b) => (Math.abs(b.change) * b.weight) - (Math.abs(a.change) * a.weight)
-  );
-
-  let riskTone = "Mixed";
-  let bias = "Balanced";
-  let status = "Balanced";
-
-  if (positivePercent >= 75) {
-    riskTone = "Risk-On";
-    bias = "Constructive Advance";
-    status = "Constructive";
-  } else if (positivePercent >= 58) {
-    riskTone = "Mixed";
-    bias = "Constructive Tilt";
-    status = "Balanced Positive";
-  } else if (positivePercent <= 30) {
-    riskTone = "Defensive";
-    bias = "Pressure Dominant";
-    status = "High Stress";
-  } else if (positivePercent <= 42) {
-    riskTone = "Mixed";
-    bias = "Defensive Rotation";
-    status = "Balanced Defensive";
-  }
-
-  return {
-    positivePercent,
-    riskTone,
-    bias,
-    status,
-    mainPressure: sortedNegative.slice(0, 2).map(s => s.name).join(" + "),
-    offsetting: sortedPositive.slice(0, 2).map(s => s.name).join(" + ")
-  };
-}
 
     function statusColor(status) {
       const s = status.toLowerCase();
@@ -741,15 +764,17 @@ function buildEngine() {
       document.getElementById("gaugeValue").textContent = engine.positivePercent;
       document.getElementById("balanceText").textContent = engine.status;
       document.getElementById("gaugeStateText").textContent = engine.status;
-const gaugeValue = document.getElementById("gaugeValue");
 
-if (engine.positivePercent >= 75) {
-  gaugeValue.style.color = "color-mix(in srgb, var(--positive) 75%, white 25%)";
-} else if (engine.positivePercent <= 42) {
-  gaugeValue.style.color = "color-mix(in srgb, var(--negative) 75%, white 25%)";
-} else {
-  gaugeValue.style.color = "color-mix(in srgb, var(--warning) 75%, white 25%)";
-}
+      const gaugeValue = document.getElementById("gaugeValue");
+
+      if (engine.positivePercent >= 75) {
+        gaugeValue.style.color = "color-mix(in srgb, var(--positive) 75%, white 25%)";
+      } else if (engine.positivePercent <= 42) {
+        gaugeValue.style.color = "color-mix(in srgb, var(--negative) 75%, white 25%)";
+      } else {
+        gaugeValue.style.color = "color-mix(in srgb, var(--warning) 75%, white 25%)";
+      }
+
       const pill = document.getElementById("statusPill");
       pill.textContent = engine.status;
       pill.style.color = statusColor(engine.status);
@@ -776,8 +801,7 @@ if (engine.positivePercent >= 75) {
         const tone = signal.direction === "positive" ? "Supportive" : "Pressure";
 
         return `
-          <div class="dist-card panel-soft rounded-2xl p-4">
-           
+          <div class="dist-card panel-soft rounded-2xl p-4 cursor-pointer" onclick="openMiniChart('${signal.name.replace(/'/g, "\\'")}')">
             <div class="flex items-start justify-between gap-3 mb-3">
               <div>
                 <div class="text-sm muted">${signal.name}</div>
@@ -790,10 +814,11 @@ if (engine.positivePercent >= 75) {
                 <div class="text-xs muted mt-1">${tone}</div>
               </div>
             </div>
-         
+
             <div class="mini-bar-track mb-3">
               <div class="mini-bar-fill" style="width:${pct}%; background:${color};"></div>
             </div>
+
             <div class="text-sm muted leading-6">${signal.impactLabel}</div>
           </div>
         `;
@@ -821,29 +846,147 @@ if (engine.positivePercent >= 75) {
       }).join("");
     }
 
+    let miniChartInstance = null;
 
+    function getMiniChartData(signalName) {
+      if (signalName === "USD") {
+        return {
+          data: [100, 101, 101.5, 102.2, 103.1, 104.0, 104.85],
+          color: "#f97316",
+          note: "1H fixed view · Dollar pressure remains elevated."
+        };
+      }
+
+      if (signalName === "2Y Yield") {
+        return {
+          data: [4.10, 4.18, 4.25, 4.33, 4.42, 4.55, 4.65],
+          color: "#f97316",
+          note: "1H fixed view · Front-end yields remain firm."
+        };
+      }
+
+      if (signalName === "10Y Yield") {
+        return {
+          data: [4.00, 4.05, 4.08, 4.12, 4.18, 4.22, 4.28],
+          color: "#f97316",
+          note: "1H fixed view · Long-end pressure still building."
+        };
+      }
+
+      if (signalName === "Gold") {
+        return {
+          data: [2580, 2595, 2610, 2622, 2635, 2644, 2652],
+          color: "#f97316",
+          note: "1H fixed view · Defensive bid remains active."
+        };
+      }
+
+      if (signalName === "Oil") {
+        return {
+          data: [81.8, 81.2, 80.7, 80.0, 79.4, 78.9, 78.4],
+          color: "#22c55e",
+          note: "1H fixed view · Lower oil is easing macro pressure."
+        };
+      }
+
+      if (signalName === "Bonds") {
+        return {
+          data: [89.8, 90.2, 90.7, 91.0, 91.2, 91.4, 91.62],
+          color: "#22c55e",
+          note: "1H fixed view · Bond stabilization supports balance."
+        };
+      }
+
+      if (signalName === "Bitcoin") {
+        return {
+          data: [64200, 64800, 65400, 66100, 66600, 67000, 67420],
+          color: "#22c55e",
+          note: "1H fixed view · Risk appetite remains constructive."
+        };
+      }
+
+      return {
+        data: [10, 11, 12, 11, 13, 14, 15],
+        color: "#60a5fa",
+        note: "1H fixed view"
+      };
+    }
+
+    function openMiniChart(signalName) {
+      const modal = document.getElementById("miniChartModal");
+      const title = document.getElementById("miniChartTitle");
+      const label = document.getElementById("miniChartLabel");
+      const note = document.getElementById("miniChartNote");
+      const canvas = document.getElementById("miniChartCanvas");
+
+      const payload = getMiniChartData(signalName);
+
+      label.textContent = "Market Pressure Map";
+      title.textContent = signalName;
+      note.textContent = payload.note;
+
+      modal.classList.remove("modal-hidden");
+      modal.classList.add("modal-visible");
+
+      if (miniChartInstance) {
+        miniChartInstance.destroy();
+      }
+
+      const ctx = canvas.getContext("2d");
+
+      miniChartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: payload.data.map((_, i) => i + 1),
+          datasets: [{
+            data: payload.data,
+            borderColor: payload.color,
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.35,
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+          },
+          scales: {
+            x: {
+              display: false,
+              grid: { display: false },
+              border: { display: false }
+            },
+            y: {
+              display: false,
+              grid: { display: false },
+              border: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    function closeMiniChart() {
+      const modal = document.getElementById("miniChartModal");
+      modal.classList.remove("modal-visible");
+      modal.classList.add("modal-hidden");
+
+      if (miniChartInstance) {
+        miniChartInstance.destroy();
+        miniChartInstance = null;
+      }
+    }
 
     const engine = buildEngine();
     renderSummary(engine);
     renderInsight(engine);
     renderDistribution();
     renderDrivers();
-    signals.forEach(signal => {
-  const chartId = `chart-${signal.name.replace(/\s+/g, '-')}`;
-  const color = signal.direction === "positive" ? "#22c55e" : "#f97316";
-
-  let data = [10, 12, 11, 13, 12, 14, 15];
-
-  if (signal.name === "USD") data = [100, 101, 101.5, 102.2, 103.1, 104.0, 104.85];
-  if (signal.name === "2Y Yield") data = [4.10, 4.18, 4.25, 4.33, 4.42, 4.55, 4.65];
-  if (signal.name === "10Y Yield") data = [4.00, 4.05, 4.08, 4.12, 4.18, 4.22, 4.28];
-  if (signal.name === "Gold") data = [2580, 2595, 2610, 2622, 2635, 2644, 2652];
-  if (signal.name === "Oil") data = [81.8, 81.2, 80.7, 80.0, 79.4, 78.9, 78.4];
-  if (signal.name === "Bonds") data = [89.8, 90.2, 90.7, 91.0, 91.2, 91.4, 91.62];
-  if (signal.name === "Bitcoin") data = [64200, 64800, 65400, 66100, 66600, 67000, 67420];
-
-  createMiniChart(chartId, data, color);
-});
   </script>
 </body>
 </html>
