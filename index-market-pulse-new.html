@@ -211,18 +211,20 @@
       pointer-events: none;
     }
 
-    .rect-gauge-marker {
-      position: absolute;
-      top: 50%;
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: var(--panel);
-      border: 3px solid var(--text);
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--panel) 82%, transparent);
-      transition: left .35s ease;
-    }
+.rect-gauge-marker {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 2px solid rgba(255,255,255,0.72);
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,0.05),
+    0 4px 10px rgba(0,0,0,0.28);
+  transition: left .35s ease;
+}
 
     .rect-gauge-marker::after {
       content: "";
@@ -667,7 +669,15 @@
       document.getElementById("gaugeValue").textContent = engine.positivePercent;
       document.getElementById("balanceText").textContent = engine.status;
       document.getElementById("gaugeStateText").textContent = engine.status;
+const gaugeValue = document.getElementById("gaugeValue");
 
+if (engine.positivePercent >= 75) {
+  gaugeValue.style.color = "var(--positive)";
+} else if (engine.positivePercent <= 42) {
+  gaugeValue.style.color = "var(--negative)";
+} else {
+  gaugeValue.style.color = "var(--warning)";
+}
       const pill = document.getElementById("statusPill");
       pill.textContent = engine.status;
       pill.style.color = statusColor(engine.status);
