@@ -149,7 +149,7 @@
     }
   </style>
 </head>
-<body class="dark" id="app-body">
+<body class="dark" id="main-body">
   <header class="border-b sticky top-0 z-40" style="border-color:var(--border); background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(10px);">
     <div class="max-w-7xl mx-auto px-4 lg:px-8">
       <div class="h-16 flex items-center justify-between gap-4">
@@ -216,10 +216,11 @@
         </div>
         <div class="flex flex-col gap-4">
           <a href="index.html" class="nav-link">Market Pulse</a>
-          <a href="analysis.html" class="nav-link">Analysis</a>
-          <a href="strategy.html" class="nav-link">Strategy Lab</a>
-          <a href="news.html" class="nav-link">News</a>
-          <a href="top-movers.html" class="nav-link active">Top Movers</a>
+<a href="analysis.html" class="nav-link">Analysis</a>
+<a href="veloxis-options-flow.html" class="nav-link">Options Flow</a>
+<a href="strategy.html" class="nav-link">Strategy Lab</a>
+<a href="news.html" class="nav-link">News</a>
+<a href="top-movers.html" class="nav-link active">Top Movers</a>
         </div>
       </div>
     </div>
@@ -519,9 +520,7 @@
       { symbol:"META", price:"502.70", change:"-2.95%", volume:"47M", type:"loser", title:"Weakness Structure" }
     ];
 
-    function toggleTheme() {
-      document.getElementById("app-body").classList.toggle("dark");
-    }
+    
 
     function toggleMobileMenu() {
       const wrap = document.getElementById("mobileMenuWrap");
