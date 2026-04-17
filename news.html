@@ -153,7 +153,7 @@
     }
   </style>
 </head>
-<body class="dark" id="app-body">
+<body class="dark" id="main-body">
   <header class="border-b" style="border-color:var(--border);">
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <div class="h-16 flex items-center justify-between gap-6">
@@ -396,9 +396,7 @@
     let activeCategory = "All";
     let activeImpact = "All";
 
-    function toggleTheme() {
-      document.getElementById("app-body").classList.toggle("dark");
-    }
+    
 
     function setCategory(event, category) {
       activeCategory = category;
