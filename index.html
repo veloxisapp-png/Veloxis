@@ -3,33 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Veloxis - Market Intelligence</title>
+  <title>Veloxis — Market Pulse</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
-      --bg: #fafafa;
+      --bg: #f4f7fb;
+      --bg-soft: #edf2f8;
       --panel: #ffffff;
-      --panel-2: #f5f5f5;
+      --panel-soft: #f8fafc;
       --border: #e5e7eb;
-      --text: #111827;
-      --muted: #6b7280;
+      --text: #0f172a;
+      --muted: #64748b;
       --accent: #2563eb;
       --positive: #16a34a;
       --negative: #dc2626;
-      --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      --warning: #b45309;
+      --shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+
+      --gauge-left: #6b2d37;
+      --gauge-mid-left: #7b6230;
+      --gauge-mid-right: #5d7440;
+      --gauge-right: #295c45;
     }
 
     body.dark {
-      --bg: #09090b;
-      --panel: #111827;
-      --panel-2: #18181b;
-      --border: #27272a;
-      --text: #f4f4f5;
-      --muted: #a1a1aa;
+      --bg: #070b14;
+      --bg-soft: #0b1120;
+      --panel: #0f172a;
+      --panel-soft: #111827;
+      --border: rgba(255,255,255,0.08);
+      --text: #f8fafc;
+      --muted: #94a3b8;
       --accent: #60a5fa;
       --positive: #22c55e;
-      --negative: #ef4444;
-      --shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+      --negative: #f87171;
+      --warning: #f59e0b;
+      --shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
     }
 
     * { box-sizing: border-box; }
@@ -37,9 +47,11 @@
     body {
       margin: 0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
+      background:
+        radial-gradient(circle at top center, rgba(37,99,235,0.05), transparent 24%),
+        var(--bg);
       color: var(--text);
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: background .2s ease, color .2s ease;
     }
 
     .panel {
@@ -49,18 +61,21 @@
     }
 
     .panel-soft {
-      background: var(--panel-2);
+      background: var(--panel-soft);
       border: 1px solid var(--border);
     }
+
+    .muted { color: var(--muted); }
 
     .nav-link {
       position: relative;
       color: var(--muted);
       text-decoration: none;
-      font-size: 0.96rem;
+      font-size: .96rem;
       font-weight: 500;
-      padding: 0.4rem 0;
-      transition: color 0.2s ease;
+      padding: .4rem 0;
+      transition: color .2s ease;
+      white-space: nowrap;
     }
 
     .nav-link:hover,
@@ -72,129 +87,354 @@
       content: "";
       position: absolute;
       left: 0;
-      bottom: -0.9rem;
-      width: 100%;
+      right: 0;
+      bottom: -.9rem;
       height: 2px;
       background: var(--accent);
       border-radius: 999px;
     }
 
     .metric-card,
-    .driver-card {
-      transition: transform 0.2s ease, border-color 0.2s ease;
+    .driver-card,
+    .dist-card,
+    .summary-card {
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
     }
 
     .metric-card:hover,
-    .driver-card:hover {
+    .driver-card:hover,
+    .dist-card:hover,
+    .summary-card:hover {
       transform: translateY(-2px);
-      border-color: rgba(96, 165, 250, 0.35);
+      border-color: rgba(96,165,250,0.20);
+      box-shadow: 0 12px 24px rgba(15,23,42,0.10);
     }
 
-    .muted { color: var(--muted); }
-
-    .page { display: none; }
-    .page.active { display: block; }
-
-    .thin-scroll::-webkit-scrollbar {
-      height: 8px;
-      width: 8px;
+    .dist-card {
+      cursor: pointer;
     }
 
-    .thin-scroll::-webkit-scrollbar-thumb {
-      background: #3f3f46;
+    .top-strip,
+    .hero-grid,
+    .mid-grid,
+    .drivers-grid,
+    .distribution-grid,
+    .assets-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .top-strip,
+    .hero-grid,
+    .mid-grid,
+    .drivers-grid,
+    .distribution-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .assets-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .desktop-nav::-webkit-scrollbar { height: 8px; }
+    .desktop-nav::-webkit-scrollbar-thumb {
+      background: #475569;
       border-radius: 999px;
     }
 
-    @media (max-width: 960px) {
-      .desktop-nav {
-        overflow-x: auto;
-        white-space: nowrap;
-      }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: .55rem .95rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+      font-size: .88rem;
+      font-weight: 700;
+    }
+
+    .rect-gauge-shell {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .rect-gauge-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .rect-gauge-value {
+      font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: color-mix(in srgb, var(--text) 75%, var(--muted));
+      opacity: 0.92;
+    }
+
+    .rect-gauge-sub {
+      font-size: .72rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: .4rem;
+    }
+
+    .rect-gauge-track-wrap {
+      position: relative;
+      padding: 10px 0 4px 0;
+    }
+
+    .rect-gauge-track {
+      position: relative;
+      width: 100%;
+      height: 18px;
+      border-radius: 999px;
+      background:
+        linear-gradient(
+          90deg,
+          var(--gauge-left) 0%,
+          var(--gauge-mid-left) 34%,
+          var(--gauge-mid-right) 66%,
+          var(--gauge-right) 100%
+        );
+      border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+      overflow: visible;
+    }
+
+    .rect-gauge-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      pointer-events: none;
+    }
+
+    .rect-gauge-marker {
+      position: absolute;
+      top: 14px;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 8px solid #9ca3af;
+      transform: translateX(-50%);
+      transition: left .35s ease;
+    }
+
+    .rect-gauge-marker::after {
+      content: none;
+    }
+
+    .rect-gauge-scale {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      gap: .5rem;
+      margin-top: .85rem;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .rect-gauge-scale span {
+      white-space: nowrap;
+    }
+
+    .rect-gauge-ticks {
+      position: absolute;
+      top: 2px;
+      left: 0;
+      right: 0;
+      height: 26px;
+      pointer-events: none;
+    }
+
+    .rect-gauge-tick {
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      transform: translateX(-50%);
+    }
+
+    .mini-bar-track {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--muted) 18%, transparent);
+      overflow: hidden;
+    }
+
+    .mini-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width .35s ease;
+    }
+
+    .mobile-drawer {
+      transform: translateX(100%);
+      transition: transform .22s ease;
+    }
+
+    .mobile-drawer.open {
+      transform: translateX(0);
+    }
+
+    .modal-hidden {
+      display: none;
+    }
+
+    .modal-visible {
+      display: flex;
+    }
+
+    @media (min-width: 768px) {
+      .top-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .drivers-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .distribution-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .assets-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    @media (min-width: 1280px) {
+      .hero-grid { grid-template-columns: 7fr 5fr; }
+      .mid-grid { grid-template-columns: 4fr 8fr; }
+      .distribution-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
   </style>
 </head>
 <body class="dark" id="main-body">
-  <header class="sticky top-0 z-50 border-b backdrop-blur supports-[backdrop-filter]:bg-black/10" style="border-color: var(--border); background: color-mix(in srgb, var(--bg) 88%, transparent);">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <div class="h-16 flex items-center justify-between gap-6">
-        <!-- Logo -->
-        <div class="flex items-center min-w-fit">
+  <header
+    class="sticky top-0 z-50 border-b backdrop-blur"
+    style="border-color: var(--border); background: color-mix(in srgb, var(--bg) 88%, transparent);"
+  >
+    <div class="max-w-7xl mx-auto px-4 lg:px-8">
+      <div class="h-16 flex items-center justify-between gap-4">
+        <div class="flex items-center min-w-fit gap-3">
           <img
             src="/mnt/data/8478C569-50B4-4693-9D56-5F10688E24B3.jpeg"
             alt="Veloxis logo"
-            class="h-9 w-auto object-contain"
+            class="h-8 lg:h-9 w-auto object-contain"
+            onerror="this.style.display='none';document.getElementById('fallback-logo').style.display='flex';"
           />
+          <div id="fallback-logo" class="hidden h-8 w-8 items-center justify-center rounded-lg panel-soft text-sm font-bold">V</div>
         </div>
 
-        <!-- Navigation -->
-        <nav class="desktop-nav flex items-center gap-7 flex-1 justify-center thin-scroll">
-          <a href="#" class="nav-link active" id="tab-market-pulse" onclick="showPage('market-pulse'); return false;">Market Pulse</a>
-          <a href="#" class="nav-link" id="tab-analysis" onclick="showPage('analysis'); return false;">Analysis</a>
-          <a href="#" class="nav-link" id="tab-strategy-lab" onclick="showPage('strategy-lab'); return false;">Strategy Lab</a>
-          <a href="#" class="nav-link" id="tab-news" onclick="showPage('news'); return false;">News</a>
-          <a href="#" class="nav-link" id="tab-top-movers" onclick="showPage('top-movers'); return false;">Top Movers</a>
+        <nav class="desktop-nav hidden lg:flex items-center gap-7 flex-1 justify-center overflow-x-auto">
+          <a href="#" class="nav-link active">Market Pulse</a>
+          <a href="analysis.html" class="nav-link">Analysis</a>
+          <a href="strategy.html" class="nav-link">Strategy Lab</a>
+          <a href="news.html" class="nav-link">News</a>
+          <a href="top-movers.html" class="nav-link">Top Movers</a>
         </nav>
 
-        <!-- Theme Toggle -->
-        <div class="min-w-fit">
+        <div class="hidden lg:flex items-center gap-2">
           <button
             onclick="toggleTheme()"
             class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
             style="color: var(--text);"
-            aria-label="Toggle theme"
           >
             Theme
           </button>
+        </div>
+
+        <div class="flex lg:hidden items-center gap-2">
+          <button
+            onclick="toggleTheme()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color: var(--text);"
+          >
+            Theme
+          </button>
+          <button
+            onclick="toggleMobileMenu()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color: var(--text);"
+          >
+            Menu
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mobileMenuWrap" class="fixed inset-0 z-50 hidden lg:hidden">
+      <div class="absolute inset-0 bg-black/40" onclick="toggleMobileMenu()"></div>
+      <div
+        id="mobileDrawer"
+        class="mobile-drawer absolute right-0 top-0 h-full w-[82%] max-w-[340px] panel p-5"
+      >
+        <div class="flex items-center justify-between mb-6">
+          <div class="font-semibold text-lg">Navigation</div>
+          <button onclick="toggleMobileMenu()" class="panel-soft rounded-xl px-3 py-2 text-sm">Close</button>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <a href="#" class="nav-link active">Market Pulse</a>
+          <a href="analysis.html" class="nav-link">Analysis</a>
+          <a href="strategy.html" class="nav-link">Strategy Lab</a>
+          <a href="news.html" class="nav-link">News</a>
+          <a href="top-movers.html" class="nav-link">Top Movers</a>
         </div>
       </div>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-5 lg:px-8 py-6 lg:py-8">
-    <!-- MARKET PULSE -->
-    <section id="page-market-pulse" class="page active">
-      <!-- Top strip -->
-      <div class="panel rounded-2xl px-4 py-3 mb-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
+  <main class="max-w-7xl mx-auto px-4 lg:px-8 py-5 lg:py-8">
+    <section class="space-y-6">
+      <div class="panel rounded-2xl p-3 lg:p-4">
+        <div class="top-strip text-sm">
+          <div class="summary-card panel-soft rounded-xl px-4 py-3 flex items-center justify-between">
             <span class="muted">Sentiment Ratio</span>
-            <span class="font-semibold">62%</span>
+            <span class="font-semibold" id="topSentiment">0%</span>
           </div>
-          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
+          <div class="summary-card panel-soft rounded-xl px-4 py-3 flex items-center justify-between">
             <span class="muted">Risk Tone</span>
-            <span class="font-semibold">Mixed</span>
+            <span class="font-semibold" id="topRiskTone">Neutral</span>
           </div>
-          <div class="flex items-center justify-between panel-soft rounded-xl px-4 py-3">
+          <div class="summary-card panel-soft rounded-xl px-4 py-3 flex items-center justify-between">
             <span class="muted">Session Bias</span>
-            <span class="font-semibold">Defensive Rotation</span>
+            <span class="font-semibold" id="topBias">Balanced</span>
           </div>
         </div>
       </div>
 
-      <!-- Hero -->
-      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
-        <div class="xl:col-span-7 panel rounded-3xl p-6 lg:p-8">
-          <div class="max-w-2xl">
-            <p class="text-sm font-medium mb-3" style="color: var(--accent);">Cross-Asset Market View</p>
-            <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Market Pulse</h1>
-            <p class="text-base lg:text-lg leading-8 muted mb-5">
-              A real-time view of cross-asset pressure using major macro signals, alternative risk assets,
-              bond yields, and treasury behavior in one compact market framework.
-            </p>
-            <div class="panel-soft rounded-2xl px-4 py-4">
-              <p class="text-sm lg:text-[15px] leading-7">
-                Veloxis reads the market through a live weighted ratio. The wheel reflects the current balance
-                of key signals, while the insight card explains what is driving the move.
-              </p>
+      <div class="hero-grid">
+        <div class="panel rounded-3xl p-6 lg:p-8">
+          <p class="text-sm font-medium mb-3" style="color: var(--accent);">Cross-Asset Market View</p>
+          <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Market Pulse</h1>
+          <p class="text-base lg:text-lg leading-8 muted mb-6">
+            A live market engine built from weighted cross-asset inputs. Veloxis converts macro pressure into a cleaner signal for faster decision-making.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="summary-card panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Market Status</div>
+              <div class="text-lg font-semibold" id="summaryMarketStatus">Balanced</div>
+            </div>
+            <div class="summary-card panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Primary Pressure</div>
+              <div class="text-lg font-semibold" id="summaryPressure">-</div>
+            </div>
+            <div class="summary-card panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Primary Support</div>
+              <div class="text-lg font-semibold" id="summarySupport">-</div>
             </div>
           </div>
         </div>
 
-        <div class="xl:col-span-5 panel rounded-3xl p-6 lg:p-8">
-          <div class="flex items-start justify-between gap-4 mb-6">
+        <div class="panel rounded-3xl p-6 lg:p-8">
+          <div class="flex items-start justify-between gap-4 mb-5">
             <div>
               <p class="text-sm muted mb-1">Live Market Ratio</p>
-              <h2 class="text-2xl font-semibold">Composite Wheel</h2>
+              <h2 class="text-2xl font-semibold">Signal Gauge</h2>
             </div>
             <div class="text-right">
               <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
@@ -202,187 +442,124 @@
             </div>
           </div>
 
-          <div class="flex justify-center mb-6">
-            <div class="relative w-64 h-64">
-              <svg viewBox="0 0 220 220" class="w-full h-full">
-                <!-- Track -->
-                <circle cx="110" cy="110" r="78" fill="none" stroke="rgba(113,113,122,0.18)" stroke-width="26" />
+          <div class="text-center mb-4">
+            <span class="status-pill" id="statusPill">Balanced</span>
+          </div>
 
-                <!-- Green arc -->
-                <circle
-                  cx="110"
-                  cy="110"
-                  r="78"
-                  fill="none"
-                  stroke="var(--positive)"
-                  stroke-width="26"
-                  stroke-linecap="round"
-                  stroke-dasharray="302 490"
-                  stroke-dashoffset="0"
-                  transform="rotate(-90 110 110)"
-                />
-
-                <!-- Red arc -->
-                <circle
-                  cx="110"
-                  cy="110"
-                  r="78"
-                  fill="none"
-                  stroke="var(--negative)"
-                  stroke-width="26"
-                  stroke-linecap="round"
-                  stroke-dasharray="188 490"
-                  stroke-dashoffset="-314"
-                  transform="rotate(-90 110 110)"
-                />
-              </svg>
-
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div class="text-center">
-                  <div class="text-5xl font-semibold tracking-tight">62%</div>
-                  <div class="text-xs uppercase tracking-[0.18em] mt-2 muted">Live Ratio</div>
-                </div>
+          <div class="rect-gauge-shell">
+            <div class="rect-gauge-head">
+              <div>
+                <div class="rect-gauge-value" id="gaugeValue">0</div>
+                <div class="rect-gauge-sub">Live Read</div>
               </div>
+              <div class="text-right text-sm muted">
+                <div class="font-medium" id="gaugeStateText">Balanced</div>
+              </div>
+            </div>
+
+            <div class="rect-gauge-track-wrap">
+              <div class="rect-gauge-ticks">
+                <span class="rect-gauge-tick" style="left: 16.5%;"></span>
+                <span class="rect-gauge-tick" style="left: 50%;"></span>
+                <span class="rect-gauge-tick" style="left: 83.5%;"></span>
+              </div>
+
+              <div class="rect-gauge-track">
+                <div class="rect-gauge-overlay"></div>
+                <div class="rect-gauge-marker" id="gaugeMarker" style="left: 50%;"></div>
+              </div>
+            </div>
+
+            <div class="rect-gauge-scale">
+              <span>Pressure</span>
+              <span>Balance</span>
+              <span>Momentum</span>
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3 text-sm">
-            <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="muted mb-1">Primary Inputs</div>
-              <div class="font-semibold">6 Active Signals</div>
+          <div class="grid grid-cols-2 gap-3 mt-6 text-sm">
+            <div class="summary-card panel-soft rounded-2xl px-4 py-3">
+              <div class="muted mb-1">Signal Balance</div>
+              <div class="font-semibold" id="balanceText">Balanced</div>
             </div>
-            <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="muted mb-1">Method</div>
-              <div class="font-semibold">Inverse Live Read</div>
+            <div class="summary-card panel-soft rounded-2xl px-4 py-3">
+              <div class="muted mb-1">Net Drivers</div>
+              <div class="font-semibold">7 Active Inputs</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Drivers + Insight -->
-      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
-        <div class="xl:col-span-8 panel rounded-3xl p-6">
-          <div class="flex items-center justify-between mb-5">
-            <div>
-              <h3 class="text-xl font-semibold">Core Drivers</h3>
-              <p class="text-sm muted mt-1">Major inputs reflected in the live market wheel.</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="driver-card panel-soft rounded-2xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm muted">USD Index</span>
-                <span class="text-sm font-medium" style="color: var(--negative);">+0.32%</span>
-              </div>
-              <div class="text-2xl font-semibold mb-2">104.85</div>
-              <p class="text-sm muted leading-6">Dollar strength adds broad pressure and tightens upside participation across risk assets.</p>
-            </div>
-
-            <div class="driver-card panel-soft rounded-2xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm muted">Crude Oil</span>
-                <span class="text-sm font-medium" style="color: var(--positive);">-1.80%</span>
-              </div>
-              <div class="text-2xl font-semibold mb-2">$78.40</div>
-              <p class="text-sm muted leading-6">Oil weakness eases inflation pressure and changes the immediate macro pressure mix.</p>
-            </div>
-
-            <div class="driver-card panel-soft rounded-2xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm muted">Gold</span>
-                <span class="text-sm font-medium" style="color: var(--negative);">+0.90%</span>
-              </div>
-              <div class="text-2xl font-semibold mb-2">$2,652</div>
-              <p class="text-sm muted leading-6">Firm gold suggests capital is still respecting defensive exposure beneath headline stability.</p>
-            </div>
-
-            <div class="driver-card panel-soft rounded-2xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm muted">Bitcoin</span>
-                <span class="text-sm font-medium" style="color: var(--positive);">+2.30%</span>
-              </div>
-              <div class="text-2xl font-semibold mb-2">$67,420</div>
-              <p class="text-sm muted leading-6">Crypto strength keeps a risk-on layer in the mix, preventing a fully defensive signal.</p>
-            </div>
-
-            <div class="driver-card panel-soft rounded-2xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm muted">US 10Y Yield</span>
-                <span class="text-sm font-medium" style="color: var(--negative);">+0.14%</span>
-              </div>
-              <div class="text-2xl font-semibold mb-2">4.28%</div>
-              <p class="text-sm muted leading-6">Higher yields keep financial conditions firm and matter directly for equity valuation pressure.</p>
-            </div>
-
-            <div class="driver-card panel-soft rounded-2xl p-4">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm muted">Treasury Bonds</span>
-                <span class="text-sm font-medium" style="color: var(--positive);">+0.41%</span>
-              </div>
-              <div class="text-2xl font-semibold mb-2">TLT 91.62</div>
-              <p class="text-sm muted leading-6">Bond stabilization slightly offsets yield pressure and adds nuance to the current market ratio.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="xl:col-span-4 panel rounded-3xl p-6">
+      <div class="mid-grid">
+        <div class="panel rounded-3xl p-6">
           <div class="mb-5">
             <h3 class="text-xl font-semibold">Veloxis Insight</h3>
-            <p class="text-sm muted mt-1">Interpretation of the current cross-asset read.</p>
+            <p class="text-sm muted mt-1">Cause and current result.</p>
           </div>
 
           <div class="panel-soft rounded-2xl p-5 mb-4">
-            <p class="text-sm leading-7">
-              The current live ratio is being pushed primarily by dollar firmness and higher yields, while
-              Bitcoin strength and softer crude prevent the structure from becoming one-sided. Bonds are
-              helping smooth the reading rather than reversing it.
+            <p class="text-sm leading-7" id="insightText">
+              Live interpretation will appear here.
             </p>
           </div>
 
           <div class="grid grid-cols-1 gap-3">
-            <div class="panel-soft rounded-2xl px-4 py-3">
+            <div class="summary-card panel-soft rounded-2xl px-4 py-3">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Main Pressure</div>
-              <div class="font-semibold">Dollar + Yields</div>
+              <div class="font-semibold" id="mainPressure">-</div>
             </div>
-            <div class="panel-soft rounded-2xl px-4 py-3">
+            <div class="summary-card panel-soft rounded-2xl px-4 py-3">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Offsetting Factors</div>
-              <div class="font-semibold">Crypto + Softer Energy</div>
+              <div class="font-semibold" id="offsettingFactors">-</div>
             </div>
-            <div class="panel-soft rounded-2xl px-4 py-3">
-              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Interpretation Style</div>
+            <div class="summary-card panel-soft rounded-2xl px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Decision Style</div>
               <div class="font-semibold">Probabilistic, Not Directive</div>
             </div>
           </div>
         </div>
+
+        <div class="panel rounded-3xl p-6">
+          <div class="mb-5">
+            <h3 class="text-xl font-semibold">Market Pressure Map</h3>
+            <p class="text-sm muted mt-1">Live weighted contributors behind the current reading.</p>
+          </div>
+
+          <div class="distribution-grid" id="distributionGrid"></div>
+        </div>
       </div>
 
-      <!-- Compact market cards -->
+      <div class="panel rounded-3xl p-6">
+        <div class="mb-5">
+          <h3 class="text-xl font-semibold">Core Drivers</h3>
+          <p class="text-sm muted mt-1">Major inputs reflected in the live market engine.</p>
+        </div>
+
+        <div class="drivers-grid" id="driversGrid"></div>
+      </div>
+
       <div class="panel rounded-3xl p-6">
         <div class="mb-5">
           <h3 class="text-xl font-semibold">Market Assets</h3>
-          <p class="text-sm muted mt-1">Compact reads for additional context outside the wheel.</p>
+          <p class="text-sm muted mt-1">Compact reads for additional context outside the core engine.</p>
         </div>
 
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="assets-grid">
           <div class="metric-card panel-soft rounded-2xl p-4">
             <div class="text-sm muted mb-2">Nasdaq Futures</div>
             <div class="text-2xl font-semibold">18,942</div>
             <div class="text-sm mt-2" style="color: var(--positive);">+0.48%</div>
           </div>
-
           <div class="metric-card panel-soft rounded-2xl p-4">
             <div class="text-sm muted mb-2">S&amp;P 500 Futures</div>
             <div class="text-2xl font-semibold">5,830</div>
             <div class="text-sm mt-2" style="color: var(--positive);">+0.43%</div>
           </div>
-
           <div class="metric-card panel-soft rounded-2xl p-4">
             <div class="text-sm muted mb-2">Dow Futures</div>
             <div class="text-2xl font-semibold">42,350</div>
             <div class="text-sm mt-2" style="color: var(--positive);">+0.28%</div>
           </div>
-
           <div class="metric-card panel-soft rounded-2xl p-4">
             <div class="text-sm muted mb-2">VIX</div>
             <div class="text-2xl font-semibold">18.45</div>
@@ -391,60 +568,425 @@
         </div>
       </div>
     </section>
-
-    <!-- ANALYSIS -->
-    <section id="page-analysis" class="page">
-      <div class="panel rounded-3xl p-8">
-        <h1 class="text-3xl font-semibold mb-3">Analysis</h1>
-        <p class="muted">Analysis page scaffold is ready. Next step: symbol search, chart area, key levels, and AI commentary.</p>
-      </div>
-    </section>
-
-    <!-- STRATEGY LAB -->
-    <section id="page-strategy-lab" class="page">
-      <div class="panel rounded-3xl p-8">
-        <h1 class="text-3xl font-semibold mb-3">Strategy Lab</h1>
-        <p class="muted">Strategy detection and alert logic will be built here next, including pattern scanning and AI probability notes.</p>
-      </div>
-    </section>
-
-    <!-- NEWS -->
-    <section id="page-news" class="page">
-      <div class="panel rounded-3xl p-8">
-        <h1 class="text-3xl font-semibold mb-3">News</h1>
-        <p class="muted">News table will be added next with dynamic row count, impact labels, sources, and AI view.</p>
-      </div>
-    </section>
-
-    <!-- TOP MOVERS -->
-    <section id="page-top-movers" class="page">
-      <div class="panel rounded-3xl p-8">
-        <h1 class="text-3xl font-semibold mb-3">Top Movers</h1>
-        <p class="muted">Top Movers layout will be added next with gainers, losers, relative volume, and quick rationale.</p>
-      </div>
-    </section>
   </main>
 
+  <div id="miniChartModal" class="modal-hidden fixed inset-0 z-[999] bg-black/60 items-center justify-center px-4">
+    <div class="panel rounded-3xl w-full max-w-md p-5 relative">
+      <button
+        onclick="closeMiniChart()"
+        class="absolute top-3 right-3 panel-soft rounded-lg px-3 py-1 text-sm"
+        style="color: var(--text);"
+      >
+        Close
+      </button>
+
+      <div class="mb-4">
+        <div class="text-sm muted mb-1" id="miniChartLabel">Signal</div>
+        <div class="text-xl font-semibold" id="miniChartTitle">Mini Chart</div>
+        <div class="text-sm muted mt-2" id="miniChartNote">1H fixed view</div>
+      </div>
+
+      <div style="height: 220px;">
+        <canvas id="miniChartCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+
   <script>
-    function showPage(page) {
-      document.querySelectorAll(".page").forEach((section) => {
-        section.classList.remove("active");
-      });
-
-      document.querySelectorAll(".nav-link").forEach((link) => {
-        link.classList.remove("active");
-      });
-
-      const targetPage = document.getElementById(`page-${page}`);
-      const targetTab = document.getElementById(`tab-${page}`);
-
-      if (targetPage) targetPage.classList.add("active");
-      if (targetTab) targetTab.classList.add("active");
-    }
-
     function toggleTheme() {
       document.getElementById("main-body").classList.toggle("dark");
     }
+
+    function toggleMobileMenu() {
+      const wrap = document.getElementById("mobileMenuWrap");
+      const drawer = document.getElementById("mobileDrawer");
+      const isHidden = wrap.classList.contains("hidden");
+
+      if (isHidden) {
+        wrap.classList.remove("hidden");
+        requestAnimationFrame(() => drawer.classList.add("open"));
+      } else {
+        drawer.classList.remove("open");
+        setTimeout(() => wrap.classList.add("hidden"), 220);
+      }
+    }
+
+    const signals = [
+      {
+        name: "USD",
+        symbol: "USD Index",
+        value: "104.85",
+        change: 0.32,
+        weight: 1.5,
+        direction: "negative",
+        impactLabel: "Broad pressure across risk assets"
+      },
+      {
+        name: "2Y Yield",
+        symbol: "US 2Y Yield",
+        value: "4.65%",
+        change: 0.12,
+        weight: 1.6,
+        direction: "negative",
+        impactLabel: "Fed-sensitive front-end pressure"
+      },
+      {
+        name: "10Y Yield",
+        symbol: "US 10Y Yield",
+        value: "4.28%",
+        change: 0.14,
+        weight: 1.4,
+        direction: "negative",
+        impactLabel: "Tighter conditions and valuation pressure"
+      },
+      {
+        name: "Gold",
+        symbol: "Gold",
+        value: "$2,652",
+        change: 0.90,
+        weight: 0.8,
+        direction: "negative",
+        impactLabel: "Defensive capital still respected"
+      },
+      {
+        name: "Oil",
+        symbol: "Crude Oil",
+        value: "$78.40",
+        change: -1.80,
+        weight: 0.7,
+        direction: "positive",
+        impactLabel: "Softer energy reduces macro pressure"
+      },
+      {
+        name: "Bonds",
+        symbol: "Treasury Bonds",
+        value: "TLT 91.62",
+        change: 0.41,
+        weight: 0.9,
+        direction: "positive",
+        impactLabel: "Bond stabilization offsets some stress"
+      },
+      {
+        name: "Bitcoin",
+        symbol: "Bitcoin",
+        value: "$67,420",
+        change: 2.30,
+        weight: 1.0,
+        direction: "positive",
+        impactLabel: "Risk-on participation remains alive"
+      }
+    ];
+
+    function contribution(signal) {
+      return Math.abs(signal.change) * signal.weight;
+    }
+
+    function buildEngine() {
+      let positive = 0;
+      let negative = 0;
+
+      const negatives = signals.filter(s => s.direction === "negative");
+      const positives = signals.filter(s => s.direction === "positive");
+
+      signals.forEach(s => {
+        const impact = Math.abs(s.change) * s.weight;
+
+        if (s.direction === "positive") {
+          positive += impact;
+        } else {
+          negative += impact;
+        }
+      });
+
+      const totalRaw = positive + negative;
+      const positivePercent = totalRaw ? Math.round((positive / totalRaw) * 100) : 50;
+
+      const sortedNegative = [...negatives].sort(
+        (a, b) => (Math.abs(b.change) * b.weight) - (Math.abs(a.change) * a.weight)
+      );
+      const sortedPositive = [...positives].sort(
+        (a, b) => (Math.abs(b.change) * b.weight) - (Math.abs(a.change) * a.weight)
+      );
+
+      let riskTone = "Mixed";
+      let bias = "Balanced";
+      let status = "Balanced";
+
+      if (positivePercent >= 75) {
+        riskTone = "Risk-On";
+        bias = "Constructive Advance";
+        status = "Constructive";
+      } else if (positivePercent >= 58) {
+        riskTone = "Mixed";
+        bias = "Constructive Tilt";
+        status = "Balanced Positive";
+      } else if (positivePercent <= 30) {
+        riskTone = "Defensive";
+        bias = "Pressure Dominant";
+        status = "High Stress";
+      } else if (positivePercent <= 42) {
+        riskTone = "Mixed";
+        bias = "Defensive Rotation";
+        status = "Balanced Defensive";
+      }
+
+      return {
+        positivePercent,
+        riskTone,
+        bias,
+        status,
+        mainPressure: sortedNegative.slice(0, 2).map(s => s.name).join(" + "),
+        offsetting: sortedPositive.slice(0, 2).map(s => s.name).join(" + ")
+      };
+    }
+
+    function statusColor(status) {
+      const s = status.toLowerCase();
+      if (s.includes("constructive")) return "var(--positive)";
+      if (s.includes("stress")) return "var(--negative)";
+      if (s.includes("defensive")) return "var(--warning)";
+      return "var(--accent)";
+    }
+
+    function setGaugeMarker(value) {
+      document.getElementById("gaugeMarker").style.left = `${value}%`;
+    }
+
+    function renderSummary(engine) {
+      document.getElementById("topSentiment").textContent = `${engine.positivePercent}%`;
+      document.getElementById("topRiskTone").textContent = engine.riskTone;
+      document.getElementById("topBias").textContent = engine.bias;
+
+      document.getElementById("summaryMarketStatus").textContent = engine.status;
+      document.getElementById("summaryPressure").textContent = engine.mainPressure;
+      document.getElementById("summarySupport").textContent = engine.offsetting;
+
+      document.getElementById("gaugeValue").textContent = engine.positivePercent;
+      document.getElementById("balanceText").textContent = engine.status;
+      document.getElementById("gaugeStateText").textContent = engine.status;
+
+      const gaugeValue = document.getElementById("gaugeValue");
+
+      if (engine.positivePercent >= 75) {
+        gaugeValue.style.color = "color-mix(in srgb, var(--positive) 75%, white 25%)";
+      } else if (engine.positivePercent <= 42) {
+        gaugeValue.style.color = "color-mix(in srgb, var(--negative) 75%, white 25%)";
+      } else {
+        gaugeValue.style.color = "color-mix(in srgb, var(--warning) 75%, white 25%)";
+      }
+
+      const pill = document.getElementById("statusPill");
+      pill.textContent = engine.status;
+      pill.style.color = statusColor(engine.status);
+
+      setGaugeMarker(engine.positivePercent);
+    }
+
+    function renderInsight(engine) {
+      document.getElementById("mainPressure").textContent = engine.mainPressure;
+      document.getElementById("offsettingFactors").textContent = engine.offsetting;
+
+      document.getElementById("insightText").textContent =
+        `${engine.mainPressure} remain the main sources of market pressure, while ${engine.offsetting} keep the structure from becoming fully one-sided. The current read is ${engine.status.toLowerCase()}.`;
+    }
+
+    function renderDistribution() {
+      const total = signals.reduce((sum, s) => sum + contribution(s), 0);
+      const grid = document.getElementById("distributionGrid");
+
+      grid.innerHTML = signals.map(signal => {
+        const share = total ? (contribution(signal) / total) * 100 : 0;
+        const pct = Math.round(share);
+        const color = signal.direction === "positive" ? "var(--positive)" : "var(--negative)";
+        const tone = signal.direction === "positive" ? "Supportive" : "Pressure";
+
+        return `
+          <div class="dist-card panel-soft rounded-2xl p-4 cursor-pointer" onclick="openMiniChart('${signal.name.replace(/'/g, "\\'")}')">
+            <div class="flex items-start justify-between gap-3 mb-3">
+              <div>
+                <div class="text-sm muted">${signal.name}</div>
+                <div class="text-3xl font-semibold mt-2">${pct}%</div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm font-medium" style="color:${color}">
+                  ${signal.change > 0 ? "+" : ""}${signal.change.toFixed(2)}%
+                </div>
+                <div class="text-xs muted mt-1">${tone}</div>
+              </div>
+            </div>
+
+            <div class="mini-bar-track mb-3">
+              <div class="mini-bar-fill" style="width:${pct}%; background:${color};"></div>
+            </div>
+
+            <div class="text-sm muted leading-6">${signal.impactLabel}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderDrivers() {
+      const grid = document.getElementById("driversGrid");
+
+      grid.innerHTML = signals.map(signal => {
+        const color = signal.direction === "positive" ? "var(--positive)" : "var(--negative)";
+
+        return `
+          <div class="driver-card panel-soft rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm muted">${signal.symbol}</span>
+              <span class="text-sm font-medium" style="color:${color}">
+                ${signal.change > 0 ? "+" : ""}${signal.change.toFixed(2)}%
+              </span>
+            </div>
+            <div class="text-2xl font-semibold mb-2">${signal.value}</div>
+            <p class="text-sm muted leading-6">${signal.impactLabel}</p>
+          </div>
+        `;
+      }).join("");
+    }
+
+    let miniChartInstance = null;
+
+    function getMiniChartData(signalName) {
+      if (signalName === "USD") {
+        return {
+          data: [100, 101, 101.5, 102.2, 103.1, 104.0, 104.85],
+          color: "#f97316",
+          note: "1H fixed view · Dollar pressure remains elevated."
+        };
+      }
+
+      if (signalName === "2Y Yield") {
+        return {
+          data: [4.10, 4.18, 4.25, 4.33, 4.42, 4.55, 4.65],
+          color: "#f97316",
+          note: "1H fixed view · Front-end yields remain firm."
+        };
+      }
+
+      if (signalName === "10Y Yield") {
+        return {
+          data: [4.00, 4.05, 4.08, 4.12, 4.18, 4.22, 4.28],
+          color: "#f97316",
+          note: "1H fixed view · Long-end pressure still building."
+        };
+      }
+
+      if (signalName === "Gold") {
+        return {
+          data: [2580, 2595, 2610, 2622, 2635, 2644, 2652],
+          color: "#f97316",
+          note: "1H fixed view · Defensive bid remains active."
+        };
+      }
+
+      if (signalName === "Oil") {
+        return {
+          data: [81.8, 81.2, 80.7, 80.0, 79.4, 78.9, 78.4],
+          color: "#22c55e",
+          note: "1H fixed view · Lower oil is easing macro pressure."
+        };
+      }
+
+      if (signalName === "Bonds") {
+        return {
+          data: [89.8, 90.2, 90.7, 91.0, 91.2, 91.4, 91.62],
+          color: "#22c55e",
+          note: "1H fixed view · Bond stabilization supports balance."
+        };
+      }
+
+      if (signalName === "Bitcoin") {
+        return {
+          data: [64200, 64800, 65400, 66100, 66600, 67000, 67420],
+          color: "#22c55e",
+          note: "1H fixed view · Risk appetite remains constructive."
+        };
+      }
+
+      return {
+        data: [10, 11, 12, 11, 13, 14, 15],
+        color: "#60a5fa",
+        note: "1H fixed view"
+      };
+    }
+
+    function openMiniChart(signalName) {
+      const modal = document.getElementById("miniChartModal");
+      const title = document.getElementById("miniChartTitle");
+      const label = document.getElementById("miniChartLabel");
+      const note = document.getElementById("miniChartNote");
+      const canvas = document.getElementById("miniChartCanvas");
+
+      const payload = getMiniChartData(signalName);
+
+      label.textContent = "Market Pressure Map";
+      title.textContent = signalName;
+      note.textContent = payload.note;
+
+      modal.classList.remove("modal-hidden");
+      modal.classList.add("modal-visible");
+
+      if (miniChartInstance) {
+        miniChartInstance.destroy();
+      }
+
+      const ctx = canvas.getContext("2d");
+
+      miniChartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: payload.data.map((_, i) => i + 1),
+          datasets: [{
+            data: payload.data,
+            borderColor: payload.color,
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.35,
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+          },
+          scales: {
+            x: {
+              display: false,
+              grid: { display: false },
+              border: { display: false }
+            },
+            y: {
+              display: false,
+              grid: { display: false },
+              border: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    function closeMiniChart() {
+      const modal = document.getElementById("miniChartModal");
+      modal.classList.remove("modal-visible");
+      modal.classList.add("modal-hidden");
+
+      if (miniChartInstance) {
+        miniChartInstance.destroy();
+        miniChartInstance = null;
+      }
+    }
+
+    const engine = buildEngine();
+    renderSummary(engine);
+    renderInsight(engine);
+    renderDistribution();
+    renderDrivers();
   </script>
 </body>
 </html>
