@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Veloxis — Dealer Positioning</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --bg-soft: #edf2f8;
+      --panel: #ffffff;
+      --panel-soft: #f8fafc;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --positive: #16a34a;
+      --negative: #dc2626;
+      --warning: #b45309;
+      --shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    body.dark {
+      --bg: #070b14;
+      --bg-soft: #0b1120;
+      --panel: #0f172a;
+      --panel-soft: #111827;
+      --border: rgba(255,255,255,0.08);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #60a5fa;
+      --positive: #22c55e;
+      --negative: #f87171;
+      --warning: #f59e0b;
+      --shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top center, rgba(37,99,235,0.05), transparent 24%),
+        var(--bg);
+      color: var(--text);
+      transition: background .2s ease, color .2s ease;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .panel-soft {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+    }
+
+    .muted { color: var(--muted); }
+
+    .nav-link {
+      position: relative;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .96rem;
+      font-weight: 500;
+      padding: .4rem 0;
+      transition: color .2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--text);
+    }
+
+    .nav-link.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -.9rem;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 999px;
+    }
+
+    .summary-card,
+    .control-btn,
+    .insight-box,
+    .metric-box {
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .summary-card:hover,
+    .control-btn:hover,
+    .insight-box:hover,
+    .metric-box:hover {
+      transform: translateY(-2px);
+      border-color: rgba(96,165,250,0.20);
+      box-shadow: 0 12px 24px rgba(15,23,42,0.10);
+    }
+
+    .desktop-nav::-webkit-scrollbar { height: 8px; }
+    .desktop-nav::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 999px;
+    }
+
+    .mobile-drawer {
+      transform: translateX(100%);
+      transition: transform .22s ease;
+    }
+
+    .mobile-drawer.open {
+      transform: translateX(0);
+    }
+
+    .ticker-input {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      color: var(--text);
+      outline: none;
+    }
+
+    .ticker-input:focus {
+      border-color: rgba(96,165,250,0.55);
+      box-shadow: 0 0 0 3px rgba(96,165,250,0.12);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: .5rem .9rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+      font-size: .82rem;
+      font-weight: 700;
+    }
+
+    .chart-shell {
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chart-stage {
+      flex: 1;
+      min-height: 320px;
+      border-radius: 1.25rem;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(to bottom, rgba(255,255,255,0.02), rgba(255,255,255,0.00)),
+        var(--panel-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-gridline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(148,163,184,0.10);
+    }
+
+    .chart-line {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .control-btn {
+      width: 100%;
+      text-align: left;
+      padding: .8rem .95rem;
+      border-radius: 1rem;
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+      color: var(--text);
+      font-size: .92rem;
+      font-weight: 600;
+    }
+
+    .control-btn.active {
+      border-color: rgba(96,165,250,0.55);
+      box-shadow: 0 0 0 3px rgba(96,165,250,0.10);
+      color: var(--accent);
+    }
+
+    .section-label {
+      font-size: .74rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .7rem;
+      font-weight: 700;
+    }
+
+    .ask-box textarea {
+      width: 100%;
+      resize: vertical;
+      min-height: 86px;
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+      color: var(--text);
+      border-radius: 1rem;
+      padding: 1rem;
+      outline: none;
+    }
+
+    .ask-box textarea:focus {
+      border-color: rgba(96,165,250,0.55);
+      box-shadow: 0 0 0 3px rgba(96,165,250,0.12);
+    }
+
+    .ask-output {
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+      border-radius: 1rem;
+      padding: 1rem;
+      line-height: 1.8;
+    }
+
+    .prob-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .45rem .75rem;
+      border-radius: 999px;
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      font-size: .82rem;
+      font-weight: 700;
+    }
+
+    .layout-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr;
+    }
+
+    .status-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr;
+    }
+
+    .ai-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 768px) {
+      .status-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .ai-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .layout-grid {
+        grid-template-columns: 280px minmax(0, 1fr) 300px;
+        align-items: start;
+      }
+    }
+  </style>
+</head>
+<body class="dark" id="main-body">
+  <header
+    class="sticky top-0 z-50 border-b backdrop-blur"
+    style="border-color: var(--border); background: color-mix(in srgb, var(--bg) 88%, transparent);"
+  >
+    <div class="max-w-7xl mx-auto px-4 lg:px-8">
+      <div class="h-16 flex items-center justify-between gap-4">
+        <div class="flex items-center min-w-fit gap-3">
+          <div class="h-8 w-8 rounded-lg panel-soft flex items-center justify-center text-sm font-bold">V</div>
+          <div class="font-semibold tracking-tight">Veloxis</div>
+        </div>
+
+        <nav class="desktop-nav hidden lg:flex items-center gap-7 flex-1 justify-center overflow-x-auto">
+          <a href="index-market-pulse-new.html" class="nav-link">Market Pulse</a>
+          <a href="analysis.html" class="nav-link">Analysis</a>
+          <a href="dealer-positioning.html" class="nav-link active">Dealer Positioning</a>
+          <a href="strategy.html" class="nav-link">Strategy Lab</a>
+          <a href="news.html" class="nav-link">News</a>
+          <a href="top-movers.html" class="nav-link">Top Movers</a>
+        </nav>
+
+        <div class="hidden lg:flex items-center gap-2">
+          <button
+            onclick="toggleTheme()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color: var(--text);"
+          >
+            Theme
+          </button>
+        </div>
+
+        <div class="flex lg:hidden items-center gap-2">
+          <button
+            onclick="toggleTheme()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color: var(--text);"
+          >
+            Theme
+          </button>
+          <button
+            onclick="toggleMobileMenu()"
+            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
+            style="color: var(--text);"
+          >
+            Menu
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mobileMenuWrap" class="fixed inset-0 z-50 hidden lg:hidden">
+      <div class="absolute inset-0 bg-black/40" onclick="toggleMobileMenu()"></div>
+      <div
+        id="mobileDrawer"
+        class="mobile-drawer absolute right-0 top-0 h-full w-[82%] max-w-[340px] panel p-5"
+      >
+        <div class="flex items-center justify-between mb-6">
+          <div class="font-semibold text-lg">Navigation</div>
+          <button onclick="toggleMobileMenu()" class="panel-soft rounded-xl px-3 py-2 text-sm">Close</button>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <a href="index-market-pulse-new.html" class="nav-link">Market Pulse</a>
+          <a href="analysis.html" class="nav-link">Analysis</a>
+          <a href="dealer-positioning.html" class="nav-link active">Dealer Positioning</a>
+          <a href="strategy.html" class="nav-link">Strategy Lab</a>
+          <a href="news.html" class="nav-link">News</a>
+          <a href="top-movers.html" class="nav-link">Top Movers</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 lg:px-8 py-5 lg:py-8">
+    <section class="space-y-6">
+      <div class="panel rounded-3xl p-5 lg:p-6">
+        <div class="flex flex-col xl:flex-row xl:items-center gap-4 xl:gap-6">
+          <div class="flex-1 flex flex-col sm:flex-row gap-3">
+            <input
+              id="tickerInput"
+              type="text"
+              value="QQQ"
+              class="ticker-input rounded-2xl px-4 py-3 text-base font-semibold w-full sm:max-w-[220px]"
+              placeholder="Enter symbol"
+            />
+            <button
+              onclick="refreshTicker()"
+              class="panel-soft rounded-2xl px-5 py-3 text-sm font-semibold w-full sm:w-auto"
+              style="color: var(--text);"
+            >
+              Load Symbol
+            </button>
+          </div>
+
+          <div class="status-grid flex-1">
+            <div class="summary-card panel-soft rounded-2xl px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Last Price</div>
+              <div class="text-xl font-semibold" id="tickerPrice">610.20</div>
+            </div>
+            <div class="summary-card panel-soft rounded-2xl px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Daily Change</div>
+              <div class="text-xl font-semibold" id="tickerChange" style="color: var(--positive);">+0.84%</div>
+            </div>
+            <div class="summary-card panel-soft rounded-2xl px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">IV State</div>
+              <div class="text-xl font-semibold">Elevated</div>
+            </div>
+            <div class="summary-card panel-soft rounded-2xl px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Flow State</div>
+              <div class="text-xl font-semibold">Active</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-grid">
+        <aside class="space-y-4">
+          <div class="panel rounded-3xl p-5">
+            <div class="section-label">Trend</div>
+            <div class="insight-box panel-soft rounded-2xl p-4">
+              <div class="font-semibold mb-2">Confirming</div>
+              <p class="text-sm muted leading-7">
+                Price remains aligned with premium flow and gamma structure. Current positioning supports continuation more than reversal.
+              </p>
+            </div>
+          </div>
+
+          <div class="panel rounded-3xl p-5">
+            <div class="section-label">Intent</div>
+            <div class="insight-box panel-soft rounded-2xl p-4">
+              <div class="font-semibold mb-2">Aggressive Upside Interest</div>
+              <p class="text-sm muted leading-7">
+                Sweep calls suggest urgency. Block activity appears more consistent with institutional positioning than retail speculation.
+              </p>
+            </div>
+          </div>
+
+          <div class="panel rounded-3xl p-5">
+            <div class="section-label">Positioning Insight</div>
+            <div class="insight-box panel-soft rounded-2xl p-4">
+              <div class="font-semibold mb-2">New Positions Building</div>
+              <p class="text-sm muted leading-7">
+                Volume exceeding open interest on selected strikes suggests fresh positioning rather than simple closing flow.
+              </p>
+            </div>
+          </div>
+
+          <div class="panel rounded-3xl p-5">
+            <div class="section-label">Volatility Insight</div>
+            <div class="insight-box panel-soft rounded-2xl p-4">
+              <div class="font-semibold mb-2">IV Rich</div>
+              <p class="text-sm muted leading-7">
+                Options remain relatively expensive. Event-related IV crush risk should be considered before interpreting premium at face value.
+              </p>
+            </div>
+          </div>
+
+          <div class="panel rounded-3xl p-5">
+            <div class="section-label">Gamma Logic</div>
+            <div class="insight-box panel-soft rounded-2xl p-4">
+              <div class="font-semibold mb-2">Negative Gamma Regime</div>
+              <p class="text-sm muted leading-7">
+                Dealers may need to chase price if key levels break. This raises the probability of directional expansion rather than pinning.
+              </p>
+            </div>
+          </div>
+        </aside>
+
+        <section class="space-y-4">
+          <div class="panel rounded-3xl p-5 lg:p-6 chart-shell">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+              <div>
+                <div class="text-sm muted mb-1">Dynamic Options View</div>
+                <h2 class="text-2xl font-semibold" id="chartTitle">Spot GEX</h2>
+              </div>
+              <div class="prob-badge" id="chartBadge">
+                <span>Mode</span>
+                <span id="chartBadgeValue">GEX</span>
+              </div>
+            </div>
+
+            <div class="chart-stage">
+              <div class="chart-gridline" style="top: 20%;"></div>
+              <div class="chart-gridline" style="top: 40%;"></div>
+              <div class="chart-gridline" style="top: 60%;"></div>
+              <div class="chart-gridline" style="top: 80%;"></div>
+
+              <svg class="chart-line" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <polyline
+                  id="mainChartLine"
+                  fill="none"
+                  stroke="var(--accent)"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  points="0,65 10,62 20,58 30,60 40,52 50,50 60,46 70,42 80,39 90,34 100,30"
+                ></polyline>
+              </svg>
+
+              <div class="absolute bottom-4 left-4 right-4 flex justify-between text-xs muted">
+                <span>Start</span>
+                <span>Mid Session</span>
+                <span>Now</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel rounded-3xl p-5 lg:p-6">
+            <div class="flex items-center justify-between gap-3 mb-4">
+              <div>
+                <div class="text-sm muted mb-1">AskVeloxis</div>
+                <h3 class="text-2xl font-semibold">Probabilistic Interpretation</h3>
+              </div>
+              <div class="prob-badge">
+                <span>Output</span>
+                <span>No Advice</span>
+              </div>
+            </div>
+
+            <div class="ask-box space-y-4">
+              <textarea id="askInput" placeholder="Ask about positioning, dealer behavior, or how current flow aligns with price...">Interpret current QQQ options positioning and explain whether price is confirming flow.</textarea>
+              <button
+                onclick="runAskVeloxis()"
+                class="panel-soft rounded-2xl px-5 py-3 text-sm font-semibold"
+                style="color: var(--text);"
+              >
+                Analyze
+              </button>
+
+              <div class="ask-output">
+                <div class="flex flex-wrap gap-2 mb-3">
+                  <div class="prob-badge">Probability: 68%</div>
+                  <div class="prob-badge">Bias: Constructive</div>
+                  <div class="prob-badge">Regime: Negative Gamma</div>
+                </div>
+                <div id="askOutputText" class="text-sm leading-8">
+                  Current flow suggests directional interest remains constructive, with sweep call activity supporting upside intent. Price continues to align with premium behavior, which strengthens trend confirmation. However, because gamma remains negative, the market is more likely to expand on breaks than remain pinned inside a narrow range.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="space-y-4">
+          <div class="panel rounded-3xl p-5">
+            <div class="section-label">GEX</div>
+            <div class="space-y-3">
+              <button class="control-btn active" onclick="setChartMode('Spot GEX')">Spot GEX</button>
+              <button class="control-btn" onclick="setChartMode('GEX by Strike')">GEX by Strike</button>
+              <button class="control-btn" onclick="setChartMode('Daily GEX')">Daily GEX</button>
+              <button class="control-btn" onclick="setChartMode('Expiry GEX')">Expiry GEX</button>
+              <button class="control-btn" onclick="setChartMode('Expiry by Strike')">Expiry by Strike</button>
+            </div>
+          </div>
+
+          <div class="panel rounded-3xl p-5">
+            <div class="section-label">Flow</div>
+            <div class="space-y-3">
+              <button class="control-btn" onclick="setChartMode('Unusual Activity')">Unusual Activity</button>
+              <button class="control-btn" onclick="setChartMode('Sweep Orders')">Sweep Orders</button>
+              <button class="control-btn" onclick="setChartMode('Block Trades')">Block Trades</button>
+              <button class="control-btn" onclick="setChartMode('Net Premium')">Net Premium</button>
+              <button class="control-btn" onclick="setChartMode('Strike Premium')">Strike Premium</button>
+            </div>
+          </div>
+
+          <div class="panel rounded-3xl p-5">
+            <div class="section-label">Positioning</div>
+            <div class="space-y-3">
+              <button class="control-btn" onclick="setChartMode('Open Interest')">Open Interest</button>
+              <button class="control-btn" onclick="setChartMode('Volume vs OI')">Volume vs OI</button>
+              <button class="control-btn" onclick="setChartMode('Put/Call Ratio')">Put/Call Ratio</button>
+            </div>
+          </div>
+
+          <div class="panel rounded-3xl p-5">
+            <div class="section-label">Volatility & Greeks</div>
+            <div class="space-y-3">
+              <button class="control-btn" onclick="setChartMode('Implied Volatility')">Implied Volatility</button>
+              <button class="control-btn" onclick="setChartMode('IV Crush Risk')">IV Crush Risk</button>
+              <button class="control-btn" onclick="setChartMode('Delta Exposure')">Delta Exposure</button>
+              <button class="control-btn" onclick="setChartMode('Gamma Exposure')">Gamma Exposure</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+<script>
+function toggleTheme() {
+  document.getElementById("main-body").classList.toggle("dark");
+}
+
+function toggleMobileMenu() {
+  const wrap = document.getElementById("mobileMenuWrap");
+  const drawer = document.getElementById("mobileDrawer");
+
+  if (wrap.classList.contains("hidden")) {
+    wrap.classList.remove("hidden");
+    setTimeout(() => drawer.classList.add("open"), 10);
+  } else {
+    drawer.classList.remove("open");
+    setTimeout(() => wrap.classList.add("hidden"), 200);
+  }
+}
+
+// تغيير نوع الشارت
+const chartModes = {
+  "Spot GEX": "0,65 10,62 20,58 30,60 40,52 50,50 60,46 70,42 80,39 90,34 100,30",
+  "GEX by Strike": "0,55 10,53 20,50 30,38 40,29 50,46 60,41 70,30 80,24 90,35 100,28",
+  "Daily GEX": "0,58 10,61 20,59 30,56 40,49 50,45 60,42 70,40 80,36 90,34 100,31",
+  "Expiry GEX": "0,70 10,66 20,61 30,55 40,53 50,47 60,50 70,45 80,40 90,33 100,29",
+  "Expiry by Strike": "0,60 10,57 20,53 30,48 40,39 50,35 60,42 70,46 80,32 90,28 100,24",
+
+  "Unusual Activity": "0,72 10,68 20,64 30,66 40,50 50,39 60,44 70,35 80,31 90,28 100,26",
+  "Sweep Orders": "0,69 10,64 20,58 30,52 40,47 50,44 60,36 70,32 80,30 90,24 100,20",
+  "Block Trades": "0,62 10,62 20,60 30,56 40,48 50,49 60,43 70,44 80,37 90,35 100,33",
+  "Net Premium": "0,74 10,71 20,63 30,60 40,56 50,50 60,44 70,40 80,36 90,30 100,27",
+  "Strike Premium": "0,68 10,63 20,57 30,53 40,48 50,51 60,46 70,34 80,29 90,33 100,30",
+
+  "Open Interest": "0,61 10,59 20,54 30,50 40,47 50,43 60,39 70,37 80,35 90,33 100,31",
+  "Volume vs OI": "0,64 10,60 20,57 30,52 40,45 50,40 60,42 70,36 80,29 90,26 100,24",
+  "Put/Call Ratio": "0,48 10,46 20,43 30,45 40,41 50,39 60,42 70,44 80,47 90,49 100,52",
+
+  "Implied Volatility": "0,54 10,52 20,50 30,48 40,47 50,44 60,41 70,39 80,36 90,34 100,32",
+  "IV Crush Risk": "0,34 10,35 20,36 30,37 40,39 50,42 60,45 70,47 80,50 90,54 100,58",
+  "Delta Exposure": "0,62 10,60 20,58 30,54 40,51 50,48 60,44 70,41 80,37 90,32 100,29",
+  "Gamma Exposure": "0,67 10,64 20,60 30,57 40,50 50,46 60,41 70,37 80,33 90,30 100,27"
+};
+
+function setChartMode(mode) {
+  document.getElementById("chartTitle").textContent = mode;
+  document.getElementById("chartBadgeValue").textContent = mode;
+  document.getElementById("mainChartLine").setAttribute("points", chartModes[mode]);
+
+  document.querySelectorAll(".control-btn").forEach(btn => {
+    btn.classList.remove("active");
+    if (btn.textContent.trim() === mode) {
+      btn.classList.add("active");
+    }
+  });
+}
+
+// تغيير السهم
+function refreshTicker() {
+  const ticker = document.getElementById("tickerInput").value.toUpperCase();
+
+  document.getElementById("tickerPrice").textContent = "—";
+  document.getElementById("tickerChange").textContent = "Loading...";
+
+  setTimeout(() => {
+    document.getElementById("tickerPrice").textContent = (Math.random()*100+500).toFixed(2);
+    document.getElementById("tickerChange").textContent = "+0.65%";
+  }, 600);
+}
+
+// Ask Veloxis (تحليل ذكي بدون توصية)
+function runAskVeloxis() {
+  const ticker = document.getElementById("tickerInput").value.toUpperCase();
+  const output = document.getElementById("askOutputText");
+
+  output.textContent =
+    `${ticker} shows alignment between price and options flow. Sweep activity supports directional intent, while gamma structure suggests expansion risk. Current conditions favor probabilistic continuation rather than immediate reversal.`;
+}
+</script>
+
+</body>
+</html>
