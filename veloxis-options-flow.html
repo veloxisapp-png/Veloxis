@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Veloxis — Dealer Positioning</title>
+  <title>Veloxis — Options Flow</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
@@ -91,28 +91,36 @@
     .summary-card,
     .control-btn,
     .insight-box,
-    .metric-box {
+    .metric-box,
+    .data-row {
       transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
     }
 
     .summary-card:hover,
     .control-btn:hover,
     .insight-box:hover,
-    .metric-box:hover {
+    .metric-box:hover,
+    .data-row:hover {
       transform: translateY(-2px);
       border-color: rgba(96,165,250,0.20);
       box-shadow: 0 12px 24px rgba(15,23,42,0.10);
     }
 
-    .desktop-nav::-webkit-scrollbar { height: 8px; }
-    .desktop-nav::-webkit-scrollbar-thumb {
+    .desktop-nav::-webkit-scrollbar,
+    .thin-scroll::-webkit-scrollbar {
+      height: 8px;
+      width: 8px;
+    }
+
+    .desktop-nav::-webkit-scrollbar-thumb,
+    .thin-scroll::-webkit-scrollbar-thumb {
       background: #475569;
       border-radius: 999px;
     }
 
     .mobile-drawer {
       transform: translateX(100%);
-      transition: transform .22s ease;
+      transition: transform .24s ease;
     }
 
     .mobile-drawer.open {
@@ -253,19 +261,83 @@
       grid-template-columns: 1fr;
     }
 
-    .ai-grid {
+    .data-grid {
       display: grid;
-      gap: 1rem;
+      gap: .9rem;
       grid-template-columns: 1fr;
+    }
+
+    .data-row {
+      display: grid;
+      grid-template-columns: 8px 1fr auto;
+      gap: .9rem;
+      align-items: center;
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+      border-radius: 1.1rem;
+      padding: .9rem 1rem;
+    }
+
+    .data-side {
+      width: 6px;
+      height: 100%;
+      min-height: 48px;
+      border-radius: 999px;
+    }
+
+    .data-row-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .data-row-sub {
+      font-size: .9rem;
+      color: var(--muted);
+      margin-top: .25rem;
+    }
+
+    .data-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .32rem .55rem;
+      border-radius: .8rem;
+      font-size: .82rem;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+    }
+
+    .data-chip-green {
+      color: var(--positive);
+      background: rgba(34,197,94,0.10);
+    }
+
+    .data-chip-red {
+      color: var(--negative);
+      background: rgba(248,113,113,0.10);
+    }
+
+    .data-right {
+      text-align: right;
+      min-width: 112px;
+    }
+
+    .data-strong {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .data-mini {
+      font-size: .9rem;
+      color: var(--muted);
+      margin-top: .18rem;
     }
 
     @media (min-width: 768px) {
       .status-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-
-      .ai-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -290,13 +362,13 @@
         </div>
 
         <nav class="desktop-nav hidden lg:flex items-center gap-7 flex-1 justify-center overflow-x-auto">
-  <a href="index.html" class="nav-link">Market Pulse</a>
-  <a href="analysis.html" class="nav-link">Analysis</a>
-  <a href="veloxis-options-flow.html" class="nav-link active">Options Flow</a>
-  <a href="strategy.html" class="nav-link">Strategy Lab</a>
-  <a href="news.html" class="nav-link">News</a>
-  <a href="top-movers.html" class="nav-link">Top Movers</a>
-</nav>
+          <a href="index.html" class="nav-link">Market Pulse</a>
+          <a href="analysis.html" class="nav-link">Analysis</a>
+          <a href="veloxis-options-flow.html" class="nav-link active">Options Flow</a>
+          <a href="strategy.html" class="nav-link">Strategy Lab</a>
+          <a href="news.html" class="nav-link">News</a>
+          <a href="top-movers.html" class="nav-link">Top Movers</a>
+        </nav>
 
         <div class="hidden lg:flex items-center gap-2">
           <button
@@ -339,12 +411,12 @@
         </div>
 
         <div class="flex flex-col gap-4">
-          <a href="index.html" class="nav-link">Market Pulse</a>
-          <a href="analysis.html" class="nav-link">Analysis</a>
-          <a href="veloxis-options-flow.html" class="nav-link active">Options Flow</a>
-          <a href="strategy.html" class="nav-link">Strategy Lab</a>
-          <a href="news.html" class="nav-link">News</a>
-          <a href="top-movers.html" class="nav-link">Top Movers</a>
+          <a href="index.html" class="nav-link" onclick="toggleMobileMenu()">Market Pulse</a>
+          <a href="analysis.html" class="nav-link" onclick="toggleMobileMenu()">Analysis</a>
+          <a href="veloxis-options-flow.html" class="nav-link active" onclick="toggleMobileMenu()">Options Flow</a>
+          <a href="strategy.html" class="nav-link" onclick="toggleMobileMenu()">Strategy Lab</a>
+          <a href="news.html" class="nav-link" onclick="toggleMobileMenu()">News</a>
+          <a href="top-movers.html" class="nav-link" onclick="toggleMobileMenu()">Top Movers</a>
         </div>
       </div>
     </div>
@@ -487,6 +559,23 @@
           <div class="panel rounded-3xl p-5 lg:p-6">
             <div class="flex items-center justify-between gap-3 mb-4">
               <div>
+                <div class="text-sm muted mb-1">Flow / Positioning Data</div>
+                <h3 class="text-2xl font-semibold" id="dataTitle">Open Interest</h3>
+              </div>
+              <div class="prob-badge">
+                <span>View</span>
+                <span id="dataTag">Position Build</span>
+              </div>
+            </div>
+
+            <div id="dataContent" class="data-grid">
+              <!-- dynamic -->
+            </div>
+          </div>
+
+          <div class="panel rounded-3xl p-5 lg:p-6">
+            <div class="flex items-center justify-between gap-3 mb-4">
+              <div>
                 <div class="text-sm muted mb-1">AskVeloxis</div>
                 <h3 class="text-2xl font-semibold">Probabilistic Interpretation</h3>
               </div>
@@ -522,126 +611,259 @@
 
         <aside class="space-y-4">
           <div class="panel rounded-3xl p-5">
-            <div class="section-label">GEX</div>
+            <div class="section-label">Upper Chart — Structure</div>
             <div class="space-y-3">
-              <button class="control-btn active" onclick="setChartMode('Spot GEX')">Spot GEX</button>
-              <button class="control-btn" onclick="setChartMode('GEX by Strike')">GEX by Strike</button>
-              <button class="control-btn" onclick="setChartMode('Daily GEX')">Daily GEX</button>
-              <button class="control-btn" onclick="setChartMode('Expiry GEX')">Expiry GEX</button>
-              <button class="control-btn" onclick="setChartMode('Expiry by Strike')">Expiry by Strike</button>
+              <button class="control-btn active" onclick="setChartMode('Spot GEX', this)">Spot GEX</button>
+              <button class="control-btn" onclick="setChartMode('GEX by Strike', this)">GEX by Strike</button>
+              <button class="control-btn" onclick="setChartMode('Daily GEX', this)">Daily GEX</button>
+              <button class="control-btn" onclick="setChartMode('Expiry GEX', this)">Expiry GEX</button>
+              <button class="control-btn" onclick="setChartMode('Expiry by Strike', this)">Expiry by Strike</button>
+              <button class="control-btn" onclick="setChartMode('Implied Volatility', this)">Implied Volatility</button>
+              <button class="control-btn" onclick="setChartMode('IV Crush Risk', this)">IV Crush Risk</button>
+              <button class="control-btn" onclick="setChartMode('Delta Exposure', this)">Delta Exposure</button>
+              <button class="control-btn" onclick="setChartMode('Gamma Exposure', this)">Gamma Exposure</button>
             </div>
           </div>
 
           <div class="panel rounded-3xl p-5">
-            <div class="section-label">Flow</div>
+            <div class="section-label">Lower Panel — Flow Data</div>
             <div class="space-y-3">
-              <button class="control-btn" onclick="setChartMode('Unusual Activity')">Unusual Activity</button>
-              <button class="control-btn" onclick="setChartMode('Sweep Orders')">Sweep Orders</button>
-              <button class="control-btn" onclick="setChartMode('Block Trades')">Block Trades</button>
-              <button class="control-btn" onclick="setChartMode('Net Premium')">Net Premium</button>
-              <button class="control-btn" onclick="setChartMode('Strike Premium')">Strike Premium</button>
-            </div>
-          </div>
-
-          <div class="panel rounded-3xl p-5">
-            <div class="section-label">Positioning</div>
-            <div class="space-y-3">
-              <button class="control-btn" onclick="setChartMode('Open Interest')">Open Interest</button>
-              <button class="control-btn" onclick="setChartMode('Volume vs OI')">Volume vs OI</button>
-              <button class="control-btn" onclick="setChartMode('Put/Call Ratio')">Put/Call Ratio</button>
-            </div>
-          </div>
-
-          <div class="panel rounded-3xl p-5">
-            <div class="section-label">Volatility & Greeks</div>
-            <div class="space-y-3">
-              <button class="control-btn" onclick="setChartMode('Implied Volatility')">Implied Volatility</button>
-              <button class="control-btn" onclick="setChartMode('IV Crush Risk')">IV Crush Risk</button>
-              <button class="control-btn" onclick="setChartMode('Delta Exposure')">Delta Exposure</button>
-              <button class="control-btn" onclick="setChartMode('Gamma Exposure')">Gamma Exposure</button>
+              <button class="control-btn" onclick="setDataMode('Unusual Activity', this)">Unusual Activity</button>
+              <button class="control-btn" onclick="setDataMode('Sweep Orders', this)">Sweep Orders</button>
+              <button class="control-btn" onclick="setDataMode('Block Trades', this)">Block Trades</button>
+              <button class="control-btn" onclick="setDataMode('Net Premium', this)">Net Premium</button>
+              <button class="control-btn" onclick="setDataMode('Strike Premium', this)">Strike Premium</button>
+              <button class="control-btn active" onclick="setDataMode('Open Interest', this)">Open Interest</button>
+              <button class="control-btn" onclick="setDataMode('Volume vs OI', this)">Volume vs OI</button>
+              <button class="control-btn" onclick="setDataMode('Put/Call Ratio', this)">Put/Call Ratio</button>
+              <button class="control-btn" onclick="setDataMode('Calls vs Puts', this)">Calls vs Puts</button>
+              <button class="control-btn" onclick="setDataMode('Contracts', this)">Contracts</button>
+              <button class="control-btn" onclick="setDataMode('Volume', this)">Volume</button>
             </div>
           </div>
         </aside>
       </div>
     </section>
   </main>
-<script>
-function toggleTheme() {
-  document.getElementById("main-body").classList.toggle("dark");
-}
 
-function toggleMobileMenu() {
-  const wrap = document.getElementById("mobileMenuWrap");
-  const drawer = document.getElementById("mobileDrawer");
-
-  if (wrap.classList.contains("hidden")) {
-    wrap.classList.remove("hidden");
-    setTimeout(() => drawer.classList.add("open"), 10);
-  } else {
-    drawer.classList.remove("open");
-    setTimeout(() => wrap.classList.add("hidden"), 200);
-  }
-}
-
-// تغيير نوع الشارت
-const chartModes = {
-  "Spot GEX": "0,65 10,62 20,58 30,60 40,52 50,50 60,46 70,42 80,39 90,34 100,30",
-  "GEX by Strike": "0,55 10,53 20,50 30,38 40,29 50,46 60,41 70,30 80,24 90,35 100,28",
-  "Daily GEX": "0,58 10,61 20,59 30,56 40,49 50,45 60,42 70,40 80,36 90,34 100,31",
-  "Expiry GEX": "0,70 10,66 20,61 30,55 40,53 50,47 60,50 70,45 80,40 90,33 100,29",
-  "Expiry by Strike": "0,60 10,57 20,53 30,48 40,39 50,35 60,42 70,46 80,32 90,28 100,24",
-
-  "Unusual Activity": "0,72 10,68 20,64 30,66 40,50 50,39 60,44 70,35 80,31 90,28 100,26",
-  "Sweep Orders": "0,69 10,64 20,58 30,52 40,47 50,44 60,36 70,32 80,30 90,24 100,20",
-  "Block Trades": "0,62 10,62 20,60 30,56 40,48 50,49 60,43 70,44 80,37 90,35 100,33",
-  "Net Premium": "0,74 10,71 20,63 30,60 40,56 50,50 60,44 70,40 80,36 90,30 100,27",
-  "Strike Premium": "0,68 10,63 20,57 30,53 40,48 50,51 60,46 70,34 80,29 90,33 100,30",
-
-  "Open Interest": "0,61 10,59 20,54 30,50 40,47 50,43 60,39 70,37 80,35 90,33 100,31",
-  "Volume vs OI": "0,64 10,60 20,57 30,52 40,45 50,40 60,42 70,36 80,29 90,26 100,24",
-  "Put/Call Ratio": "0,48 10,46 20,43 30,45 40,41 50,39 60,42 70,44 80,47 90,49 100,52",
-
-  "Implied Volatility": "0,54 10,52 20,50 30,48 40,47 50,44 60,41 70,39 80,36 90,34 100,32",
-  "IV Crush Risk": "0,34 10,35 20,36 30,37 40,39 50,42 60,45 70,47 80,50 90,54 100,58",
-  "Delta Exposure": "0,62 10,60 20,58 30,54 40,51 50,48 60,44 70,41 80,37 90,32 100,29",
-  "Gamma Exposure": "0,67 10,64 20,60 30,57 40,50 50,46 60,41 70,37 80,33 90,30 100,27"
-};
-
-function setChartMode(mode) {
-  document.getElementById("chartTitle").textContent = mode;
-  document.getElementById("chartBadgeValue").textContent = mode;
-  document.getElementById("mainChartLine").setAttribute("points", chartModes[mode]);
-
-  document.querySelectorAll(".control-btn").forEach(btn => {
-    btn.classList.remove("active");
-    if (btn.textContent.trim() === mode) {
-      btn.classList.add("active");
+  <script>
+    function applySavedTheme() {
+      const savedTheme = localStorage.getItem("veloxis-theme");
+      const body = document.getElementById("main-body");
+      if (savedTheme === "light") {
+        body.classList.remove("dark");
+      } else {
+        body.classList.add("dark");
+      }
     }
-  });
-}
 
-// تغيير السهم
-function refreshTicker() {
-  const ticker = document.getElementById("tickerInput").value.toUpperCase();
+    function toggleTheme() {
+      const body = document.getElementById("main-body");
+      body.classList.toggle("dark");
+      const currentTheme = body.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("veloxis-theme", currentTheme);
+    }
 
-  document.getElementById("tickerPrice").textContent = "—";
-  document.getElementById("tickerChange").textContent = "Loading...";
+    function toggleMobileMenu() {
+      const wrap = document.getElementById("mobileMenuWrap");
+      const drawer = document.getElementById("mobileDrawer");
 
-  setTimeout(() => {
-    document.getElementById("tickerPrice").textContent = (Math.random()*100+500).toFixed(2);
-    document.getElementById("tickerChange").textContent = "+0.65%";
-  }, 600);
-}
+      if (wrap.classList.contains("hidden")) {
+        wrap.classList.remove("hidden");
+        setTimeout(() => drawer.classList.add("open"), 10);
+      } else {
+        drawer.classList.remove("open");
+        setTimeout(() => wrap.classList.add("hidden"), 220);
+      }
+    }
 
-// Ask Veloxis (تحليل ذكي بدون توصية)
-function runAskVeloxis() {
-  const ticker = document.getElementById("tickerInput").value.toUpperCase();
-  const output = document.getElementById("askOutputText");
+    const chartModes = {
+      "Spot GEX": "0,65 10,62 20,58 30,60 40,52 50,50 60,46 70,42 80,39 90,34 100,30",
+      "GEX by Strike": "0,55 10,53 20,50 30,38 40,29 50,46 60,41 70,30 80,24 90,35 100,28",
+      "Daily GEX": "0,58 10,61 20,59 30,56 40,49 50,45 60,42 70,40 80,36 90,34 100,31",
+      "Expiry GEX": "0,70 10,66 20,61 30,55 40,53 50,47 60,50 70,45 80,40 90,33 100,29",
+      "Expiry by Strike": "0,60 10,57 20,53 30,48 40,39 50,35 60,42 70,46 80,32 90,28 100,24",
+      "Implied Volatility": "0,54 10,52 20,50 30,48 40,47 50,44 60,41 70,39 80,36 90,34 100,32",
+      "IV Crush Risk": "0,34 10,35 20,36 30,37 40,39 50,42 60,45 70,47 80,50 90,54 100,58",
+      "Delta Exposure": "0,62 10,60 20,58 30,54 40,51 50,48 60,44 70,41 80,37 90,32 100,29",
+      "Gamma Exposure": "0,67 10,64 20,60 30,57 40,50 50,46 60,41 70,37 80,33 90,30 100,27"
+    };
 
-  output.textContent =
-    `${ticker} shows alignment between price and options flow. Sweep activity supports directional intent, while gamma structure suggests expansion risk. Current conditions favor probabilistic continuation rather than immediate reversal.`;
-}
-</script>
+    const dataModes = {
+      "Open Interest": {
+        tag: "Position Build",
+        rows: [
+          { side: "call", contract: "QQQ 640C", meta: "Apr 16 • 0DTE", rightMain: "481K OI", rightSub: "Avg $0.94" },
+          { side: "call", contract: "QQQ 641C", meta: "Apr 16 • 0DTE", rightMain: "449K OI", rightSub: "Avg $0.77" },
+          { side: "put", contract: "QQQ 637P", meta: "Apr 16 • 0DTE", rightMain: "303K OI", rightSub: "Avg $1.01" },
+          { side: "put", contract: "QQQ 640P", meta: "Apr 16 • 0DTE", rightMain: "298K OI", rightSub: "Avg $1.19" }
+        ]
+      },
+      "Volume": {
+        tag: "Execution Size",
+        rows: [
+          { side: "call", contract: "QQQ 640C", meta: "Apr 16 • 0DTE", rightMain: "481K Vol", rightSub: "51.74x OI" },
+          { side: "call", contract: "QQQ 641C", meta: "Apr 16 • 0DTE", rightMain: "449K Vol", rightSub: "52.65x OI" },
+          { side: "call", contract: "QQQ 642C", meta: "Apr 16 • 0DTE", rightMain: "310K Vol", rightSub: "72.06x OI" },
+          { side: "put", contract: "QQQ 637P", meta: "Apr 16 • 0DTE", rightMain: "303K Vol", rightSub: "67.66x OI" }
+        ]
+      },
+      "Volume vs OI": {
+        tag: "Fresh Activity",
+        rows: [
+          { side: "call", contract: "QQQ 639C", meta: "Apr 16 • 0DTE", rightMain: "301K / 3K", rightSub: "112.69x" },
+          { side: "put", contract: "QQQ 640P", meta: "Apr 16 • 0DTE", rightMain: "298K / 647", rightSub: "460.51x" },
+          { side: "put", contract: "QQQ 638P", meta: "Apr 16 • 0DTE", rightMain: "286K / 923", rightSub: "309.95x" },
+          { side: "put", contract: "QQQ 639P", meta: "Apr 16 • 0DTE", rightMain: "256K / 494", rightSub: "517.63x" }
+        ]
+      },
+      "Contracts": {
+        tag: "Contract Mix",
+        rows: [
+          { side: "call", contract: "Total Calls", meta: "Dominant upside contracts", rightMain: "780K", rightSub: "65%" },
+          { side: "put", contract: "Total Puts", meta: "Defensive / hedge contracts", rightMain: "420K", rightSub: "35%" },
+          { side: "call", contract: "Top Call Cluster", meta: "640C / 641C / 642C", rightMain: "1.24M", rightSub: "Stacked" },
+          { side: "put", contract: "Top Put Cluster", meta: "637P / 638P / 640P", rightMain: "887K", rightSub: "Active" }
+        ]
+      },
+      "Calls vs Puts": {
+        tag: "Direction Split",
+        rows: [
+          { side: "call", contract: "Call Pressure", meta: "Aggressive call concentration", rightMain: "57%", rightSub: "Constructive" },
+          { side: "put", contract: "Put Pressure", meta: "Hedge / downside interest", rightMain: "43%", rightSub: "Defensive" },
+          { side: "call", contract: "Call Leadership", meta: "640C / 641C leading", rightMain: "QQQ Upside", rightSub: "Near Spot" }
+        ]
+      },
+      "Put/Call Ratio": {
+        tag: "Sentiment",
+        rows: [
+          { side: "call", contract: "Current Ratio", meta: "Put / Call concentration", rightMain: "0.74", rightSub: "Bullish tilt" },
+          { side: "put", contract: "Hedge Layer", meta: "Still active downside protection", rightMain: "Moderate", rightSub: "Not extreme" },
+          { side: "call", contract: "Interpretation", meta: "Calls lead, puts still present", rightMain: "Mixed Positive", rightSub: "Balanced" }
+        ]
+      },
+      "Net Premium": {
+        tag: "Capital Flow",
+        rows: [
+          { side: "call", contract: "Net Call Premium", meta: "Buyer-led premium", rightMain: "+$2.4M", rightSub: "Constructive" },
+          { side: "put", contract: "Net Put Premium", meta: "Protective premium", rightMain: "-$0.9M", rightSub: "Offsetting" },
+          { side: "call", contract: "Net Balance", meta: "Overall pressure", rightMain: "Bullish", rightSub: "Calls dominant" }
+        ]
+      },
+      "Strike Premium": {
+        tag: "Strike Focus",
+        rows: [
+          { side: "call", contract: "640C", meta: "Largest premium node", rightMain: "$1.8M", rightSub: "Heavy focus" },
+          { side: "call", contract: "641C", meta: "Secondary call premium", rightMain: "$1.4M", rightSub: "Supportive" },
+          { side: "put", contract: "637P", meta: "Largest put premium", rightMain: "$0.9M", rightSub: "Hedge zone" }
+        ]
+      },
+      "Unusual Activity": {
+        tag: "Scanner",
+        rows: [
+          { side: "call", contract: "QQQ 640C", meta: "Abnormal call size", rightMain: "Alert", rightSub: "High urgency" },
+          { side: "put", contract: "QQQ 637P", meta: "Abnormal put size", rightMain: "Alert", rightSub: "Hedge spike" },
+          { side: "call", contract: "Interpretation", meta: "Both sides active, calls slightly stronger", rightMain: "Mixed", rightSub: "Constructive tilt" }
+        ]
+      },
+      "Sweep Orders": {
+        tag: "Urgency",
+        rows: [
+          { side: "call", contract: "640C Sweeps", meta: "Fast multi-exchange fills", rightMain: "Strong", rightSub: "Buyer urgency" },
+          { side: "call", contract: "641C Sweeps", meta: "Continuation sweep flow", rightMain: "Active", rightSub: "Near spot" },
+          { side: "put", contract: "637P Sweeps", meta: "Defensive sweep flow", rightMain: "Present", rightSub: "Hedge" }
+        ]
+      },
+      "Block Trades": {
+        tag: "Institutional",
+        rows: [
+          { side: "call", contract: "Call Blocks", meta: "Larger single prints", rightMain: "Visible", rightSub: "Likely institutional" },
+          { side: "put", contract: "Put Blocks", meta: "Protective block interest", rightMain: "Moderate", rightSub: "Risk control" },
+          { side: "call", contract: "Read", meta: "Calls still hold leadership", rightMain: "Constructive", rightSub: "Not one-sided" }
+        ]
+      }
+    };
 
+    function setChartMode(mode, el) {
+      document.getElementById("chartTitle").textContent = mode;
+      document.getElementById("chartBadgeValue").textContent = mode;
+      document.getElementById("mainChartLine").setAttribute("points", chartModes[mode]);
+
+      document.querySelectorAll(".control-btn").forEach(btn => {
+        if (btn.closest(".panel") && btn.closest(".panel").querySelector(".section-label")?.textContent.includes("Upper Chart")) {
+          btn.classList.remove("active");
+        }
+      });
+
+      if (el) el.classList.add("active");
+    }
+
+    function setDataMode(mode, el) {
+      const title = document.getElementById("dataTitle");
+      const tag = document.getElementById("dataTag");
+      const container = document.getElementById("dataContent");
+      const dataset = dataModes[mode];
+
+      title.textContent = mode;
+      tag.textContent = dataset.tag;
+
+      container.innerHTML = dataset.rows.map(row => {
+        const sideColor = row.side === "call" ? "var(--positive)" : "var(--negative)";
+        const pillClass = row.side === "call" ? "data-chip-green" : "data-chip-red";
+        const label = row.side === "call" ? "CALL" : "PUT";
+
+        return `
+          <div class="data-row">
+            <div class="data-side" style="background:${sideColor};"></div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <div class="data-row-title">${row.contract}</div>
+                <span class="data-pill ${pillClass}">${label}</span>
+              </div>
+              <div class="data-row-sub">${row.meta}</div>
+            </div>
+            <div class="data-right">
+              <div class="data-strong">${row.rightMain}</div>
+              <div class="data-mini">${row.rightSub}</div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      document.querySelectorAll(".control-btn").forEach(btn => {
+        if (btn.closest(".panel") && btn.closest(".panel").querySelector(".section-label")?.textContent.includes("Lower Panel")) {
+          btn.classList.remove("active");
+        }
+      });
+
+      if (el) el.classList.add("active");
+    }
+
+    function refreshTicker() {
+      const ticker = document.getElementById("tickerInput").value.toUpperCase();
+      document.getElementById("tickerPrice").textContent = "—";
+      document.getElementById("tickerChange").textContent = "Loading...";
+
+      setTimeout(() => {
+        document.getElementById("tickerPrice").textContent = ticker === "QQQ" ? "610.20" : (Math.random() * 100 + 500).toFixed(2);
+        document.getElementById("tickerChange").textContent = ticker === "QQQ" ? "+0.84%" : "+0.65%";
+      }, 500);
+    }
+
+    function runAskVeloxis() {
+      const ticker = document.getElementById("tickerInput").value.toUpperCase();
+      const dataMode = document.getElementById("dataTitle").textContent;
+      const chartMode = document.getElementById("chartTitle").textContent;
+      const output = document.getElementById("askOutputText");
+
+      output.textContent =
+        `${ticker} is currently being read through ${chartMode} in the upper structure layer and ${dataMode} in the lower flow layer. This combination helps separate dealer positioning from live contract participation. Current conditions still suggest probabilistic continuation with expansion risk if structure weakens or fresh flow accelerates.`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      applySavedTheme();
+      setDataMode("Open Interest");
+    });
+  </script>
 </body>
 </html>
