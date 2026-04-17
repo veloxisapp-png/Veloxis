@@ -433,17 +433,26 @@
 
   <script>
     // تحميل الثيم عند فتح الصفحة
-(function () {
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "dark") {
-    document.getElementById("main-body").classList.add("dark");
+function applySavedTheme() {
+  const savedTheme = localStorage.getItem("veloxis-theme");
+  const body = document.getElementById("main-body");
+
+  if (savedTheme === "light") {
+    body.classList.remove("dark");
   } else {
-    document.getElementById("main-body").classList.remove("dark");
+    body.classList.add("dark");
   }
-})();
-    function toggleTheme() {
-      document.getElementById("main-body").classList.toggle("dark");
-    }
+}
+
+function toggleTheme() {
+  const body = document.getElementById("main-body");
+  body.classList.toggle("dark");
+
+  const currentTheme = body.classList.contains("dark") ? "dark" : "light";
+  localStorage.setItem("veloxis-theme", currentTheme);
+}
+
+document.addEventListener("DOMContentLoaded", applySavedTheme);
     function setTimeframe(tf, el) {
   document.querySelectorAll(".tf-btn").forEach(btn => btn.classList.remove("active"));
   el.classList.add("active");
