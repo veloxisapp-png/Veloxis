@@ -722,6 +722,27 @@
 
     renderDesktopLists();
     renderMobileTabContent();
+    // ===== THEME FIX =====
+function applySavedTheme() {
+  const savedTheme = localStorage.getItem("veloxis-theme");
+  const body = document.getElementById("main-body");
+
+  if (savedTheme === "light") {
+    body.classList.remove("dark");
+  } else {
+    body.classList.add("dark");
+  }
+}
+
+function toggleTheme() {
+  const body = document.getElementById("main-body");
+  body.classList.toggle("dark");
+
+  const currentTheme = body.classList.contains("dark") ? "dark" : "light";
+  localStorage.setItem("veloxis-theme", currentTheme);
+}
+
+document.addEventListener("DOMContentLoaded", applySavedTheme);
   </script>
 </body>
 </html>
