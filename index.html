@@ -1025,7 +1025,10 @@ function toggleTheme() {
   localStorage.setItem("veloxis-theme", currentTheme);
 }
 function openLogin() {
-  alert("Login coming soon");
+  document.getElementById("loginBox").classList.remove("hidden");
+}
+    function closeLogin() {
+  document.getElementById("loginBox").classList.add("hidden");
 }
 document.addEventListener("DOMContentLoaded", applySavedTheme);
   </script>
