@@ -1037,48 +1037,70 @@ function openLogin() {
   const box = document.getElementById("loginBox");
 
   box.innerHTML = `
-    <div class="panel rounded-2xl p-6 w-[90%] max-w-sm">
+  <div class="panel rounded-2xl p-6 w-[90%] max-w-sm">
 
-      <h2 class="text-lg font-semibold mb-4">Create Account</h2>
+    <h2 class="text-lg font-semibold mb-4">Create Account</h2>
 
-      <input type="text" placeholder="Username"
-        class="w-full mb-3 px-3 py-2 rounded-lg border"
-        style="background: var(--panel-soft); border-color: var(--border); color: var(--text);" />
+    <input type="text" placeholder="Username"
+      class="w-full mb-3 px-3 py-2 rounded-lg border"
+      style="background: var(--panel-soft); border-color: var(--border); color: var(--text);" />
 
-      <input type="text" placeholder="Email"
-        class="w-full mb-3 px-3 py-2 rounded-lg border"
-        style="background: var(--panel-soft); border-color: var(--border); color: var(--text);" />
+    <input type="text" placeholder="Email"
+      class="w-full mb-3 px-3 py-2 rounded-lg border"
+      style="background: var(--panel-soft); border-color: var(--border); color: var(--text);" />
 
-      <input type="text" placeholder="Country"
-        class="w-full mb-3 px-3 py-2 rounded-lg border"
-        style="background: var(--panel-soft); border-color: var(--border); color: var(--text);" />
+    <input type="text" placeholder="Country"
+      class="w-full mb-3 px-3 py-2 rounded-lg border"
+      style="background: var(--panel-soft); border-color: var(--border); color: var(--text);" />
 
-      <input type="password" placeholder="Password"
-        class="w-full mb-3 px-3 py-2 rounded-lg border"
-        style="background: var(--panel-soft); border-color: var(--border); color: var(--text);" />
+    <input type="password" placeholder="Password"
+      class="w-full mb-3 px-3 py-2 rounded-lg border"
+      style="background: var(--panel-soft); border-color: var(--border); color: var(--text);" />
 
-      <input type="password" placeholder="Confirm Password"
-        class="w-full mb-4 px-3 py-2 rounded-lg border"
-        style="background: var(--panel-soft); border-color: var(--border); color: var(--text);" />
+    <input type="password" placeholder="Confirm Password"
+      class="w-full mb-4 px-3 py-2 rounded-lg border"
+      style="background: var(--panel-soft); border-color: var(--border); color: var(--text);" />
 
-      <button 
-        onclick="handleRegister()"
-        class="w-full py-2 rounded-lg"
-        style="background: var(--accent); color: white;">
-        Create Account
-      </button>
+    <button onclick="handleRegister()"
+      class="w-full py-2 rounded-lg"
+      style="background: var(--accent); color: white;">
+      Create Account
+    </button>
 
-      <button onclick="openLogin()" class="mt-3 text-sm w-full">
-        Back to Login
-      </button>
+    <button onclick="openLogin()" class="mt-3 text-sm w-full">
+      Back to Login
+    </button>
 
-      <button onclick="closeLogin()" class="mt-2 text-sm muted w-full">
-        Cancel
-      </button>
+    <button onclick="closeLogin()" class="mt-2 text-sm muted w-full">
+      Cancel
+    </button>
 
-    </div>
+  </div>
   `;
 }
+
+function handleRegister() {
+  const inputs = document.querySelectorAll("#loginBox input");
+
+  const username = inputs[0].value;
+  const email = inputs[1].value;
+  const country = inputs[2].value;
+  const password = inputs[3].value;
+  const confirm = inputs[4].value;
+
+  if (!username || !email || !country || !password || !confirm) {
+    alert("Fill all fields");
+    return;
+  }
+
+  if (password !== confirm) {
+    alert("Passwords do not match");
+    return;
+  }
+
+  alert("Account created successfully 🚀");
+}
+  
 document.addEventListener("DOMContentLoaded", applySavedTheme);
   </script>
   <footer style="margin-top:40px;padding:20px 0;border-top:1px solid rgba(255,255,255,0.08);text-align:center;color:#9CA3AF;font-size:13px;">
