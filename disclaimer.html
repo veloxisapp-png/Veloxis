@@ -1,79 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Disclaimer - Veloxis</title>
 
   <style>
-    body {
-      background-color: #0f172a;
-      color: #e5e7eb;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 40px;
+    :root {
+      --bg: #fafafa;
+      --panel: #ffffff;
+      --panel-soft: #f5f5f5;
+      --border: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+      --muted-strong: #4b5563;
+      --accent: #2563eb;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
     }
 
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: #111827;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    body.dark {
+      --bg: #09090b;
+      --panel: #111827;
+      --panel-soft: #18181b;
+      --border: #27272a;
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+      --muted-strong: #d4d4d8;
+      --accent: #60a5fa;
+      --shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px 20px 28px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .page-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .legal-card {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 34px 30px 28px;
+    }
+
+    .eyebrow {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
     }
 
     h1 {
+      margin: 0 0 24px;
       text-align: center;
-      margin-bottom: 25px;
-      font-size: 32px;
+      font-size: clamp(32px, 4vw, 42px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
     }
 
-    p {
-      color: #9ca3af;
-      line-height: 1.7;
-      margin-bottom: 15px;
+    .lead {
+      text-align: center;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+      max-width: 620px;
+      margin: 0 auto 28px;
+    }
+
+    .content {
+      display: grid;
+      gap: 14px;
+    }
+
+    .content p {
+      margin: 0;
+      color: var(--muted-strong);
+      line-height: 1.85;
+      font-size: 15px;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 24px 0 18px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .meta-box {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+
+    .meta-label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 6px;
+    }
+
+    .meta-value {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      font-weight: 600;
     }
 
     .back {
-      display: block;
-      text-align: center;
-      margin-top: 25px;
-      color: #60a5fa;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 24px auto 0;
+      color: var(--muted-strong);
       text-decoration: none;
-      transition: 0.2s;
+      transition: 0.2s ease;
       font-size: 14px;
+      padding: 10px 14px;
+      border-radius: 10px;
     }
 
     .back:hover {
-      color: #93c5fd;
-      transform: translateX(-4px);
+      color: var(--text);
+      background: var(--panel-soft);
+    }
+
+    .back-wrap {
+      text-align: center;
+    }
+
+    .page-footer {
+      max-width: 760px;
+      margin: 18px auto 0;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .page-footer strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .footer-links {
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 24px 14px 22px;
+      }
+
+      .legal-card {
+        padding: 26px 18px 22px;
+        border-radius: 16px;
+      }
+
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .content p,
+      .lead {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 
-<body>
+<body id="app-body">
+  <div class="page-wrap">
+    <section class="legal-card">
+      <div class="eyebrow">Veloxis Legal</div>
+      <h1>Disclaimer</h1>
 
-  <div class="container">
-    <h1>Disclaimer</h1>
+      <p class="lead">
+        Veloxis provides structured market intelligence for informational and educational use only.
+      </p>
 
-    <p>
-      Veloxis provides market data, analytics, and insights for informational and educational purposes only.
-    </p>
+      <div class="content">
+        <p>
+          Veloxis provides market data, analytics, and insights for informational and educational purposes only.
+        </p>
 
-    <p>
-      Nothing on this platform constitutes financial advice, investment advice, or a recommendation to buy or sell any financial instrument.
-    </p>
+        <p>
+          Nothing on this platform constitutes financial advice, investment advice, or a recommendation to buy or sell any financial instrument.
+        </p>
 
-    <p>
-      All users are solely responsible for their own decisions. You should conduct your own research or consult with a licensed financial advisor.
-    </p>
+        <p>
+          All users are solely responsible for their own decisions. You should conduct your own research or consult with a licensed financial advisor before making any financial decisions.
+        </p>
 
-    <p>
-      Veloxis does not guarantee the accuracy, completeness, or reliability of any data.
-    </p>
+        <p>
+          Veloxis does not guarantee the accuracy, completeness, timeliness, or reliability of any data, analytics, signals, or market interpretations displayed on the platform.
+        </p>
+      </div>
 
-    <a href="/index.html" class="back">← Back to Home</a>
+      <div class="divider"></div>
+
+      <div class="meta-grid">
+        <div class="meta-box">
+          <div class="meta-label">Platform Use</div>
+          <div class="meta-value">Informational and educational use only</div>
+        </div>
+
+        <div class="meta-box">
+          <div class="meta-label">Advisory Status</div>
+          <div class="meta-value">No financial or investment advice is provided</div>
+        </div>
+
+        <div class="meta-box">
+          <div class="meta-label">User Responsibility</div>
+          <div class="meta-value">All decisions remain solely with the end user</div>
+        </div>
+
+        <div class="meta-box">
+          <div class="meta-label">Data Reliability</div>
+          <div class="meta-value">No warranty is given on completeness or accuracy</div>
+        </div>
+      </div>
+
+      <div class="back-wrap">
+        <a href="/index.html" class="back">← Return to Dashboard</a>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <div><strong>Veloxis</strong> — Market Intelligence Platform</div>
+      <div>Structured analytics, signal-driven interpretation, and market context for modern traders.</div>
+
+      <div class="footer-links">
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/disclaimer.html">Disclaimer</a>
+      </div>
+
+      <div style="margin-top: 8px;">© 2026 Veloxis. All rights reserved.</div>
+    </footer>
   </div>
 
+  <script>
+    function applySavedTheme() {
+      const savedTheme = localStorage.getItem("veloxis-theme");
+      const body = document.getElementById("app-body");
+
+      if (savedTheme === "light") {
+        body.classList.remove("dark");
+      } else {
+        body.classList.add("dark");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", applySavedTheme);
+  </script>
 </body>
 </html>
