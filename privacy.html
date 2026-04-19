@@ -1,190 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Privacy Policy - Veloxis</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy - Veloxis</title>
 
-<style>
-:root {
-  --bg: #0b0f17;
-  --panel: #111827;
-  --panel-soft: #1f2937;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --muted-strong: #6b7280;
-}
+  <style>
+    :root {
+      --bg: #fafafa;
+      --panel: #ffffff;
+      --panel-soft: #f5f5f5;
+      --border: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+      --muted-strong: #4b5563;
+      --accent: #2563eb;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
 
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Inter, system-ui;
-}
+    body.dark {
+      --bg: #09090b;
+      --panel: #111827;
+      --panel-soft: #18181b;
+      --border: #27272a;
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+      --muted-strong: #d4d4d8;
+      --accent: #60a5fa;
+      --shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+    }
 
-.wrap {
-  max-width: 860px;
-  margin: 60px auto;
-  padding: 0 20px;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-h1 {
-  font-size: 40px;
-  text-align: center;
-  margin-bottom: 20px;
-}
+    body {
+      margin: 0;
+      padding: 40px 20px 28px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
 
-p {
-  line-height: 1.8;
-  color: var(--muted);
-}
+    .page-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+    }
 
-.card {
-  background: var(--panel);
-  padding: 24px;
-  border-radius: 14px;
-  margin-top: 20px;
-}
+    .legal-card {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 34px 30px 28px;
+    }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin-top: 30px;
-}
+    .eyebrow {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
 
-.box {
-  background: var(--panel-soft);
-  padding: 18px;
-  border-radius: 12px;
-  font-size: 14px;
-}
+    h1 {
+      margin: 0 0 24px;
+      text-align: center;
+      font-size: clamp(32px, 4vw, 42px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
 
-.title {
-  font-weight: 600;
-  margin-bottom: 6px;
-}
+    .lead {
+      text-align: center;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+      max-width: 620px;
+      margin: 0 auto 28px;
+    }
 
-.back-wrap {
-  text-align: center;
-}
+    .content {
+      display: grid;
+      gap: 14px;
+    }
 
-.back {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin: 24px auto 0;
-  color: var(--muted-strong);
-  text-decoration: none;
-  font-size: 14px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  transition: color 0.2s ease, background 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
-  opacity: 0.7;
-}
+    .content p {
+      margin: 0;
+      color: var(--muted-strong);
+      line-height: 1.85;
+      font-size: 15px;
+    }
 
-.back:hover {
-  color: var(--text);
-  background: var(--panel-soft);
-  opacity: 1;
-  transform: translateY(-1px);
-}
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 24px 0 18px;
+    }
 
-.footer {
-  text-align: center;
-  margin-top: 50px;
-  color: var(--muted);
-  font-size: 13px;
-}
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
 
-.footer-links {
-  margin-top: 10px;
-}
+    .meta-box {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
 
-.footer-links a {
-  margin: 0 10px;
-  color: var(--muted-strong);
-  text-decoration: none;
-}
+    .meta-label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 6px;
+    }
 
-.footer-links a:hover {
-  color: var(--text);
-}
-</style>
+    .meta-value {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 24px auto 0;
+      color: var(--muted-strong);
+      text-decoration: none;
+      transition: color 0.2s ease, background 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+      font-size: 14px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      opacity: 0.7;
+    }
+
+    .back:hover {
+      color: var(--text);
+      background: var(--panel-soft);
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+
+    .back-wrap {
+      text-align: center;
+    }
+
+    .page-footer {
+      max-width: 760px;
+      margin: 18px auto 0;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .page-footer strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .footer-links {
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 24px 14px 22px;
+      }
+
+      .legal-card {
+        padding: 26px 18px 22px;
+        border-radius: 16px;
+      }
+
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .content p,
+      .lead {
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 
-<body>
+<body id="app-body">
+  <div class="page-wrap">
+    <section class="legal-card">
+      <div class="eyebrow">Veloxis Legal</div>
+      <h1>Privacy Policy</h1>
 
-<div class="wrap">
+      <p class="lead">
+        Veloxis is committed to protecting user privacy and handling platform data responsibly.
+      </p>
 
-<h1>Privacy Policy</h1>
+      <div class="content">
+        <p>
+          Veloxis may collect limited user information such as email, account activity, session behavior, and general usage patterns in order to improve platform performance and user experience.
+        </p>
 
-<div class="card">
-<p>
-Veloxis respects your privacy and is committed to protecting your data. This policy outlines how we collect, use, and safeguard your information.
-</p>
+        <p>
+          Any information collected is used solely for operational, analytical, and security purposes related to the platform.
+        </p>
 
-<p>
-We may collect basic usage data such as page interactions, session behavior, and general analytics to improve platform performance and user experience.
-</p>
+        <p>
+          Veloxis does not sell, rent, or misuse personal data. Information may be processed through selected third-party infrastructure or analytics services where necessary to maintain and improve the service.
+        </p>
 
-<p>
-We do not sell, rent, or distribute your personal data to third parties. Any collected information is used strictly for internal analytics and system optimization.
-</p>
+        <p>
+          The platform may use cookies or similar technologies to support functionality, improve navigation, and better understand user interaction across the site.
+        </p>
 
-<p>
-Veloxis may use cookies or similar technologies to enhance functionality and understand user behavior across the platform.
-</p>
+        <p>
+          Users remain responsible for maintaining the confidentiality of their own credentials and for their activity on the platform.
+        </p>
+      </div>
 
-<p>
-All users remain responsible for their own data security and usage of the platform.
-</p>
-</div>
+      <div class="divider"></div>
 
-<div class="grid">
+      <div class="meta-grid">
+        <div class="meta-box">
+          <div class="meta-label">Data Usage</div>
+          <div class="meta-value">Used to improve platform performance and user experience</div>
+        </div>
 
-<div class="box">
-<div class="title">Data Usage</div>
-Used only for improving platform performance
-</div>
+        <div class="meta-box">
+          <div class="meta-label">Third-Party Services</div>
+          <div class="meta-value">Limited processing through infrastructure and analytics providers</div>
+        </div>
 
-<div class="box">
-<div class="title">Third Parties</div>
-No data is sold or shared externally
-</div>
+        <div class="meta-box">
+          <div class="meta-label">Tracking</div>
+          <div class="meta-value">Basic session and usage analytics only</div>
+        </div>
 
-<div class="box">
-<div class="title">Tracking</div>
-Basic analytics and session tracking only
-</div>
-
-<div class="box">
-<div class="title">User Control</div>
-Users maintain control over their interaction
-</div>
-
-</div>
-
-<div class="back-wrap">
-<a href="index.html" class="back">← Return to Dashboard</a>
-</div>
-
-<div class="footer">
-Veloxis — Market Intelligence Platform<br/>
-Structured analytics, signal-driven interpretation, and market context for modern traders.
-
-<div class="footer-links">
-<a href="terms.html">Terms</a>
-<a href="privacy.html">Privacy</a>
-<a href="disclaimer.html">Disclaimer</a>
-</div>
-
-<br/>
-© 2026 Veloxis. All rights reserved.
-</div>
-
-</div>
-
-</body>
-</html>
+        <div class="meta-box">
