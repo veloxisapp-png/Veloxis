@@ -1000,12 +1000,30 @@
         miniChartInstance = null;
       }
     }
+async function loadFlashAlpha() {
+  try {
+    const res = await fetch("https://lab.flashalpha.com/v1/exposure/gex/SPY", {
+      headers: {
+        "X-Api-Key": "PUT_YOUR_KEY_HERE"
+      }
+    });
 
+    const data = await res.json();
+    console.log(data);
+
+    document.getElementById("topSentiment").textContent = data.net_gex ?? "N/A";
+    document.getElementById("summaryMarketStatus").textContent = data.regime ?? "N/A";
+
+  } catch (err) {
+    console.error(err);
+  }
+}
     const engine = buildEngine();
     renderSummary(engine);
     renderInsight(engine);
     renderDistribution();
     renderDrivers();
+    loadFlashAlpha();
     // ===== THEME FIX =====
 function applySavedTheme() {
   const savedTheme = localStorage.getItem("veloxis-theme");
