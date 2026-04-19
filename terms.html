@@ -1,9 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terms of Service - Veloxis</title>
+
+<style>
+:root {
+  --bg: #fafafa;
+  --panel: #ffffff;
+  --panel-soft: #f5f5f5;
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+  --muted-strong: #4b5563;
+}
+
+body.dark {
+  --bg: #09090b;
+  --panel: #111827;
+  --panel-soft: #18181b;
+  --border: #27272a;
+  --text: #f4f4f5;
+  --muted: #a1a1aa;
+  --muted-strong: #d4d4d8;
+}
+
+body {
+  margin: 0;
+  padding: 40px 20px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui;
+}
+
+.wrap {
+  max-width: 760px;
+  margin: auto;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 30px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+p {
+  color: var(--muted-strong);
+  line-height: 1.8;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 25px;
+}
+
+.box {
+  background: var(--panel-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.value {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.back {
+  display: block;
+  text-align: center;
+  margin-top: 25px;
+  color: var(--muted-strong);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: 0.2s;
+}
+
+.back:hover {
+  opacity: 1;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 30px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.footer a {
+  margin: 0 10px;
+  color: var(--muted-strong);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: var(--text);
+}
+</style>
+</head>
+
+<body id="app-body">
+
+<div class="wrap">
+
 <h1>Terms of Service</h1>
 
-<p>
-By using Veloxis, you agree that all data and analytics are provided "as-is" without warranties of any kind.
-</p>
+<p>By accessing and using Veloxis, you agree to the following terms and conditions governing the use of the platform.</p>
 
-<p>
-Veloxis shall not be held liable for any financial losses or damages resulting from the use of the platform.
-</p>
+<p>Veloxis provides market intelligence, analytics, and data-driven insights for informational and educational purposes only.</p>
+
+<p>Users must not misuse the platform, attempt to exploit vulnerabilities, or engage in any activity that may harm the system or other users.</p>
+
+<p>All content, data, and platform features are provided “as is” without any guarantees of accuracy, reliability, or performance.</p>
+
+<p>Veloxis reserves the right to modify, suspend, or terminate access to the platform at any time without prior notice.</p>
+
+<p>By continuing to use the platform, you acknowledge full responsibility for your actions and decisions.</p>
+
+<div class="grid">
+
+<div class="box">
+<div class="label">PLATFORM USE</div>
+<div class="value">For informational purposes only</div>
+</div>
+
+<div class="box">
+<div class="label">USER CONDUCT</div>
+<div class="value">No misuse or system abuse allowed</div>
+</div>
+
+<div class="box">
+<div class="label">LIABILITY</div>
+<div class="value">No guarantee on accuracy or outcomes</div>
+</div>
+
+<div class="box">
+<div class="label">ACCESS CONTROL</div>
+<div class="value">Platform access may be modified anytime</div>
+</div>
+
+</div>
+
+<a href="index.html" class="back">← Return to Dashboard</a>
+
+<div class="footer">
+Veloxis — Market Intelligence Platform<br/>
+Structured analytics, signal-driven interpretation, and market context for modern traders.
+<br><br>
+<a href="terms.html">Terms</a>
+<a href="privacy.html">Privacy</a>
+<a href="disclaimer.html">Disclaimer</a>
+<br><br>
+© 2026 Veloxis
+</div>
+
+</div>
+
+<script>
+function applySavedTheme() {
+  const savedTheme = localStorage.getItem("veloxis-theme");
+  const body = document.getElementById("app-body");
+
+  if (savedTheme === "light") {
+    body.classList.remove("dark");
+  } else {
+    body.classList.add("dark");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", applySavedTheme);
+</script>
+
+</body>
+</html>
