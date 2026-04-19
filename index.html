@@ -610,7 +610,23 @@
     </div>
   </div>
 
-  <script>
+  <script type="module">
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "PUT-HERE",
+  authDomain: "PUT-HERE",
+  projectId: "PUT-HERE",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+window.auth = auth;
+window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+window.signInWithEmailAndPassword = signInWithEmailAndPassword; 
     function toggleTheme() {
       document.getElementById("main-body").classList.toggle("dark");
     }
@@ -1082,23 +1098,17 @@ function openLogin() {
 function handleRegister() {
   const inputs = document.querySelectorAll("#loginBox input");
 
-  const username = inputs[0].value;
   const email = inputs[1].value;
-  const country = inputs[2].value;
   const password = inputs[3].value;
-  const confirm = inputs[4].value;
 
-  if (!username || !email || !country || !password || !confirm) {
-    alert("Fill all fields");
-    return;
-  }
-
-  if (password !== confirm) {
-    alert("Passwords do not match");
-    return;
-  }
-
-  alert("Account created successfully 🚀");
+  createUserWithEmailAndPassword(window.auth, email, password)
+    .then(() => {
+      alert("Account created ✅");
+      closeLogin();
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
 }
   
 document.addEventListener("DOMContentLoaded", applySavedTheme);
