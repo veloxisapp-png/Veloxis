@@ -167,12 +167,18 @@ Structured analytics, signal-driven interpretation, and market context for moder
 </div>
 
 <script>
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme === "light") {
-  document.body.classList.remove("dark");
-} else {
-  document.body.classList.add("dark");
-}
+  function applySavedTheme() {
+    const savedTheme = localStorage.getItem("veloxis-theme");
+    const body = document.getElementById("app-body");
+
+    if (savedTheme === "light") {
+      body.classList.remove("dark");
+    } else {
+      body.classList.add("dark");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", applySavedTheme);
 </script>
 
 </body>
