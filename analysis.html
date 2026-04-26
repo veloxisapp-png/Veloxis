@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,163 +8,162 @@
 
   <style>
     :root {
-      --bg: #fafafa;
-      --panel: #ffffff;
-      --panel-2: #f5f5f5;
-      --border: #e5e7eb;
-      --text: #111827;
-      --muted: #6b7280;
-      --accent: #2563eb;
-      --positive: #16a34a;
-      --negative: #dc2626;
-      --warning: #f59e0b;
-      --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      --bg:#fafafa;
+      --panel:#ffffff;
+      --panel-2:#f5f5f5;
+      --border:#e5e7eb;
+      --text:#111827;
+      --muted:#6b7280;
+      --accent:#2563eb;
+      --positive:#16a34a;
+      --negative:#dc2626;
+      --warning:#f59e0b;
+      --shadow:0 10px 30px rgba(15,23,42,.06);
     }
 
     body.dark {
-      --bg: #09090b;
-      --panel: #111827;
-      --panel-2: #18181b;
-      --border: #27272a;
-      --text: #f4f4f5;
-      --muted: #a1a1aa;
-      --accent: #60a5fa;
-      --positive: #22c55e;
-      --negative: #ef4444;
-      --warning: #fbbf24;
-      --shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+      --bg:#09090b;
+      --panel:#111827;
+      --panel-2:#18181b;
+      --border:#27272a;
+      --text:#f4f4f5;
+      --muted:#a1a1aa;
+      --accent:#60a5fa;
+      --positive:#22c55e;
+      --negative:#ef4444;
+      --warning:#fbbf24;
+      --shadow:0 14px 34px rgba(0,0,0,.35);
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing:border-box; }
 
     body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      transition: background 0.2s ease, color 0.2s ease;
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      transition:background .2s ease,color .2s ease;
     }
 
     .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+      background:var(--panel);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
     }
 
     .panel-soft {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
+      background:var(--panel-2);
+      border:1px solid var(--border);
     }
 
-    .muted { color: var(--muted); }
+    .muted { color:var(--muted); }
 
     .nav-link {
-      position: relative;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.96rem;
-      font-weight: 500;
-      padding: 0.4rem 0;
-      transition: color 0.2s ease;
+      position:relative;
+      color:var(--muted);
+      text-decoration:none;
+      font-size:.96rem;
+      font-weight:500;
+      padding:.4rem 0;
+      transition:color .2s ease;
     }
 
     .nav-link:hover,
-    .nav-link.active { color: var(--text); }
+    .nav-link.active { color:var(--text); }
 
     .nav-link.active::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -0.9rem;
-      width: 100%;
-      height: 2px;
-      background: var(--accent);
-      border-radius: 999px;
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-.9rem;
+      width:100%;
+      height:2px;
+      background:var(--accent);
+      border-radius:999px;
     }
 
     .tf-btn {
-      padding: 8px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
-      transition: all 0.2s ease;
+      padding:8px 14px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:var(--panel-2);
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      transition:all .2s ease;
     }
 
     .tf-btn:hover {
-      color: var(--text);
-      border-color: rgba(96, 165, 250, 0.35);
+      color:var(--text);
+      border-color:rgba(96,165,250,.35);
     }
 
     .tf-btn.active {
-      background: var(--accent);
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.22);
+      background:var(--accent);
+      color:white;
+      border-color:transparent;
+      box-shadow:0 10px 22px rgba(37,99,235,.22);
     }
 
     body.dark .tf-btn.active {
-      box-shadow: 0 10px 22px rgba(96, 165, 250, 0.22);
+      box-shadow:0 10px 22px rgba(96,165,250,.22);
     }
 
     .signal-badge {
-      font-size: 11px;
-      font-weight: 800;
-      padding: 5px 9px;
-      border-radius: 999px;
-      white-space: nowrap;
+      font-size:11px;
+      font-weight:800;
+      padding:5px 9px;
+      border-radius:999px;
+      white-space:nowrap;
     }
 
     .badge-active {
-      background: rgba(34, 197, 94, 0.15);
-      color: var(--positive);
+      background:rgba(34,197,94,.15);
+      color:var(--positive);
     }
 
     .badge-watch {
-      background: rgba(96, 165, 250, 0.15);
-      color: var(--accent);
+      background:rgba(96,165,250,.15);
+      color:var(--accent);
     }
 
     .badge-muted {
-      background: rgba(161, 161, 170, 0.12);
-      color: var(--muted);
+      background:rgba(161,161,170,.12);
+      color:var(--muted);
     }
 
     .badge-warning {
-      background: rgba(245, 158, 11, 0.16);
-      color: var(--warning);
+      background:rgba(245,158,11,.16);
+      color:var(--warning);
     }
 
     .badge-negative {
-      background: rgba(239, 68, 68, 0.14);
-      color: var(--negative);
+      background:rgba(239,68,68,.14);
+      color:var(--negative);
     }
 
-    input,
-    select {
-      background: var(--panel-2);
-      color: var(--text);
-      border: 1px solid var(--border);
+    input,select {
+      background:var(--panel-2);
+      color:var(--text);
+      border:1px solid var(--border);
     }
 
-    input::placeholder { color: var(--muted); }
+    input::placeholder { color:var(--muted); }
 
     .thin-scroll::-webkit-scrollbar {
-      height: 8px;
-      width: 8px;
+      height:8px;
+      width:8px;
     }
 
     .thin-scroll::-webkit-scrollbar-thumb {
-      background: #3f3f46;
-      border-radius: 999px;
+      background:#3f3f46;
+      border-radius:999px;
     }
 
-    @media (max-width: 960px) {
+    @media (max-width:960px) {
       .desktop-nav {
-        overflow-x: auto;
-        white-space: nowrap;
+        overflow-x:auto;
+        white-space:nowrap;
       }
     }
   </style>
@@ -174,7 +172,7 @@
 <body class="dark" id="main-body">
   <header
     class="sticky top-0 z-50 border-b backdrop-blur supports-[backdrop-filter]:bg-black/10"
-    style="border-color: var(--border); background: color-mix(in srgb, var(--bg) 88%, transparent);"
+    style="border-color:var(--border);background:color-mix(in srgb,var(--bg) 88%,transparent);"
   >
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <div class="h-16 flex items-center justify-between gap-6">
@@ -194,7 +192,7 @@
         <button
           onclick="toggleTheme()"
           class="panel-soft rounded-xl px-3 py-2 text-sm font-medium min-w-fit"
-          style="color: var(--text);"
+          style="color:var(--text);"
         >
           Theme
         </button>
@@ -204,7 +202,6 @@
 
   <main class="max-w-7xl mx-auto px-5 lg:px-8 py-6 lg:py-8">
 
-    <!-- Search Strip -->
     <section class="panel rounded-2xl p-4 mb-6">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
         <div class="lg:col-span-7">
@@ -231,7 +228,7 @@
           <button
             onclick="analyzeSymbol()"
             class="w-full rounded-2xl px-5 py-4 font-semibold"
-            style="background: var(--accent); color: white;"
+            style="background:var(--accent);color:white;"
           >
             Analyze
           </button>
@@ -239,20 +236,17 @@
       </div>
     </section>
 
-    <!-- Main Layout -->
     <section class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
 
-      <!-- LEFT COLUMN -->
       <div class="xl:col-span-8 space-y-6">
 
-        <!-- Chart Panel -->
         <section class="panel rounded-3xl p-6 lg:p-8">
           <div class="flex items-start justify-between gap-4 mb-6">
             <div>
-              <p class="text-sm font-medium mb-3" style="color: var(--accent);">Technical Structure View</p>
+              <p class="text-sm font-medium mb-3" style="color:var(--accent);">Technical Structure View</p>
               <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Analysis</h1>
               <p class="text-base lg:text-lg leading-8 muted max-w-3xl">
-                Read current price structure, timeframe context, pattern context, and user-defined alerts in one clean chart-first layout.
+                Read price structure, timeframe context, dominant pattern, and user-defined alerts in one clean chart-first layout.
               </p>
             </div>
 
@@ -276,13 +270,13 @@
 
             <div
               class="rounded-2xl overflow-hidden border h-[380px] lg:h-[470px] relative"
-              style="border-color: var(--border); background: linear-gradient(180deg, rgba(37,99,235,0.04) 0%, rgba(15,23,42,0.04) 100%);"
+              style="border-color:var(--border);background:linear-gradient(180deg,rgba(37,99,235,.04) 0%,rgba(15,23,42,.04) 100%);"
             >
               <div class="absolute inset-0 opacity-40">
                 <svg viewBox="0 0 1000 500" class="w-full h-full">
                   <defs>
                     <pattern id="smallGrid" width="50" height="50" patternUnits="userSpaceOnUse">
-                      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(113,113,122,0.18)" stroke-width="1" />
+                      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(113,113,122,.18)" stroke-width="1" />
                     </pattern>
                   </defs>
                   <rect width="100%" height="100%" fill="url(#smallGrid)" />
@@ -292,7 +286,7 @@
               <svg viewBox="0 0 1000 500" class="absolute inset-0 w-full h-full">
                 <polyline
                   fill="none"
-                  stroke="rgba(96,165,250,0.95)"
+                  stroke="rgba(96,165,250,.95)"
                   stroke-width="4"
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -300,24 +294,24 @@
                 />
 
                 <polyline
-                  fill="rgba(96,165,250,0.10)"
+                  fill="rgba(96,165,250,.10)"
                   stroke="none"
                   points="20,380 80,360 130,365 180,340 240,300 290,315 350,290 420,260 490,270 560,235 630,220 700,245 760,210 820,190 880,170 950,182 950,500 20,500"
                 />
 
-                <rect x="0" y="188" width="1000" height="34" fill="rgba(34,197,94,0.06)" />
-                <rect x="0" y="285" width="1000" height="32" fill="rgba(239,68,68,0.06)" />
+                <rect x="0" y="188" width="1000" height="34" fill="rgba(34,197,94,.06)" />
+                <rect x="0" y="285" width="1000" height="32" fill="rgba(239,68,68,.06)" />
 
-                <line x1="0" y1="205" x2="1000" y2="205" stroke="rgba(34,197,94,0.45)" stroke-width="2" stroke-dasharray="8 8" />
-                <line x1="0" y1="300" x2="1000" y2="300" stroke="rgba(239,68,68,0.35)" stroke-width="2" stroke-dasharray="8 8" />
-                <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(161,161,170,0.28)" stroke-width="2" stroke-dasharray="6 8" />
+                <line x1="0" y1="205" x2="1000" y2="205" stroke="rgba(34,197,94,.45)" stroke-width="2" stroke-dasharray="8 8" />
+                <line x1="0" y1="300" x2="1000" y2="300" stroke="rgba(239,68,68,.35)" stroke-width="2" stroke-dasharray="8 8" />
+                <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(161,161,170,.28)" stroke-width="2" stroke-dasharray="6 8" />
 
-                                <circle cx="880" cy="170" r="7" fill="rgba(34,197,94,0.9)" />
-                <circle cx="700" cy="245" r="6" fill="rgba(245,158,11,0.9)" />
+                <circle cx="880" cy="170" r="7" fill="rgba(34,197,94,.9)" />
+                <circle cx="700" cy="245" r="6" fill="rgba(245,158,11,.9)" />
 
-                <text x="800" y="198" fill="rgba(34,197,94,0.95)" font-size="16" font-weight="600">Resistance 194.20</text>
-                <text x="810" y="293" fill="rgba(239,68,68,0.95)" font-size="16" font-weight="600">Support 189.80</text>
-                <text x="810" y="243" fill="rgba(161,161,170,0.95)" font-size="15" font-weight="500">Range Mid 191.60</text>
+                <text x="800" y="198" fill="rgba(34,197,94,.95)" font-size="16" font-weight="600">Resistance 194.20</text>
+                <text x="810" y="293" fill="rgba(239,68,68,.95)" font-size="16" font-weight="600">Support 189.80</text>
+                <text x="810" y="243" fill="rgba(161,161,170,.95)" font-size="15" font-weight="500">Range Mid 191.60</text>
               </svg>
             </div>
 
@@ -337,7 +331,6 @@
           </div>
         </section>
 
-        <!-- Scenario Map -->
         <section class="panel rounded-3xl p-6">
           <div class="mb-5">
             <h3 class="text-xl font-semibold">Scenario Map</h3>
@@ -346,7 +339,7 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="panel-soft rounded-2xl p-4">
-              <div class="text-xs uppercase tracking-[0.16em] mb-2" style="color: var(--positive);">Bullish Scenario</div>
+              <div class="text-xs uppercase tracking-[0.16em] mb-2" style="color:var(--positive);">Bullish Scenario</div>
               <div class="font-semibold mb-2">Clean Hold Above Resistance</div>
               <p class="text-sm muted leading-6">
                 Sustained trade above 194.20 with candle-close confirmation would support continuation.
@@ -354,7 +347,7 @@
             </div>
 
             <div class="panel-soft rounded-2xl p-4">
-              <div class="text-xs uppercase tracking-[0.16em] mb-2" style="color: var(--negative);">Bearish Scenario</div>
+              <div class="text-xs uppercase tracking-[0.16em] mb-2" style="color:var(--negative);">Bearish Scenario</div>
               <div class="font-semibold mb-2">Rejection Back Into Range</div>
               <p class="text-sm muted leading-6">
                 Failure near resistance shifts focus back toward 191.60, then 189.80 support.
@@ -363,7 +356,6 @@
           </div>
         </section>
 
-        <!-- Ask Veloxis moved left -->
         <section class="panel rounded-3xl p-6">
           <div class="mb-4">
             <h3 class="text-xl font-semibold">Ask Veloxis</h3>
@@ -393,7 +385,7 @@
             <button
               onclick="askVeloxis()"
               class="w-full rounded-2xl px-4 py-3 font-semibold"
-              style="background: var(--accent); color: white;"
+              style="background:var(--accent);color:white;"
             >
               Ask
             </button>
@@ -402,19 +394,18 @@
           <div class="panel-soft rounded-2xl p-4">
             <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Veloxis Decision</div>
             <p id="veloxis-response" class="text-sm leading-7">
-              Wait for confirmation. Price is constructive, but it is approaching resistance. The stronger decision is to watch candle-close behavior near 194.20 before treating this as a clean breakout.
+              Wait for confirmation. Price is constructive, but it is approaching resistance. Watch candle-close behavior near 194.20 before treating this as a clean breakout.
             </p>
           </div>
         </section>
       </div>
-
-      <!-- RIGHT COLUMN -->
+            <!-- RIGHT COLUMN -->
       <aside class="xl:col-span-4 space-y-6 xl:sticky xl:top-24 h-fit">
 
         <!-- Analysis Panel -->
         <section class="panel rounded-3xl p-6">
           <div class="mb-5">
-            <p class="text-sm font-medium mb-2" style="color: var(--accent);">Veloxis Reading</p>
+            <p class="text-sm font-medium mb-2" style="color:var(--accent);">Veloxis Reading</p>
             <h2 class="text-2xl font-semibold">Analysis Panel</h2>
             <p class="text-sm muted mt-2">Quick structure, levels, and decision context.</p>
           </div>
@@ -424,10 +415,12 @@
               <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Decision</div>
               <div id="decision-label" class="font-semibold">Wait for Confirmation</div>
             </div>
+
             <div class="panel-soft rounded-2xl px-4 py-4">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Trend</div>
               <div class="font-semibold">Higher High Structure</div>
             </div>
+
             <div class="panel-soft rounded-2xl px-4 py-4">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Pressure</div>
               <div class="font-semibold">Upward, With Exhaustion Risk</div>
@@ -458,7 +451,7 @@
           </div>
         </section>
 
-        <!-- Pattern Context compact -->
+        <!-- Pattern Context -->
         <section class="panel rounded-3xl p-6">
           <div class="mb-5">
             <h3 class="text-xl font-semibold">Pattern Context</h3>
@@ -497,13 +490,14 @@
           <div class="grid grid-cols-1 gap-3">
             <div>
               <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Alert Type</label>
-              <select id="alert-type" class="w-full rounded-2xl px-4 py-3 outline-none">
+              <select id="alert-type" class="w-full rounded-2xl px-4 py-3 outline-none" onchange="handleAlertTypeChange()">
                 <option value="pattern">Pattern</option>
                 <option value="price">Price Level</option>
               </select>
             </div>
 
-            <div>
+            <!-- Pattern Condition -->
+            <div id="pattern-condition-wrap">
               <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Condition</label>
               <select id="alert-condition" class="w-full rounded-2xl px-4 py-3 outline-none">
                 <option value="bullish_engulfing">Bullish Engulfing</option>
@@ -513,6 +507,40 @@
                 <option value="doji">Doji</option>
                 <option value="breakout">Breakout</option>
                 <option value="breakdown">Breakdown</option>
+              </select>
+            </div>
+
+            <!-- Price Level Condition -->
+            <div id="price-condition-wrap" class="hidden">
+              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Price Level</label>
+              <input
+                id="alert-price-level"
+                type="number"
+                step="0.01"
+                value="194.20"
+                class="w-full rounded-2xl px-4 py-3 outline-none"
+                placeholder="Enter price level"
+              />
+
+              <div class="grid grid-cols-3 gap-2 mt-3">
+                <button type="button" onclick="setAlertPrice('194.20')" class="panel-soft rounded-xl px-3 py-2 text-xs font-semibold">
+                  Resistance
+                </button>
+                <button type="button" onclick="setAlertPrice('191.60')" class="panel-soft rounded-xl px-3 py-2 text-xs font-semibold">
+                  Range Mid
+                </button>
+                <button type="button" onclick="setAlertPrice('189.80')" class="panel-soft rounded-xl px-3 py-2 text-xs font-semibold">
+                  Support
+                </button>
+              </div>
+            </div>
+
+            <div id="price-direction-wrap" class="hidden">
+              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Direction</label>
+              <select id="alert-price-direction" class="w-full rounded-2xl px-4 py-3 outline-none">
+                <option value="crosses_above">Crosses Above</option>
+                <option value="crosses_below">Crosses Below</option>
+                <option value="touches">Touches Level</option>
               </select>
             </div>
 
@@ -541,7 +569,7 @@
             <button
               onclick="addUserAlert()"
               class="w-full rounded-2xl px-4 py-3 font-semibold mt-2"
-              style="background: var(--accent); color: white;"
+              style="background:var(--accent);color:white;"
             >
               Add Alert
             </button>
@@ -550,7 +578,7 @@
           <div class="mt-5 panel-soft rounded-2xl p-4">
             <div class="text-xs uppercase tracking-[0.16em] muted mb-3">Active Alerts</div>
             <div id="active-alerts" class="space-y-3">
-              <div class="text-sm muted">No active alerts yet.</div>
+              <div id="empty-alert-state" class="text-sm muted">No active alerts yet.</div>
             </div>
           </div>
         </section>
@@ -650,15 +678,38 @@
       }
     }
 
+    function handleAlertTypeChange() {
+      const alertType = document.getElementById("alert-type").value;
+
+      const patternWrap = document.getElementById("pattern-condition-wrap");
+      const priceWrap = document.getElementById("price-condition-wrap");
+      const directionWrap = document.getElementById("price-direction-wrap");
+
+      if (alertType === "price") {
+        patternWrap.classList.add("hidden");
+        priceWrap.classList.remove("hidden");
+        directionWrap.classList.remove("hidden");
+      } else {
+        patternWrap.classList.remove("hidden");
+        priceWrap.classList.add("hidden");
+        directionWrap.classList.add("hidden");
+      }
+    }
+
+    function setAlertPrice(price) {
+      document.getElementById("alert-price-level").value = price;
+    }
+
     function addUserAlert() {
       const symbol = document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
-      const condition = document.getElementById("alert-condition").value;
+      const alertType = document.getElementById("alert-type").value;
       const timeframe = document.getElementById("alert-timeframe").value;
       const trigger = document.getElementById("alert-trigger").value;
       const alertsBox = document.getElementById("active-alerts");
+      const emptyState = document.getElementById("empty-alert-state");
 
-      if (alertsBox.textContent.includes("No active alerts yet")) {
-        alertsBox.innerHTML = "";
+      if (emptyState) {
+        emptyState.remove();
       }
 
       const labelMap = {
@@ -677,13 +728,35 @@
         confirmation: "Close + Confirmation"
       };
 
+      const directionMap = {
+        crosses_above: "Crosses Above",
+        crosses_below: "Crosses Below",
+        touches: "Touches Level"
+      };
+
+      let title = "";
+      let detail = "";
+
+      if (alertType === "price") {
+        const price = document.getElementById("alert-price-level").value || "194.20";
+        const direction = document.getElementById("alert-price-direction").value;
+
+        title = symbol + " — " + directionMap[direction] + " " + price;
+        detail = "Timeframe: " + timeframe + " • Trigger: " + triggerMap[trigger];
+      } else {
+        const condition = document.getElementById("alert-condition").value;
+
+        title = symbol + " — " + (labelMap[condition] || condition);
+        detail = "Timeframe: " + timeframe + " • Trigger: " + triggerMap[trigger];
+      }
+
       const item = document.createElement("div");
       item.className = "panel rounded-2xl px-4 py-3";
       item.innerHTML = `
         <div class="flex items-center justify-between gap-3">
           <div>
-            <div class="text-sm font-semibold">${symbol} — ${labelMap[condition] || condition}</div>
-            <div class="text-xs muted mt-1">Timeframe: ${timeframe} • Trigger: ${triggerMap[trigger]}</div>
+            <div class="text-sm font-semibold">${title}</div>
+            <div class="text-xs muted mt-1">${detail}</div>
           </div>
           <span class="signal-badge badge-watch">Active</span>
         </div>
@@ -709,6 +782,7 @@
       applySavedTheme();
       refreshPatternContext(selectedTimeframe);
       refreshDecision(selectedTimeframe);
+      handleAlertTypeChange();
     });
   </script>
 </body>
