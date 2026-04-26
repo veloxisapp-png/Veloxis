@@ -8,16 +8,30 @@
 
   <style>
     :root{
-      --bg:#fafafa; --panel:#ffffff; --panel-2:#f5f5f5; --border:#e5e7eb;
-      --text:#111827; --muted:#6b7280; --accent:#2563eb;
-      --positive:#16a34a; --negative:#dc2626; --warning:#f59e0b;
+      --bg:#fafafa;
+      --panel:#ffffff;
+      --panel-2:#f5f5f5;
+      --border:#e5e7eb;
+      --text:#111827;
+      --muted:#6b7280;
+      --accent:#2563eb;
+      --positive:#16a34a;
+      --negative:#dc2626;
+      --warning:#f59e0b;
       --shadow:0 10px 30px rgba(15,23,42,.06);
     }
 
     body.dark{
-      --bg:#09090b; --panel:#111827; --panel-2:#18181b; --border:#27272a;
-      --text:#f4f4f5; --muted:#a1a1aa; --accent:#60a5fa;
-      --positive:#22c55e; --negative:#ef4444; --warning:#fbbf24;
+      --bg:#09090b;
+      --panel:#111827;
+      --panel-2:#18181b;
+      --border:#27272a;
+      --text:#f4f4f5;
+      --muted:#a1a1aa;
+      --accent:#60a5fa;
+      --positive:#22c55e;
+      --negative:#ef4444;
+      --warning:#fbbf24;
       --shadow:0 14px 34px rgba(0,0,0,.35);
     }
 
@@ -30,48 +44,101 @@
       color:var(--text);
     }
 
-    .panel{background:var(--panel);border:1px solid var(--border);box-shadow:var(--shadow)}
-    .panel-soft{background:var(--panel-2);border:1px solid var(--border)}
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+
+    .panel-soft{
+      background:var(--panel-2);
+      border:1px solid var(--border);
+    }
+
     .muted{color:var(--muted)}
 
     .nav-link{
-      position:relative;color:var(--muted);text-decoration:none;font-size:.96rem;
-      font-weight:500;padding:.4rem 0;
+      position:relative;
+      color:var(--muted);
+      text-decoration:none;
+      font-size:.96rem;
+      font-weight:500;
+      padding:.4rem 0;
     }
-    .nav-link:hover,.nav-link.active{color:var(--text)}
+
+    .nav-link:hover,
+    .nav-link.active{color:var(--text)}
+
     .nav-link.active::after{
-      content:"";position:absolute;left:0;bottom:-.9rem;width:100%;height:2px;
-      background:var(--accent);border-radius:999px;
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-.9rem;
+      width:100%;
+      height:2px;
+      background:var(--accent);
+      border-radius:999px;
     }
 
     input,select{
-      background:var(--panel-2);color:var(--text);border:1px solid var(--border);
+      background:var(--panel-2);
+      color:var(--text);
+      border:1px solid var(--border);
     }
+
     input::placeholder{color:var(--muted)}
 
-    .tf-btn,.choice-btn,.level-btn,.alert-tf-btn{
-      padding:8px 12px;border-radius:12px;border:1px solid var(--border);
-      background:var(--panel-2);color:var(--muted);font-size:13px;font-weight:700;
-      transition:all .2s ease;cursor:pointer;
+    .tf-btn,
+    .choice-btn,
+    .level-btn,
+    .alert-tf-btn{
+      padding:8px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:var(--panel-2);
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      transition:all .2s ease;
+      cursor:pointer;
     }
 
-    .tf-btn:hover,.choice-btn:hover,.level-btn:hover,.alert-tf-btn:hover{
-      color:var(--text);border-color:rgba(96,165,250,.35);
+    .tf-btn:hover,
+    .choice-btn:hover,
+    .level-btn:hover,
+    .alert-tf-btn:hover{
+      color:var(--text);
+      border-color:rgba(96,165,250,.35);
     }
 
-    .tf-btn.active,.choice-btn.active,.level-btn.active,.alert-tf-btn.active{
-      background:var(--accent);color:white;border-color:transparent;
+    .tf-btn.active,
+    .choice-btn.active,
+    .level-btn.active,
+    .alert-tf-btn.active{
+      background:var(--accent);
+      color:white;
+      border-color:transparent;
       box-shadow:0 10px 22px rgba(37,99,235,.22);
     }
 
     .decision-card{
-      background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(37,99,235,.05));
-      border:1px solid rgba(96,165,250,.35);
+      background:linear-gradient(135deg,rgba(37,99,235,.18),rgba(37,99,235,.05));
+      border:1px solid rgba(96,165,250,.30);
+    }
+
+    .suggestion-card{
+      background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(96,165,250,.06));
+      border:1px solid rgba(34,197,94,.22);
     }
 
     .signal-badge{
-      font-size:11px;font-weight:800;padding:5px 9px;border-radius:999px;white-space:nowrap;
+      font-size:11px;
+      font-weight:800;
+      padding:5px 9px;
+      border-radius:999px;
+      white-space:nowrap;
     }
+
     .badge-active{background:rgba(34,197,94,.15);color:var(--positive)}
     .badge-watch{background:rgba(96,165,250,.15);color:var(--accent)}
     .badge-warning{background:rgba(245,158,11,.16);color:var(--warning)}
@@ -87,8 +154,10 @@
 </head>
 
 <body class="dark" id="main-body">
-  <header class="sticky top-0 z-50 border-b backdrop-blur supports-[backdrop-filter]:bg-black/10"
-    style="border-color:var(--border);background:color-mix(in srgb,var(--bg) 88%,transparent);">
+  <header
+    class="sticky top-0 z-50 border-b backdrop-blur supports-[backdrop-filter]:bg-black/10"
+    style="border-color:var(--border);background:color-mix(in srgb,var(--bg) 88%,transparent);"
+  >
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <div class="h-16 flex items-center justify-between gap-6">
         <div class="flex items-center min-w-fit">
@@ -104,7 +173,11 @@
           <a href="top-movers.html" class="nav-link">Top Movers</a>
         </nav>
 
-        <button onclick="toggleTheme()" class="panel-soft rounded-xl px-3 py-2 text-sm font-medium min-w-fit" style="color:var(--text);">
+        <button
+          onclick="toggleTheme()"
+          class="panel-soft rounded-xl px-3 py-2 text-sm font-medium min-w-fit"
+          style="color:var(--text);"
+        >
           Theme
         </button>
       </div>
@@ -113,12 +186,18 @@
 
   <main class="max-w-7xl mx-auto px-5 lg:px-8 py-6 lg:py-8">
 
+    <!-- Search Strip -->
     <section class="panel rounded-2xl p-4 mb-6">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
         <div class="lg:col-span-7">
           <label class="block text-sm font-medium muted mb-2">Symbol</label>
-          <input id="symbol-input" type="text" value="AAPL" placeholder="Enter ticker symbol"
-            class="w-full rounded-2xl px-5 py-4 outline-none text-base font-medium" />
+          <input
+            id="symbol-input"
+            type="text"
+            value="AAPL"
+            placeholder="Enter ticker symbol"
+            class="w-full rounded-2xl px-5 py-4 outline-none text-base font-medium"
+          />
         </div>
 
         <div class="lg:col-span-3">
@@ -131,26 +210,34 @@
 
         <div class="lg:col-span-2">
           <label class="block text-sm font-medium muted mb-2 opacity-0">Analyze</label>
-          <button onclick="analyzeSymbol()" class="w-full rounded-2xl px-5 py-4 font-semibold" style="background:var(--accent);color:white;">
+          <button
+            onclick="analyzeSymbol()"
+            class="w-full rounded-2xl px-5 py-4 font-semibold"
+            style="background:var(--accent);color:white;"
+          >
             Analyze
           </button>
         </div>
       </div>
     </section>
 
-    <section class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
+    <!-- Main Layout -->
+    <section class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6 items-start">
 
+      <!-- LEFT COLUMN -->
       <div class="xl:col-span-8 space-y-6">
 
+        <!-- Chart Panel -->
         <section class="panel rounded-3xl p-6 lg:p-8">
           <div class="flex items-start justify-between gap-4 mb-6">
             <div>
               <p class="text-sm font-medium mb-3" style="color:var(--accent);">Technical Structure View</p>
               <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Analysis</h1>
               <p class="text-base lg:text-lg leading-8 muted max-w-3xl">
-                Read price structure, timeframe context, dominant pattern, and smart alerts in one clean decision layout.
+                Read price structure, timeframe context, dominant pattern, and smart suggestions in one decision layout.
               </p>
             </div>
+
             <div class="text-right min-w-fit">
               <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
               <p class="text-sm font-medium mt-1">Now</p>
@@ -163,6 +250,7 @@
                 <p class="text-sm muted">Primary Chart</p>
                 <h2 id="chart-title" class="text-xl font-semibold mt-1">AAPL Price Structure</h2>
               </div>
+
               <div class="text-right">
                 <p class="text-xs uppercase tracking-[0.16em] muted">Price</p>
                 <p id="price-label" class="text-lg font-semibold">$192.84</p>
@@ -171,6 +259,7 @@
 
             <div class="rounded-2xl overflow-hidden border h-[380px] lg:h-[470px] relative"
               style="border-color:var(--border);background:linear-gradient(180deg,rgba(37,99,235,.04),rgba(15,23,42,.04));">
+
               <div class="absolute inset-0 opacity-40">
                 <svg viewBox="0 0 1000 500" class="w-full h-full">
                   <defs>
@@ -183,15 +272,27 @@
               </div>
 
               <svg viewBox="0 0 1000 500" class="absolute inset-0 w-full h-full">
-                <polyline fill="none" stroke="rgba(96,165,250,.95)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
-                  points="20,380 80,360 130,365 180,340 240,300 290,315 350,290 420,260 490,270 560,235 630,220 700,245 760,210 820,190 880,170 950,182" />
-                <polyline fill="rgba(96,165,250,.10)" stroke="none"
-                  points="20,380 80,360 130,365 180,340 240,300 290,315 350,290 420,260 490,270 560,235 630,220 700,245 760,210 820,190 880,170 950,182 950,500 20,500" />
+                <polyline
+                  fill="none"
+                  stroke="rgba(96,165,250,.95)"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  points="20,380 80,360 130,365 180,340 240,300 290,315 350,290 420,260 490,270 560,235 630,220 700,245 760,210 820,190 880,170 950,182"
+                />
+                <polyline
+                  fill="rgba(96,165,250,.10)"
+                  stroke="none"
+                  points="20,380 80,360 130,365 180,340 240,300 290,315 350,290 420,260 490,270 560,235 630,220 700,245 760,210 820,190 880,170 950,182 950,500 20,500"
+                />
+
                 <line x1="0" y1="205" x2="1000" y2="205" stroke="rgba(34,197,94,.45)" stroke-width="2" stroke-dasharray="8 8" />
                 <line x1="0" y1="300" x2="1000" y2="300" stroke="rgba(239,68,68,.35)" stroke-width="2" stroke-dasharray="8 8" />
                 <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(161,161,170,.28)" stroke-width="2" stroke-dasharray="6 8" />
+
                 <circle cx="880" cy="170" r="7" fill="rgba(34,197,94,.9)" />
                 <circle cx="700" cy="245" r="6" fill="rgba(245,158,11,.9)" />
+
                 <text x="800" y="198" fill="rgba(34,197,94,.95)" font-size="16" font-weight="600">Resistance 194.20</text>
                 <text x="810" y="293" fill="rgba(239,68,68,.95)" font-size="16" font-weight="600">Support 189.80</text>
                 <text x="810" y="243" fill="rgba(161,161,170,.95)" font-size="15" font-weight="500">Range Mid 191.60</text>
@@ -214,78 +315,175 @@
           </div>
         </section>
 
+        <!-- Scenario Map -->
         <section class="panel rounded-3xl p-6">
           <div class="mb-5">
             <h3 class="text-xl font-semibold">Scenario Map</h3>
             <p class="text-sm muted mt-1">Fast decision view based on current structure.</p>
           </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="panel-soft rounded-2xl p-4">
               <div class="text-xs uppercase tracking-[0.16em] mb-2" style="color:var(--positive);">Bullish Scenario</div>
               <div class="font-semibold mb-2">Clean Hold Above Resistance</div>
-              <p class="text-sm muted leading-6">Sustained trade above 194.20 with candle-close confirmation would support continuation.</p>
+              <p class="text-sm muted leading-6">
+                Sustained trade above 194.20 with candle-close confirmation would support continuation.
+              </p>
             </div>
+
             <div class="panel-soft rounded-2xl p-4">
               <div class="text-xs uppercase tracking-[0.16em] mb-2" style="color:var(--negative);">Bearish Scenario</div>
               <div class="font-semibold mb-2">Rejection Back Into Range</div>
-              <p class="text-sm muted leading-6">Failure near resistance shifts focus back toward 191.60, then 189.80 support.</p>
+              <p class="text-sm muted leading-6">
+                Failure near resistance shifts focus back toward 191.60, then 189.80 support.
+              </p>
             </div>
           </div>
         </section>
 
+        <!-- Ask Veloxis -->
         <section class="panel rounded-3xl p-6">
           <div class="mb-4">
             <h3 class="text-xl font-semibold">Ask Veloxis</h3>
             <p class="text-sm muted mt-1">Ask about the chart, scenario, resistance, support, or current decision.</p>
           </div>
+
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-4">
-            <button onclick="quickAsk('Is 194.20 resistance likely to break?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">Is 194.20 likely to break?</button>
-            <button onclick="quickAsk('What confirms this breakout?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">What confirms breakout?</button>
-            <button onclick="quickAsk('Where is failure level?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">Where is failure level?</button>
+            <button onclick="quickAsk('Is 194.20 resistance likely to break?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
+              Is 194.20 likely to break?
+            </button>
+            <button onclick="quickAsk('What confirms this breakout?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
+              What confirms breakout?
+            </button>
+            <button onclick="quickAsk('Where is failure level?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
+              Where is failure level?
+            </button>
           </div>
+
           <div class="space-y-3 mb-4">
-            <input id="ask-input" type="text" value="What matters most on this chart right now?" class="w-full rounded-2xl px-4 py-4 outline-none" />
-            <button onclick="askVeloxis()" class="w-full rounded-2xl px-4 py-3 font-semibold" style="background:var(--accent);color:white;">Ask</button>
+            <input
+              id="ask-input"
+              type="text"
+              value="What matters most on this chart right now?"
+              class="w-full rounded-2xl px-4 py-4 outline-none"
+            />
+            <button
+              onclick="askVeloxis()"
+              class="w-full rounded-2xl px-4 py-3 font-semibold"
+              style="background:var(--accent);color:white;"
+            >
+              Ask
+            </button>
           </div>
+
           <div class="panel-soft rounded-2xl p-4">
             <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Veloxis Decision</div>
-            <p id="veloxis-response" class="text-sm leading-7">Wait for confirmation. Price is constructive, but it is approaching resistance. Watch candle-close behavior near 194.20.</p>
+            <p id="veloxis-response" class="text-sm leading-7">
+              Wait for confirmation. Price is constructive, but it is approaching resistance. Watch candle-close behavior near 194.20.
+            </p>
           </div>
         </section>
       </div>
-
+            <!-- RIGHT COLUMN -->
       <div class="xl:col-span-4 space-y-6">
 
+        <!-- Decision Panel -->
         <section class="panel rounded-3xl p-6 decision-card">
-          <h2 class="text-2xl font-semibold mb-4">Analysis Panel</h2>
+          <div class="flex items-start justify-between gap-4 mb-4">
+            <div>
+              <p class="text-sm font-medium mb-1" style="color:var(--accent);">Veloxis Reading</p>
+              <h2 class="text-xl font-semibold">Decision Panel</h2>
+            </div>
+            <span id="confidence-badge" class="signal-badge badge-warning">Medium</span>
+          </div>
+
           <div class="panel-soft rounded-2xl p-4 mb-4">
             <div class="text-xs uppercase tracking-[0.15em] muted mb-1">Decision</div>
-            <div id="decision-text" class="text-xl font-bold tracking-tight">WAIT FOR CONFIRMATION</div>
+            <div id="decision-text" class="text-base font-semibold leading-6">
+              Wait for breakout confirmation
+            </div>
           </div>
-          <div class="space-y-3 text-sm">
-            <div class="flex justify-between"><span class="muted">Trend</span><span class="font-semibold">Higher High</span></div>
-            <div class="flex justify-between"><span class="muted">Pressure</span><span class="font-semibold">Exhaustion Risk</span></div>
-            <div class="flex justify-between"><span class="muted">Resistance</span><span class="font-semibold">194.20</span></div>
-            <div class="flex justify-between"><span class="muted">Range Mid</span><span class="font-semibold">191.60</span></div>
-            <div class="flex justify-between"><span class="muted">Support</span><span class="font-semibold">189.80</span></div>
+
+          <div class="grid grid-cols-1 gap-3 text-sm">
+            <div class="flex justify-between gap-4">
+              <span class="muted">Why</span>
+              <span id="why-text" class="font-semibold text-right">Near 194.20 resistance + exhaustion risk</span>
+            </div>
+            <div class="flex justify-between gap-4">
+              <span class="muted">Action</span>
+              <span id="action-text" class="font-semibold text-right">Watch candle close above resistance</span>
+            </div>
+            <div class="flex justify-between gap-4">
+              <span class="muted">Invalidation</span>
+              <span id="invalid-text" class="font-semibold text-right">Back below 191.60</span>
+            </div>
           </div>
         </section>
 
+        <!-- Veloxis Suggestion -->
+        <section class="panel rounded-3xl p-6 suggestion-card">
+          <div class="flex items-start justify-between gap-4 mb-4">
+            <div>
+              <h3 class="text-lg font-semibold">Veloxis Suggestion</h3>
+              <p class="text-sm muted mt-1">Suggested alert based on current structure.</p>
+            </div>
+            <span class="signal-badge badge-watch">Suggested</span>
+          </div>
+
+          <div class="panel-soft rounded-2xl p-4 mb-4">
+            <div class="text-xs uppercase tracking-[0.15em] muted mb-2">Suggested Alert</div>
+            <p id="suggestion-text" class="text-sm leading-7 font-semibold">
+              Alert if AAPL closes above 194.20 resistance on 1D timeframe.
+            </p>
+          </div>
+
+          <button
+            onclick="useSuggestedAlert()"
+            class="w-full rounded-xl py-3 font-semibold"
+            style="background:linear-gradient(135deg,#3b82f6,#2563eb);color:white;box-shadow:0 12px 25px rgba(37,99,235,.35);"
+          >
+            Use Suggested Alert
+          </button>
+
+          <button
+            onclick="toggleManualAlert()"
+            class="w-full rounded-xl py-3 font-semibold mt-3 panel-soft"
+            style="color:var(--text);"
+          >
+            Customize Alert
+          </button>
+        </section>
+
+        <!-- Pattern Context -->
         <section class="panel rounded-3xl p-6">
           <h3 class="text-lg font-semibold mb-2">Pattern Context</h3>
           <p class="text-sm muted mb-4">Only the dominant pattern is shown. Others are monitored in the background.</p>
+
           <div class="panel-soft rounded-2xl p-4 grid grid-cols-2 gap-4">
-            <div><div class="text-xs uppercase muted mb-1">Pattern</div><div id="dominant-pattern" class="font-semibold">Bullish Engulfing</div></div>
-            <div><div class="text-xs uppercase muted mb-1">Timeframe</div><div id="pattern-timeframe" class="font-semibold">1D</div></div>
-            <div><div class="text-xs uppercase muted mb-1">Context</div><div id="pattern-context" class="font-semibold">Near Resistance</div></div>
-            <div><div class="text-xs uppercase muted mb-1">Quality</div><span id="pattern-quality" class="signal-badge badge-active">Confirmed</span></div>
+            <div>
+              <div class="text-xs uppercase muted mb-1">Pattern</div>
+              <div id="dominant-pattern" class="font-semibold">Bullish Engulfing</div>
+            </div>
+            <div>
+              <div class="text-xs uppercase muted mb-1">Timeframe</div>
+              <div id="pattern-timeframe" class="font-semibold">1D</div>
+            </div>
+            <div>
+              <div class="text-xs uppercase muted mb-1">Context</div>
+              <div id="pattern-context" class="font-semibold">Near Resistance</div>
+            </div>
+            <div>
+              <div class="text-xs uppercase muted mb-1">Quality</div>
+              <span id="pattern-quality" class="signal-badge badge-active">Confirmed</span>
+            </div>
           </div>
         </section>
 
-        <section class="panel rounded-3xl p-6">
+        <!-- Manual Alert -->
+        <section id="manual-alert-section" class="panel rounded-3xl p-6 hidden">
           <div class="mb-4">
-            <h3 class="text-lg font-semibold">Smart Alert</h3>
-            <p class="text-xs muted mt-1">Build alert in quick steps</p>
+            <h3 class="text-lg font-semibold">Manual Alert</h3>
+            <p class="text-xs muted mt-1">Advanced alert builder.</p>
           </div>
 
           <div class="mb-4">
@@ -332,147 +530,274 @@
           <div class="mb-4">
             <div class="text-xs uppercase muted mb-2">Timeframe</div>
             <div class="space-y-2">
-              <div class="flex items-center gap-2"><span class="text-xs muted w-16">Scalp</span><button class="alert-tf-btn" onclick="setAlertTF('1min',this)">1m</button><button class="alert-tf-btn" onclick="setAlertTF('5min',this)">5m</button></div>
-              <div class="flex items-center gap-2"><span class="text-xs muted w-16">Intraday</span><button class="alert-tf-btn" onclick="setAlertTF('15min',this)">15m</button><button class="alert-tf-btn" onclick="setAlertTF('1H',this)">1H</button></div>
-              <div class="flex items-center gap-2"><span class="text-xs muted w-16">Swing</span><button class="alert-tf-btn" onclick="setAlertTF('4H',this)">4H</button><button class="alert-tf-btn active" onclick="setAlertTF('1D',this)">1D</button></div>
-              <div class="flex items-center gap-2"><span class="text-xs muted w-16">Position</span><button class="alert-tf-btn" onclick="setAlertTF('1W',this)">1W</button><button class="alert-tf-btn" onclick="setAlertTF('1M',this)">1M</button></div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs muted w-16">Scalp</span>
+                <button class="alert-tf-btn" onclick="setAlertTF('1min',this)">1 min</button>
+                <button class="alert-tf-btn" onclick="setAlertTF('5min',this)">5 min</button>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs muted w-16">Intraday</span>
+                <button class="alert-tf-btn" onclick="setAlertTF('15min',this)">15 min</button>
+                <button class="alert-tf-btn" onclick="setAlertTF('1H',this)">1H</button>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs muted w-16">Swing</span>
+                <button class="alert-tf-btn" onclick="setAlertTF('4H',this)">4H</button>
+                <button class="alert-tf-btn active" onclick="setAlertTF('1D',this)">1D</button>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs muted w-16">Position</span>
+                <button class="alert-tf-btn" onclick="setAlertTF('1W',this)">1W</button>
+                <button class="alert-tf-btn" onclick="setAlertTF('1M',this)">1M</button>
+              </div>
             </div>
           </div>
 
-          <button onclick="addAlert()" class="w-full rounded-xl py-3 font-semibold" style="background:linear-gradient(135deg,#3b82f6,#2563eb);color:white;box-shadow:0 12px 25px rgba(37,99,235,.35);">
-            Add Alert
+          <button
+            onclick="addAlert()"
+            class="w-full rounded-xl py-3 font-semibold"
+            style="background:linear-gradient(135deg,#3b82f6,#2563eb);color:white;box-shadow:0 12px 25px rgba(37,99,235,.35);"
+          >
+            Add Manual Alert
           </button>
-
-          <div class="mt-4 panel-soft rounded-2xl p-3">
-            <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Active Alerts</div>
-            <div id="active-alerts" class="text-sm muted">No active alerts yet.</div>
-          </div>
         </section>
+
+        <!-- Active Alerts -->
+        <section class="panel rounded-3xl p-5">
+          <div class="text-xs uppercase tracking-[0.16em] muted mb-3">Active Alerts</div>
+          <div id="active-alerts" class="text-sm muted">No active alerts yet.</div>
+        </section>
+
       </div>
     </section>
   </main>
 
   <script>
-    let alertType="price";
-    let level="resistance";
-    let expectation="breakout";
-    let timeframe="1D";
+    let alertType = "price";
+    let level = "resistance";
+    let expectation = "breakout";
+    let timeframe = "1D";
 
     function applySavedTheme(){
-      const saved=localStorage.getItem("veloxis-theme");
-      document.getElementById("main-body").classList.toggle("dark", saved!=="light");
+      const saved = localStorage.getItem("veloxis-theme");
+      document.getElementById("main-body").classList.toggle("dark", saved !== "light");
     }
 
     function toggleTheme(){
-      const body=document.getElementById("main-body");
+      const body = document.getElementById("main-body");
       body.classList.toggle("dark");
       localStorage.setItem("veloxis-theme", body.classList.contains("dark") ? "dark" : "light");
     }
 
     function analyzeSymbol(){
-      const symbol=document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
-      document.getElementById("symbol-input").value=symbol;
-      document.getElementById("chart-title").innerText=symbol+" Price Structure";
-      const names={AAPL:"Apple Inc.",QQQ:"Invesco QQQ Trust",SPY:"SPDR S&P 500 ETF",TSLA:"Tesla Inc.",AMD:"Advanced Micro Devices",NVDA:"NVIDIA Corp."};
-      document.getElementById("company-name").innerText=names[symbol] || symbol;
-      askVeloxis();
-    }
+      const symbol = document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
+      document.getElementById("symbol-input").value = symbol;
+      document.getElementById("chart-title").innerText = symbol + " Price Structure";
 
-    function setChartTimeframe(tf,el){
-      document.querySelectorAll(".tf-btn").forEach(b=>b.classList.remove("active"));
-      el.classList.add("active");
-      document.getElementById("pattern-timeframe").innerText=tf;
-    }
+      const names = {
+        AAPL:"Apple Inc.",
+        QQQ:"Invesco QQQ Trust",
+        SPY:"SPDR S&P 500 ETF",
+        TSLA:"Tesla Inc.",
+        AMD:"Advanced Micro Devices",
+        NVDA:"NVIDIA Corp."
+      };
 
-    function setAlertType(type,el){
-      alertType=type;
-      document.querySelectorAll("#alert-type-switch .choice-btn").forEach(b=>b.classList.remove("active"));
-      el.classList.add("active");
-      document.getElementById("price-alert-box").classList.toggle("hidden",type!=="price");
-      document.getElementById("pattern-alert-box").classList.toggle("hidden",type!=="pattern");
+      document.getElementById("company-name").innerText = names[symbol] || symbol;
       updateSmartDecision();
     }
 
-    function setLevel(v,el){
-      level=v;
-      document.querySelectorAll(".level-btn").forEach(b=>b.classList.remove("active"));
+    function setChartTimeframe(tf, el){
+      document.querySelectorAll(".tf-btn").forEach(b => b.classList.remove("active"));
+      el.classList.add("active");
+      document.getElementById("pattern-timeframe").innerText = tf;
+    }
+
+    function toggleManualAlert(){
+      document.getElementById("manual-alert-section").classList.toggle("hidden");
+    }
+
+    function setAlertType(type, el){
+      alertType = type;
+
+      document.querySelectorAll("#alert-type-switch .choice-btn").forEach(b => b.classList.remove("active"));
       el.classList.add("active");
 
-      if(v==="resistance"){ expectation="breakout"; }
-      if(v==="support"){ expectation="reaction"; }
-      if(v==="mid"){ expectation="reaction"; }
+      document.getElementById("price-alert-box").classList.toggle("hidden", type !== "price");
+      document.getElementById("pattern-alert-box").classList.toggle("hidden", type !== "pattern");
 
-      document.querySelectorAll("#price-alert-box .choice-btn").forEach(b=>b.classList.remove("active"));
-      const target=[...document.querySelectorAll("#price-alert-box .choice-btn")].find(b=>{
-        return (expectation==="breakout" && b.textContent.includes("Breakout")) ||
-               (expectation==="rejection" && b.textContent.includes("Rejection")) ||
-               (expectation==="reaction" && b.textContent.includes("Reaction"));
+      updateSmartDecision();
+    }
+
+    function setLevel(v, el){
+      level = v;
+
+      document.querySelectorAll(".level-btn").forEach(b => b.classList.remove("active"));
+      el.classList.add("active");
+
+      if(v === "resistance") expectation = "breakout";
+      if(v === "support") expectation = "reaction";
+      if(v === "mid") expectation = "reaction";
+
+      document.querySelectorAll("#price-alert-box .choice-btn").forEach(b => b.classList.remove("active"));
+
+      const target = [...document.querySelectorAll("#price-alert-box .choice-btn")].find(b => {
+        return (expectation === "breakout" && b.textContent.includes("Breakout")) ||
+               (expectation === "rejection" && b.textContent.includes("Rejection")) ||
+               (expectation === "reaction" && b.textContent.includes("Reaction"));
       });
+
       if(target) target.classList.add("active");
+
       updateSmartDecision();
     }
 
-    function setExpectation(v,el){
-      expectation=v;
-      document.querySelectorAll("#price-alert-box .choice-btn").forEach(b=>b.classList.remove("active"));
+    function setExpectation(v, el){
+      expectation = v;
+      document.querySelectorAll("#price-alert-box .choice-btn").forEach(b => b.classList.remove("active"));
       el.classList.add("active");
       updateSmartDecision();
     }
 
-    function setAlertTF(v,el){
-      timeframe=v;
-      document.querySelectorAll(".alert-tf-btn").forEach(b=>b.classList.remove("active"));
+    function setAlertTF(v, el){
+      timeframe = v;
+      document.querySelectorAll(".alert-tf-btn").forEach(b => b.classList.remove("active"));
       el.classList.add("active");
       updateSmartDecision();
+    }
+
+    function updateConfidence(type){
+      const badge = document.getElementById("confidence-badge");
+      badge.className = "signal-badge";
+
+      if(type === "high"){
+        badge.classList.add("badge-active");
+        badge.innerText = "High";
+      }else if(type === "low"){
+        badge.classList.add("badge-negative");
+        badge.innerText = "Low";
+      }else{
+        badge.classList.add("badge-warning");
+        badge.innerText = "Medium";
+      }
     }
 
     function updateSmartDecision(){
-      const decision=document.getElementById("decision-text");
-      const response=document.getElementById("veloxis-response");
+      const symbol = document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
+      const decision = document.getElementById("decision-text");
+      const why = document.getElementById("why-text");
+      const action = document.getElementById("action-text");
+      const invalid = document.getElementById("invalid-text");
+      const suggestion = document.getElementById("suggestion-text");
+      const response = document.getElementById("veloxis-response");
 
-      if(alertType==="pattern"){
-        decision.innerText="PATTERN WATCH";
-        response.innerText="Pattern alert is active. Wait for candle-close confirmation on the selected timeframe before treating the pattern as valid.";
+      if(alertType === "pattern"){
+        const pattern = document.getElementById("alert-pattern") ? document.getElementById("alert-pattern").value : "Bullish Engulfing";
+
+        decision.innerText = "Watch pattern confirmation";
+        why.innerText = pattern + " requires candle close validation";
+        action.innerText = "Monitor selected timeframe";
+        invalid.innerText = "Pattern fails if next candle reverses";
+        suggestion.innerText = `Alert if ${symbol} confirms ${pattern} on ${timeframe} timeframe.`;
+        response.innerText = "Pattern setup needs confirmation. Do not treat it as valid until candle close supports the pattern.";
+        updateConfidence("medium");
         return;
       }
 
-      if(level==="resistance" && expectation==="breakout"){
-        decision.innerText="WAIT FOR BREAKOUT CONFIRMATION";
-        response.innerText="Resistance breakout requires a clean candle close above 194.20. Failure to hold shifts focus back toward 191.60.";
-      } else if(level==="resistance" && expectation==="rejection"){
-        decision.innerText="WATCH REJECTION";
-        response.innerText="Price is near resistance. A rejection setup becomes stronger if price fails above 194.20 and returns below the range.";
-      } else if(level==="support"){
-        decision.innerText="WATCH SUPPORT REACTION";
-        response.innerText="Support reaction zone. Watch for bounce confirmation or a breakdown below 189.80.";
-      } else {
-        decision.innerText="WAIT FOR CONFIRMATION";
-        response.innerText="Mid-range area is less clean. Wait for price to confirm direction before acting.";
+      if(level === "resistance" && expectation === "breakout"){
+        decision.innerText = "Wait for breakout confirmation";
+        why.innerText = "Near 194.20 resistance + exhaustion risk";
+        action.innerText = "Watch close above 194.20";
+        invalid.innerText = "Back below 191.60";
+        suggestion.innerText = `Alert if ${symbol} closes above 194.20 resistance on ${timeframe} timeframe.`;
+        response.innerText = "Price is constructive but near resistance. A breakout is not valid until price closes above 194.20 and holds.";
+        updateConfidence("medium");
+      }
+
+      else if(level === "resistance" && expectation === "rejection"){
+        decision.innerText = "Watch rejection near resistance";
+        why.innerText = "Price is stretched near 194.20";
+        action.innerText = "Watch failure back below resistance";
+        invalid.innerText = "Clean hold above 194.20";
+        suggestion.innerText = `Alert if ${symbol} rejects 194.20 resistance and turns lower on ${timeframe}.`;
+        response.innerText = "A rejection setup becomes stronger if price fails above 194.20 and returns below the range.";
+        updateConfidence("medium");
+      }
+
+      else if(level === "support"){
+        decision.innerText = "Watch support reaction";
+        why.innerText = "Price near 189.80 support zone";
+        action.innerText = "Watch bounce or breakdown";
+        invalid.innerText = "Clean break below 189.80";
+        suggestion.innerText = `Alert if ${symbol} reacts at 189.80 support on ${timeframe} timeframe.`;
+        response.innerText = "Support is the key reaction zone. Watch whether price bounces or breaks below 189.80 with confirmation.";
+        updateConfidence("medium");
+      }
+
+      else{
+        decision.innerText = "Wait for clearer direction";
+        why.innerText = "Price is near mid-range";
+        action.innerText = "Avoid weak middle entries";
+        invalid.innerText = "Needs break of range";
+        suggestion.innerText = `Alert if ${symbol} leaves the 191.60 mid-range with confirmation on ${timeframe}.`;
+        response.innerText = "Mid-range trades are less clean. Wait for price to confirm direction before acting.";
+        updateConfidence("low");
       }
     }
 
-    function addAlert(){
-      const box=document.getElementById("active-alerts");
-      const symbol=document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
+    function useSuggestedAlert(){
+      const box = document.getElementById("active-alerts");
+      const suggestion = document.getElementById("suggestion-text").innerText;
 
-      let title="";
-      if(alertType==="pattern"){
-        const pattern=document.getElementById("alert-pattern").value;
-        title=`${symbol} — ${pattern} on ${timeframe}`;
-      } else {
-        const levelLabel=level==="resistance" ? "194.20 Resistance" : level==="support" ? "189.80 Support" : "191.60 Range Mid";
-        title=`${symbol} — ${expectation.toUpperCase()} at ${levelLabel} on ${timeframe}`;
+      box.className = "space-y-2";
+      if(box.innerText.includes("No active alerts yet")) box.innerHTML = "";
+
+      const item = document.createElement("div");
+      item.className = "panel rounded-2xl px-4 py-3";
+      item.innerHTML = `
+        <div class="flex items-center justify-between gap-3">
+          <div class="text-sm font-semibold">${suggestion}</div>
+          <span class="signal-badge badge-watch">Active</span>
+        </div>
+      `;
+
+      box.prepend(item);
+    }
+
+    function addAlert(){
+      const box = document.getElementById("active-alerts");
+      const symbol = document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
+
+      let title = "";
+
+      if(alertType === "pattern"){
+        const pattern = document.getElementById("alert-pattern").value;
+        title = `${symbol} — ${pattern} on ${timeframe}`;
+      }else{
+        const levelLabel = level === "resistance" ? "194.20 Resistance" :
+                           level === "support" ? "189.80 Support" :
+                           "191.60 Range Mid";
+
+        title = `${symbol} — ${expectation.toUpperCase()} at ${levelLabel} on ${timeframe}`;
       }
 
-      box.className="space-y-2";
-      const item=document.createElement("div");
-      item.className="panel rounded-2xl px-4 py-3";
-      item.innerHTML=`<div class="flex items-center justify-between gap-3"><div class="text-sm font-semibold">${title}</div><span class="signal-badge badge-watch">Active</span></div>`;
+      box.className = "space-y-2";
+      if(box.innerText.includes("No active alerts yet")) box.innerHTML = "";
+
+      const item = document.createElement("div");
+      item.className = "panel rounded-2xl px-4 py-3";
+      item.innerHTML = `
+        <div class="flex items-center justify-between gap-3">
+          <div class="text-sm font-semibold">${title}</div>
+          <span class="signal-badge badge-watch">Active</span>
+        </div>
+      `;
+
       box.prepend(item);
     }
 
     function quickAsk(q){
-      document.getElementById("ask-input").value=q;
+      document.getElementById("ask-input").value = q;
       askVeloxis();
     }
 
