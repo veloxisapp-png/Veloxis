@@ -449,7 +449,8 @@
           </div>
 
           <button
-            onclick="useSuggestedAlert()"
+  id="suggested-btn"
+  onclick="useSuggestedAlert()"
             class="w-full rounded-xl py-3 font-semibold"
             style="background:linear-gradient(135deg,#3b82f6,#2563eb);color:white;box-shadow:0 12px 25px rgba(37,99,235,.35);"
           >
@@ -627,16 +628,23 @@
 
     function toggleManualAlert(){
   const section = document.getElementById("manual-alert-section");
-  const btn = document.getElementById("customize-btn");
+  const customizeBtn = document.getElementById("customize-btn");
+  const suggestedBtn = document.getElementById("suggested-btn");
 
   section.classList.toggle("hidden");
 
   if(section.classList.contains("hidden")){
-    btn.classList.remove("customize-active");
-    btn.innerText = "Customize Alert";
+    customizeBtn.classList.remove("customize-active");
+    customizeBtn.innerText = "Customize Alert";
+
+    suggestedBtn.style.opacity = "1";
+    suggestedBtn.style.filter = "none";
   }else{
-    btn.classList.add("customize-active");
-    btn.innerText = "Customizing Alert";
+    customizeBtn.classList.add("customize-active");
+    customizeBtn.innerText = "Customizing Alert";
+
+    suggestedBtn.style.opacity = "0.45";
+    suggestedBtn.style.filter = "grayscale(1)";
 
     setTimeout(() => {
       section.scrollIntoView({ behavior: "smooth", block: "center" });
