@@ -847,11 +847,21 @@
       const item = document.createElement("div");
       item.className = "panel rounded-2xl px-4 py-3";
       item.innerHTML = `
-        <div class="flex items-center justify-between gap-3">
-          <div class="text-sm font-semibold">${title}</div>
-          <span class="signal-badge badge-watch">Active</span>
-        </div>
-      `;
+  <div class="flex items-center justify-between gap-3">
+    <div class="text-sm font-semibold">${title}</div>
+
+    <div class="flex items-center gap-2">
+      <span class="signal-badge badge-watch">Active</span>
+
+      <button 
+        onclick="this.closest('.panel').remove()" 
+        class="text-xs px-2 py-1 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+`;
 
       box.prepend(item);
     }
