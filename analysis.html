@@ -80,7 +80,9 @@
       border-radius:999px;
     }
 
-    .tf-btn {
+    .tf-btn,
+    .choice-btn,
+    .level-btn {
       padding:8px 14px;
       border-radius:12px;
       border:1px solid var(--border);
@@ -89,14 +91,19 @@
       font-size:13px;
       font-weight:700;
       transition:all .2s ease;
+      cursor:pointer;
     }
 
-    .tf-btn:hover {
+    .tf-btn:hover,
+    .choice-btn:hover,
+    .level-btn:hover {
       color:var(--text);
       border-color:rgba(96,165,250,.35);
     }
 
-    .tf-btn.active {
+    .tf-btn.active,
+    .choice-btn.active,
+    .level-btn.active {
       background:var(--accent);
       color:white;
       border-color:transparent;
@@ -511,29 +518,35 @@
                 id="alert-price"
                 type="text"
                 class="w-full rounded-2xl px-4 py-3 outline-none"
-                placeholder="Enter price"
+                placeholder="Choose a level or enter price"
               />
 
               <div class="grid grid-cols-3 gap-2 mt-3">
-                <button type="button" onclick="setPriceLevel('194.20', 'Resistance')" class="panel-soft rounded-xl px-3 py-2 text-xs font-semibold">
+                <button type="button" onclick="setPriceLevel('194.20', 'Resistance')" class="level-btn">
                   Resistance
                 </button>
-                <button type="button" onclick="setPriceLevel('191.60', 'Range Mid')" class="panel-soft rounded-xl px-3 py-2 text-xs font-semibold">
+                <button type="button" onclick="setPriceLevel('191.60', 'Range Mid')" class="level-btn">
                   Range Mid
                 </button>
-                <button type="button" onclick="setPriceLevel('189.80', 'Support')" class="panel-soft rounded-xl px-3 py-2 text-xs font-semibold">
+                <button type="button" onclick="setPriceLevel('189.80', 'Support')" class="level-btn">
                   Support
                 </button>
               </div>
-            </div>
 
-            <div id="direction-box" class="hidden">
-              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Direction</label>
-              <select id="alert-direction" class="w-full rounded-2xl px-4 py-3 outline-none">
-                <option value="Crosses Above">Crosses Above</option>
-                <option value="Crosses Below">Crosses Below</option>
-                <option value="Touches Level">Touches Level</option>
-              </select>
+              <div class="mt-4">
+                <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Expectation</label>
+                <div class="grid grid-cols-1 gap-2">
+                  <button type="button" onclick="setExpectation('Breakout ↑', this)" class="choice-btn active text-left">
+                    Breakout ↑
+                  </button>
+                  <button type="button" onclick="setExpectation('Rejection ↓', this)" class="choice-btn text-left">
+                    Rejection ↓
+                  </button>
+                  <button type="button" onclick="setExpectation('Reaction', this)" class="choice-btn text-left">
+                    Reaction
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div>
@@ -580,6 +593,7 @@
 
   <script>
     let selectedTimeframe = "1D";
+    let selectedExpectation = "Breakout ↑";
     let selectedPriceLabel = "";
 
     function applySavedTheme() {
@@ -676,16 +690,17 @@
 
       const patternBox = document.getElementById("pattern-box");
       const priceBox = document.getElementById("price-box");
-      const directionBox = document.getElementById("direction-box");
 
       if (type === "price") {
         patternBox.classList.add("hidden");
         priceBox.classList.remove("hidden");
-        directionBox.classList.remove("hidden");
+
+        if (!document.getElementById("alert-price").value) {
+          setPriceLevel("194.20", "Resistance");
+        }
       } else {
         patternBox.classList.remove("hidden");
         priceBox.classList.add("hidden");
-        directionBox.classList.add("hidden");
       }
     }
 
@@ -693,6 +708,37 @@
       selectedPriceLabel = label;
       const input = document.getElementById("alert-price");
       input.value = price + " (" + label + ")";
+
+      document.querySelectorAll(".level-btn").forEach(btn => btn.classList.remove("active"));
+
+      const levelButtons = Array.from(document.querySelectorAll(".level-btn"));
+      const matched = levelButtons.find(btn => btn.textContent.trim() === label);
+      if (matched) matched.classList.add("active");
+
+      updateExpectationHint(label);
+    }
+
+    function setExpectation(expectation, el) {
+      selectedExpectation = expectation;
+
+      document.querySelectorAll(".choice-btn").forEach(btn => btn.classList.remove("active"));
+      el.classList.add("active");
+    }
+
+    function updateExpectationHint(label) {
+      if (label === "Resistance") {
+        selectedExpectation = "Breakout ↑";
+      } else if (label === "Support") {
+        selectedExpectation = "Reaction";
+      } else {
+        selectedExpectation = "Reaction";
+      }
+
+      const choiceButtons = Array.from(document.querySelectorAll(".choice-btn"));
+      choiceButtons.forEach(btn => btn.classList.remove("active"));
+
+      const matched = choiceButtons.find(btn => btn.textContent.trim() === selectedExpectation);
+      if (matched) matched.classList.add("active");
     }
 
     function addAlert() {
@@ -710,13 +756,10 @@
 
       if (type === "price") {
         const price = document.getElementById("alert-price").value || "194.20 (Resistance)";
-        const direction = document.getElementById("alert-direction").value;
-
-        title = symbol + " — " + direction + " " + price;
+        title = symbol + " — " + selectedExpectation + " at " + price;
         detail = "Timeframe: " + timeframe + " • Trigger: " + trigger;
       } else {
         const pattern = document.getElementById("alert-pattern").value;
-
         title = symbol + " — " + pattern;
         detail = "Timeframe: " + timeframe + " • Trigger: " + trigger;
       }
