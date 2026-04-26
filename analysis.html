@@ -42,7 +42,6 @@
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       background:var(--bg);
       color:var(--text);
-      transition:background .2s ease,color .2s ease;
     }
 
     .panel {
@@ -65,7 +64,6 @@
       font-size:.96rem;
       font-weight:500;
       padding:.4rem 0;
-      transition:color .2s ease;
     }
 
     .nav-link:hover,
@@ -105,10 +103,6 @@
       box-shadow:0 10px 22px rgba(37,99,235,.22);
     }
 
-    body.dark .tf-btn.active {
-      box-shadow:0 10px 22px rgba(96,165,250,.22);
-    }
-
     .signal-badge {
       font-size:11px;
       font-weight:800;
@@ -127,19 +121,9 @@
       color:var(--accent);
     }
 
-    .badge-muted {
-      background:rgba(161,161,170,.12);
-      color:var(--muted);
-    }
-
     .badge-warning {
       background:rgba(245,158,11,.16);
       color:var(--warning);
-    }
-
-    .badge-negative {
-      background:rgba(239,68,68,.14);
-      color:var(--negative);
     }
 
     input,
@@ -161,31 +145,14 @@
       border-radius:999px;
     }
 
-    .right-sticky {
-      position: sticky;
-      top: 88px;
-      align-self: start;
-      max-height: calc(100vh - 104px);
-      overflow-y: auto;
-      padding-right: 2px;
-    }
-
-    .right-sticky::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .right-sticky::-webkit-scrollbar-thumb {
-      background: rgba(161,161,170,.35);
-      border-radius: 999px;
+    .sticky-side {
+      position:sticky;
+      top:88px;
+      align-self:start;
     }
 
     @media (max-width:1280px) {
-      .right-sticky {
-        position: static;
-        max-height: none;
-        overflow: visible;
-        padding-right: 0;
-      }
+      .sticky-side { position:static; }
     }
 
     @media (max-width:960px) {
@@ -230,7 +197,6 @@
 
   <main class="max-w-7xl mx-auto px-5 lg:px-8 py-6 lg:py-8">
 
-    <!-- Search Strip -->
     <section class="panel rounded-2xl p-4 mb-6">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
         <div class="lg:col-span-7">
@@ -265,13 +231,10 @@
       </div>
     </section>
 
-    <!-- Main Layout -->
     <section class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
 
-      <!-- Left Column -->
       <div class="xl:col-span-8 space-y-6">
 
-        <!-- Chart Panel -->
         <section class="panel rounded-3xl p-6 lg:p-8">
           <div class="flex items-start justify-between gap-4 mb-6">
             <div>
@@ -363,7 +326,6 @@
           </div>
         </section>
 
-        <!-- Scenario Map -->
         <section class="panel rounded-3xl p-6">
           <div class="mb-5">
             <h3 class="text-xl font-semibold">Scenario Map</h3>
@@ -389,7 +351,6 @@
           </div>
         </section>
 
-        <!-- Ask Veloxis -->
         <section class="panel rounded-3xl p-6">
           <div class="mb-4">
             <h3 class="text-xl font-semibold">Ask Veloxis</h3>
@@ -397,14 +358,14 @@
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-4">
-            <button onclick="quickAsk('Is this breakout real?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
-              Is this breakout real?
+            <button onclick="quickAsk('Is 194.20 resistance likely to break?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
+              Is 194.20 likely to break?
             </button>
-            <button onclick="quickAsk('Where is the key resistance?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
-              Where is key resistance?
+            <button onclick="quickAsk('What confirms this breakout?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
+              What confirms breakout?
             </button>
-            <button onclick="quickAsk('Should I wait or act now?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
-              Wait or act now?
+            <button onclick="quickAsk('Where is the failure level?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
+              Where is failure level?
             </button>
           </div>
 
@@ -433,185 +394,367 @@
           </div>
         </section>
       </div>
-      <!-- RIGHT COLUMN (STICKY) -->
-<div class="xl:col-span-4 right-sticky space-y-6">
+            <!-- RIGHT COLUMN -->
+      <div class="xl:col-span-4 sticky-side space-y-6">
 
-  <!-- Analysis Panel -->
-  <section class="panel rounded-3xl p-6">
-    <p class="text-sm font-medium mb-3" style="color:var(--accent);">Veloxis Reading</p>
-    <h3 class="text-2xl font-semibold mb-4">Analysis Panel</h3>
+        <!-- Analysis Panel -->
+        <section class="panel rounded-3xl p-6">
+          <div class="mb-5">
+            <p class="text-sm font-medium mb-2" style="color:var(--accent);">Veloxis Reading</p>
+            <h2 class="text-2xl font-semibold">Analysis Panel</h2>
+            <p class="text-sm muted mt-2">Quick structure, levels, and decision context.</p>
+          </div>
 
-    <div class="space-y-3">
-      <div class="panel-soft rounded-xl p-3">
-        <div class="text-xs muted">Decision</div>
-        <div class="font-semibold">Wait for Confirmation</div>
+          <div class="grid grid-cols-1 gap-3 mb-5">
+            <div class="panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Decision</div>
+              <div id="decision-label" class="font-semibold">Wait for Confirmation</div>
+            </div>
+
+            <div class="panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Trend</div>
+              <div class="font-semibold">Higher High Structure</div>
+            </div>
+
+            <div class="panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Pressure</div>
+              <div class="font-semibold">Upward, With Exhaustion Risk</div>
+            </div>
+          </div>
+
+          <div class="panel-soft rounded-2xl p-5">
+            <div class="text-sm font-semibold mb-3">Key Levels</div>
+
+            <div class="grid grid-cols-1 gap-3">
+              <div class="flex items-center justify-between">
+                <span class="muted text-sm">Resistance</span>
+                <span class="font-semibold">194.20</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="muted text-sm">Support</span>
+                <span class="font-semibold">189.80</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="muted text-sm">Range Mid</span>
+                <span class="font-semibold">191.60</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pattern Context -->
+        <section class="panel rounded-3xl p-6">
+          <div class="mb-5">
+            <h3 class="text-xl font-semibold">Pattern Context</h3>
+            <p class="text-sm muted mt-1">
+              Only the dominant pattern is shown. Other patterns are monitored in the background.
+            </p>
+          </div>
+
+          <div class="panel-soft rounded-2xl p-5">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Pattern</div>
+                <div id="dominant-pattern" class="font-semibold">Bullish Engulfing</div>
+              </div>
+
+              <div>
+                <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Timeframe</div>
+                <div id="pattern-timeframe" class="font-semibold">1D</div>
+              </div>
+
+              <div>
+                <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Context</div>
+                <div id="pattern-context" class="font-semibold">Near Resistance</div>
+              </div>
+
+              <div>
+                <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Quality</div>
+                <span id="pattern-quality" class="signal-badge badge-active">Confirmed</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- User Alerts -->
+        <section class="panel rounded-3xl p-6">
+          <div class="mb-5">
+            <h3 class="text-xl font-semibold">User Alerts</h3>
+            <p class="text-sm muted mt-1">Create alerts for patterns or price levels.</p>
+          </div>
+
+          <div class="grid grid-cols-1 gap-3">
+            <div>
+              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Alert Type</label>
+              <select id="alert-type" class="w-full rounded-2xl px-4 py-3 outline-none" onchange="handleAlertTypeChange()">
+                <option value="pattern">Pattern</option>
+                <option value="price">Price Level</option>
+              </select>
+            </div>
+
+            <div id="pattern-box">
+              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Pattern</label>
+              <select id="alert-pattern" class="w-full rounded-2xl px-4 py-3 outline-none">
+                <option value="Bullish Engulfing">Bullish Engulfing</option>
+                <option value="Bearish Engulfing">Bearish Engulfing</option>
+                <option value="Hammer">Hammer</option>
+                <option value="Shooting Star">Shooting Star</option>
+                <option value="Doji">Doji</option>
+                <option value="Breakout">Breakout</option>
+                <option value="Breakdown">Breakdown</option>
+              </select>
+            </div>
+
+            <div id="price-box" class="hidden">
+              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Price Level</label>
+              <input
+                id="alert-price"
+                type="text"
+                class="w-full rounded-2xl px-4 py-3 outline-none"
+                placeholder="Enter price"
+              />
+
+              <div class="grid grid-cols-3 gap-2 mt-3">
+                <button type="button" onclick="setPriceLevel('194.20', 'Resistance')" class="panel-soft rounded-xl px-3 py-2 text-xs font-semibold">
+                  Resistance
+                </button>
+                <button type="button" onclick="setPriceLevel('191.60', 'Range Mid')" class="panel-soft rounded-xl px-3 py-2 text-xs font-semibold">
+                  Range Mid
+                </button>
+                <button type="button" onclick="setPriceLevel('189.80', 'Support')" class="panel-soft rounded-xl px-3 py-2 text-xs font-semibold">
+                  Support
+                </button>
+              </div>
+            </div>
+
+            <div id="direction-box" class="hidden">
+              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Direction</label>
+              <select id="alert-direction" class="w-full rounded-2xl px-4 py-3 outline-none">
+                <option value="Crosses Above">Crosses Above</option>
+                <option value="Crosses Below">Crosses Below</option>
+                <option value="Touches Level">Touches Level</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Timeframe</label>
+              <select id="alert-timeframe" class="w-full rounded-2xl px-4 py-3 outline-none">
+                <option value="1min">1 min</option>
+                <option value="5min">5 min</option>
+                <option value="15min">15 min</option>
+                <option value="1H">1H</option>
+                <option value="4H">4H</option>
+                <option value="1D" selected>1D</option>
+                <option value="1W">1W</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Trigger</label>
+              <select id="alert-trigger" class="w-full rounded-2xl px-4 py-3 outline-none">
+                <option value="Candle Close">Candle Close</option>
+                <option value="Real-time Intrabar">Real-time Intrabar</option>
+                <option value="Close + Confirmation">Close + Confirmation</option>
+              </select>
+            </div>
+
+            <button
+              onclick="addAlert()"
+              class="w-full rounded-2xl px-4 py-3 font-semibold mt-2"
+              style="background:var(--accent);color:white;"
+            >
+              Add Alert
+            </button>
+          </div>
+
+          <div class="mt-5 panel-soft rounded-2xl p-4">
+            <div class="text-xs uppercase tracking-[0.16em] muted mb-3">Active Alerts</div>
+            <div id="active-alerts" class="space-y-3">
+              <div id="empty-alerts" class="text-sm muted">No active alerts yet.</div>
+            </div>
+          </div>
+        </section>
       </div>
+    </section>
+  </main>
 
-      <div class="panel-soft rounded-xl p-3">
-        <div class="text-xs muted">Trend</div>
-        <div class="font-semibold">Higher High Structure</div>
-      </div>
+  <script>
+    let selectedTimeframe = "1D";
+    let selectedPriceLabel = "";
 
-      <div class="panel-soft rounded-xl p-3">
-        <div class="text-xs muted">Pressure</div>
-        <div class="font-semibold">Upward, With Exhaustion Risk</div>
-      </div>
-    </div>
+    function applySavedTheme() {
+      const savedTheme = localStorage.getItem("veloxis-theme");
+      const body = document.getElementById("main-body");
 
-    <!-- Key Levels -->
-    <div class="mt-5 panel-soft rounded-xl p-4">
-      <div class="text-sm font-semibold mb-2">Key Levels</div>
-      <div class="flex justify-between text-sm">
-        <span class="muted">Resistance</span>
-        <span>194.20</span>
-      </div>
-      <div class="flex justify-between text-sm">
-        <span class="muted">Support</span>
-        <span>189.80</span>
-      </div>
-      <div class="flex justify-between text-sm">
-        <span class="muted">Range Mid</span>
-        <span>191.60</span>
-      </div>
-    </div>
-  </section>
+      if (savedTheme === "light") {
+        body.classList.remove("dark");
+      } else {
+        body.classList.add("dark");
+      }
+    }
 
-  <!-- Pattern Context (SMART - بدون تشويش) -->
-  <section class="panel rounded-3xl p-6">
-    <h3 class="text-lg font-semibold mb-3">Pattern Context</h3>
-    <p class="text-sm muted mb-4">
-      Only the dominant pattern is shown. Other patterns are monitored in the background.
-    </p>
+    function toggleTheme() {
+      const body = document.getElementById("main-body");
+      body.classList.toggle("dark");
 
-    <div class="panel-soft rounded-xl p-4 space-y-2">
-      <div class="flex justify-between">
-        <span class="muted text-sm">Pattern</span>
-        <span class="font-semibold">Bullish Engulfing</span>
-      </div>
+      const currentTheme = body.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("veloxis-theme", currentTheme);
+    }
 
-      <div class="flex justify-between">
-        <span class="muted text-sm">Timeframe</span>
-        <span>1D</span>
-      </div>
+    function setTimeframe(tf, el) {
+      selectedTimeframe = tf;
 
-      <div class="flex justify-between">
-        <span class="muted text-sm">Quality</span>
-        <span class="badge-active signal-badge">Confirmed</span>
-      </div>
-    </div>
-  </section>
+      document.querySelectorAll(".tf-btn").forEach(btn => btn.classList.remove("active"));
+      el.classList.add("active");
 
-  <!-- User Alerts (SMART UI) -->
-  <section class="panel rounded-3xl p-6">
-    <h3 class="text-lg font-semibold mb-3">User Alerts</h3>
-    <p class="text-sm muted mb-4">
-      Create alerts for patterns or price levels.
-    </p>
+      const alertTimeframe = document.getElementById("alert-timeframe");
+      if (alertTimeframe) alertTimeframe.value = tf;
 
-    <!-- TYPE -->
-    <div class="mb-3">
-      <label class="text-xs muted">Alert Type</label>
-      <select id="alert-type" class="w-full rounded-xl px-3 py-2 mt-1">
-        <option value="pattern">Pattern</option>
-        <option value="price">Price Level</option>
-      </select>
-    </div>
+      document.getElementById("pattern-timeframe").textContent = tf;
 
-    <!-- PATTERN -->
-    <div id="pattern-box">
-      <label class="text-xs muted">Pattern</label>
-      <select class="w-full rounded-xl px-3 py-2 mt-1">
-        <option>Bullish Engulfing</option>
-        <option>Bearish Engulfing</option>
-        <option>Hammer</option>
-        <option>Shooting Star</option>
-        <option>Doji</option>
-      </select>
-    </div>
+      refreshDecision(tf);
+      refreshPatternContext(tf);
+    }
 
-    <!-- PRICE -->
-    <div id="price-box" class="hidden">
-      <label class="text-xs muted">Price Level</label>
-      <input type="text" class="w-full rounded-xl px-3 py-2 mt-1" placeholder="Enter price" />
+    function analyzeSymbol() {
+      const symbolInput = document.getElementById("symbol-input");
+      const symbol = symbolInput.value.trim().toUpperCase() || "AAPL";
 
-      <div class="flex gap-2 mt-2">
-        <button class="tf-btn">Resistance</button>
-        <button class="tf-btn">Range Mid</button>
-        <button class="tf-btn">Support</button>
-      </div>
-    </div>
+      symbolInput.value = symbol;
+      document.getElementById("chart-title").textContent = symbol + " Price Structure";
 
-    <!-- TIMEFRAME -->
-    <div class="mt-3">
-      <label class="text-xs muted">Timeframe</label>
-      <select class="w-full rounded-xl px-3 py-2 mt-1">
-        <option>1D</option>
-        <option>1H</option>
-        <option>4H</option>
-      </select>
-    </div>
+      const knownNames = {
+        AAPL: "Apple Inc.",
+        QQQ: "Invesco QQQ Trust",
+        SPY: "SPDR S&P 500 ETF",
+        TSLA: "Tesla Inc.",
+        AMD: "Advanced Micro Devices",
+        NVDA: "NVIDIA Corp."
+      };
 
-    <!-- TRIGGER -->
-    <div class="mt-3">
-      <label class="text-xs muted">Trigger</label>
-      <select class="w-full rounded-xl px-3 py-2 mt-1">
-        <option>Candle Close</option>
-        <option>Instant</option>
-      </select>
-    </div>
+      document.getElementById("company-name").textContent = knownNames[symbol] || symbol;
+      askVeloxis();
+    }
 
-    <button
-      class="w-full rounded-xl mt-4 py-3 font-semibold"
-      style="background:var(--accent);color:white;"
-    >
-      Add Alert
-    </button>
+    function refreshDecision(tf) {
+      const decision = document.getElementById("decision-label");
 
-    <!-- ACTIVE -->
-    <div class="mt-4 panel-soft rounded-xl p-3 text-sm">
-      No active alerts yet.
-    </div>
-  </section>
+      if (tf === "1min" || tf === "5min") {
+        decision.textContent = "Wait — Fast Timeframe Noise";
+      } else if (tf === "1H") {
+        decision.textContent = "Watch Resistance Reaction";
+      } else {
+        decision.textContent = "Wait for Confirmation";
+      }
+    }
 
-</div>
-</section>
+    function refreshPatternContext(tf) {
+      const pattern = document.getElementById("dominant-pattern");
+      const context = document.getElementById("pattern-context");
+      const quality = document.getElementById("pattern-quality");
 
-</main>
+      if (tf === "1H") {
+        pattern.textContent = "Doji Near Resistance";
+        context.textContent = "Indecision Zone";
+        quality.className = "signal-badge badge-warning";
+        quality.textContent = "Watching";
+      } else if (tf === "5min") {
+        pattern.textContent = "Hammer Attempt";
+        context.textContent = "Fast Reversal Attempt";
+        quality.className = "signal-badge badge-watch";
+        quality.textContent = "Developing";
+      } else {
+        pattern.textContent = "Bullish Engulfing";
+        context.textContent = "Near Resistance";
+        quality.className = "signal-badge badge-active";
+        quality.textContent = "Confirmed";
+      }
+    }
 
-<!-- SCRIPTS -->
-<script>
-function toggleTheme(){
-  document.body.classList.toggle("dark");
-}
+    function handleAlertTypeChange() {
+      const type = document.getElementById("alert-type").value;
 
-function setTimeframe(tf, el){
-  document.querySelectorAll(".tf-btn").forEach(b=>b.classList.remove("active"));
-  el.classList.add("active");
-}
+      const patternBox = document.getElementById("pattern-box");
+      const priceBox = document.getElementById("price-box");
+      const directionBox = document.getElementById("direction-box");
 
-function quickAsk(q){
-  document.getElementById("ask-input").value = q;
-}
+      if (type === "price") {
+        patternBox.classList.add("hidden");
+        priceBox.classList.remove("hidden");
+        directionBox.classList.remove("hidden");
+      } else {
+        patternBox.classList.remove("hidden");
+        priceBox.classList.add("hidden");
+        directionBox.classList.add("hidden");
+      }
+    }
 
-function askVeloxis(){
-  document.getElementById("veloxis-response").innerText =
-    "Smart read: Price is near resistance. Best action is to wait for confirmation before entry.";
-}
+    function setPriceLevel(price, label) {
+      selectedPriceLabel = label;
+      const input = document.getElementById("alert-price");
+      input.value = price + " (" + label + ")";
+    }
 
-function analyzeSymbol(){
-  document.getElementById("company-name").innerText = "Updated Symbol";
-}
+    function addAlert() {
+      const symbol = document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
+      const type = document.getElementById("alert-type").value;
+      const timeframe = document.getElementById("alert-timeframe").value;
+      const trigger = document.getElementById("alert-trigger").value;
+      const activeAlerts = document.getElementById("active-alerts");
+      const emptyAlerts = document.getElementById("empty-alerts");
 
-document.getElementById("alert-type").addEventListener("change", function(){
-  if(this.value === "pattern"){
-    document.getElementById("pattern-box").classList.remove("hidden");
-    document.getElementById("price-box").classList.add("hidden");
-  } else {
-    document.getElementById("pattern-box").classList.add("hidden");
-    document.getElementById("price-box").classList.remove("hidden");
-  }
-});
-</script>
+      if (emptyAlerts) emptyAlerts.remove();
 
+      let title = "";
+      let detail = "";
+
+      if (type === "price") {
+        const price = document.getElementById("alert-price").value || "194.20 (Resistance)";
+        const direction = document.getElementById("alert-direction").value;
+
+        title = symbol + " — " + direction + " " + price;
+        detail = "Timeframe: " + timeframe + " • Trigger: " + trigger;
+      } else {
+        const pattern = document.getElementById("alert-pattern").value;
+
+        title = symbol + " — " + pattern;
+        detail = "Timeframe: " + timeframe + " • Trigger: " + trigger;
+      }
+
+      const item = document.createElement("div");
+      item.className = "panel rounded-2xl px-4 py-3";
+      item.innerHTML = `
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <div class="text-sm font-semibold">${title}</div>
+            <div class="text-xs muted mt-1">${detail}</div>
+          </div>
+          <span class="signal-badge badge-watch">Active</span>
+        </div>
+      `;
+
+      activeAlerts.prepend(item);
+    }
+
+    function quickAsk(question) {
+      document.getElementById("ask-input").value = question;
+      askVeloxis();
+    }
+
+    function askVeloxis() {
+      const symbol = document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
+      const response = document.getElementById("veloxis-response");
+
+      response.textContent =
+        symbol + " is approaching 194.20 resistance. The clean decision is to wait for candle-close confirmation before treating this as a valid breakout. If price rejects that level, focus shifts back toward 191.60.";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      applySavedTheme();
+      handleAlertTypeChange();
+      refreshDecision(selectedTimeframe);
+      refreshPatternContext(selectedTimeframe);
+    });
+  </script>
 </body>
 </html>
