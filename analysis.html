@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Veloxis - Analysis</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
     :root {
       --bg: #fafafa;
@@ -16,6 +17,7 @@
       --accent: #2563eb;
       --positive: #16a34a;
       --negative: #dc2626;
+      --warning: #f59e0b;
       --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
     }
 
@@ -29,10 +31,13 @@
       --accent: #60a5fa;
       --positive: #22c55e;
       --negative: #ef4444;
+      --warning: #fbbf24;
       --shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -52,22 +57,11 @@
       background: var(--panel-2);
       border: 1px solid var(--border);
     }
-.tf-btn {
-  padding: 8px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--panel-2);
-  color: var(--text);
-  font-size: 13px;
-  font-weight: 700;
-  transition: .2s;
-}
 
-.tf-btn.active {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
+    .muted {
+      color: var(--muted);
+    }
+
     .nav-link {
       position: relative;
       color: var(--muted);
@@ -95,9 +89,13 @@
     }
 
     .tf-btn {
-      background: var(--panel-2);
+      padding: 8px 14px;
+      border-radius: 12px;
       border: 1px solid var(--border);
+      background: var(--panel-2);
       color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
       transition: all 0.2s ease;
     }
 
@@ -107,18 +105,59 @@
     }
 
     .tf-btn.active {
-      color: white;
       background: var(--accent);
+      color: #fff;
       border-color: transparent;
       box-shadow: 0 10px 22px rgba(37, 99, 235, 0.22);
     }
 
     body.dark .tf-btn.active {
-      color: #fff;
       box-shadow: 0 10px 22px rgba(96, 165, 250, 0.22);
     }
 
-    .muted { color: var(--muted); }
+    .signal-badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .badge-active {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--positive);
+    }
+
+    .badge-watch {
+      background: rgba(96, 165, 250, 0.15);
+      color: var(--accent);
+    }
+
+    .badge-muted {
+      background: rgba(161, 161, 170, 0.12);
+      color: var(--muted);
+    }
+
+    .badge-warning {
+      background: rgba(245, 158, 11, 0.16);
+      color: var(--warning);
+    }
+
+    .badge-negative {
+      background: rgba(239, 68, 68, 0.14);
+      color: var(--negative);
+    }
+
+    input,
+    select {
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    input::placeholder {
+      color: var(--muted);
+    }
 
     .thin-scroll::-webkit-scrollbar {
       height: 8px;
@@ -138,13 +177,17 @@
     }
   </style>
 </head>
+
 <body class="dark" id="main-body">
-  <header class="sticky top-0 z-50 border-b backdrop-blur supports-[backdrop-filter]:bg-black/10" style="border-color: var(--border); background: color-mix(in srgb, var(--bg) 88%, transparent);">
+  <header
+    class="sticky top-0 z-50 border-b backdrop-blur supports-[backdrop-filter]:bg-black/10"
+    style="border-color: var(--border); background: color-mix(in srgb, var(--bg) 88%, transparent);"
+  >
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <div class="h-16 flex items-center justify-between gap-6">
         <div class="flex items-center min-w-fit">
           <img
-            src="/mnt/data/8478C569-50B4-4693-9D56-5F10688E24B3.jpeg"
+            src="logo.png"
             alt="Veloxis logo"
             class="h-9 w-auto object-contain"
           />
@@ -152,11 +195,11 @@
 
         <nav class="desktop-nav flex items-center gap-7 flex-1 justify-center thin-scroll">
           <a href="index.html" class="nav-link">Market Pulse</a>
-<a href="analysis.html" class="nav-link active">Analysis</a>
-<a href="veloxis-options-flow.html" class="nav-link">Options Flow</a>
-<a href="strategy.html" class="nav-link">Strategy Lab</a>
-<a href="news.html" class="nav-link">News</a>
-<a href="top-movers.html" class="nav-link">Top Movers</a>
+          <a href="analysis.html" class="nav-link active">Analysis</a>
+          <a href="veloxis-options-flow.html" class="nav-link">Options Flow</a>
+          <a href="strategy.html" class="nav-link">Strategy Lab</a>
+          <a href="news.html" class="nav-link">News</a>
+          <a href="top-movers.html" class="nav-link">Top Movers</a>
         </nav>
 
         <div class="min-w-fit">
@@ -174,7 +217,8 @@
   </header>
 
   <main class="max-w-7xl mx-auto px-5 lg:px-8 py-6 lg:py-8">
-    <!-- Top Search Strip -->
+
+    <!-- Search Strip -->
     <section class="panel rounded-2xl p-4 mb-6">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
         <div class="lg:col-span-7">
@@ -184,15 +228,14 @@
             type="text"
             value="AAPL"
             placeholder="Enter ticker symbol"
-            class="w-full rounded-2xl px-5 py-4 outline-none panel-soft text-base font-medium"
-            style="color: var(--text);"
+            class="w-full rounded-2xl px-5 py-4 outline-none text-base font-medium"
           />
         </div>
 
         <div class="lg:col-span-3">
           <label class="block text-sm font-medium muted mb-2">Current Focus</label>
           <div class="panel-soft rounded-2xl px-4 py-4 h-[58px] flex items-center justify-between">
-            <span class="font-semibold">Apple Inc.</span>
+            <span id="company-name" class="font-semibold">Apple Inc.</span>
             <span class="text-sm muted">NASDAQ</span>
           </div>
         </div>
@@ -200,6 +243,7 @@
         <div class="lg:col-span-2">
           <label class="block text-sm font-medium muted mb-2 opacity-0">Analyze</label>
           <button
+            onclick="analyzeSymbol()"
             class="w-full rounded-2xl px-5 py-4 font-semibold"
             style="background: var(--accent); color: white;"
           >
@@ -209,158 +253,312 @@
       </div>
     </section>
 
-    <!-- Hero -->
+    <!-- Main Layout -->
     <section class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
-      <div class="xl:col-span-8 panel rounded-3xl p-6 lg:p-8">
-        <div class="flex items-start justify-between gap-4 mb-6">
-          <div>
-            <p class="text-sm font-medium mb-3" style="color: var(--accent);">Technical Structure View</p>
-            <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Analysis</h1>
-            <p class="text-base lg:text-lg leading-8 muted max-w-3xl">
-              Read current price structure, time-based context, major levels, and scenario pressure
-              through a clean analysis layout built for both active traders and higher-timeframe professionals.
-            </p>
-          </div>
 
-          <div class="text-right min-w-fit">
-            <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
-            <p class="text-sm font-medium mt-1">Now</p>
-          </div>
-        </div>
+      <!-- Left Column -->
+      <div class="xl:col-span-8 space-y-6">
 
-        <!-- Chart Area -->
-        <div class="panel-soft rounded-3xl p-5 lg:p-6">
-          <div class="flex items-center justify-between mb-4 gap-4">
+        <!-- Chart Panel -->
+        <section class="panel rounded-3xl p-6 lg:p-8">
+          <div class="flex items-start justify-between gap-4 mb-6">
             <div>
-              <p class="text-sm muted">Primary Chart</p>
-              <h2 class="text-xl font-semibold mt-1">AAPL Price Structure</h2>
+              <p class="text-sm font-medium mb-3" style="color: var(--accent);">Technical Structure View</p>
+              <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Analysis</h1>
+              <p class="text-base lg:text-lg leading-8 muted max-w-3xl">
+                Read current price structure, timeframe context, pattern signals, and user-defined alerts in one clean chart-first layout.
+              </p>
             </div>
-            <div class="text-right">
-              <p class="text-xs uppercase tracking-[0.16em] muted">Price</p>
-              <p class="text-lg font-semibold">$192.84</p>
+
+            <div class="text-right min-w-fit">
+              <p class="text-xs uppercase tracking-[0.18em] muted">Updated</p>
+              <p class="text-sm font-medium mt-1">Now</p>
             </div>
           </div>
 
-          <div class="rounded-2xl overflow-hidden border h-[380px] lg:h-[460px] relative" style="border-color: var(--border); background: linear-gradient(180deg, rgba(37,99,235,0.04) 0%, rgba(15,23,42,0.04) 100%);">
-            <!-- Grid -->
-            <div class="absolute inset-0 opacity-40">
-              <svg viewBox="0 0 1000 500" class="w-full h-full">
-                <defs>
-                  <pattern id="smallGrid" width="50" height="50" patternUnits="userSpaceOnUse">
-                    <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(113,113,122,0.18)" stroke-width="1" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#smallGrid)" />
+          <div class="panel-soft rounded-3xl p-5 lg:p-6">
+            <div class="flex items-center justify-between mb-4 gap-4">
+              <div>
+                <p class="text-sm muted">Primary Chart</p>
+                <h2 id="chart-title" class="text-xl font-semibold mt-1">AAPL Price Structure</h2>
+              </div>
+              <div class="text-right">
+                <p class="text-xs uppercase tracking-[0.16em] muted">Price</p>
+                <p id="price-label" class="text-lg font-semibold">$192.84</p>
+              </div>
+            </div>
+
+            <div
+              class="rounded-2xl overflow-hidden border h-[380px] lg:h-[470px] relative"
+              style="border-color: var(--border); background: linear-gradient(180deg, rgba(37,99,235,0.04) 0%, rgba(15,23,42,0.04) 100%);"
+            >
+              <div class="absolute inset-0 opacity-40">
+                <svg viewBox="0 0 1000 500" class="w-full h-full">
+                  <defs>
+                    <pattern id="smallGrid" width="50" height="50" patternUnits="userSpaceOnUse">
+                      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(113,113,122,0.18)" stroke-width="1" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#smallGrid)" />
+                </svg>
+              </div>
+
+              <svg viewBox="0 0 1000 500" class="absolute inset-0 w-full h-full">
+                <polyline
+                  fill="none"
+                  stroke="rgba(96,165,250,0.95)"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  points="20,380 80,360 130,365 180,340 240,300 290,315 350,290 420,260 490,270 560,235 630,220 700,245 760,210 820,190 880,170 950,182"
+                />
+
+                <polyline
+                  fill="rgba(96,165,250,0.10)"
+                  stroke="none"
+                  points="20,380 80,360 130,365 180,340 240,300 290,315 350,290 420,260 490,270 560,235 630,220 700,245 760,210 820,190 880,170 950,182 950,500 20,500"
+                />
+
+                <rect x="0" y="188" width="1000" height="34" fill="rgba(34,197,94,0.06)" />
+                <rect x="0" y="285" width="1000" height="32" fill="rgba(239,68,68,0.06)" />
+
+                <line x1="0" y1="205" x2="1000" y2="205" stroke="rgba(34,197,94,0.45)" stroke-width="2" stroke-dasharray="8 8" />
+                <line x1="0" y1="300" x2="1000" y2="300" stroke="rgba(239,68,68,0.35)" stroke-width="2" stroke-dasharray="8 8" />
+                <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(161,161,170,0.28)" stroke-width="2" stroke-dasharray="6 8" />
+
+                <circle cx="880" cy="170" r="7" fill="rgba(34,197,94,0.9)" />
+                <circle cx="700" cy="245" r="6" fill="rgba(245,158,11,0.9)" />
+
+                <text x="800" y="198" fill="rgba(34,197,94,0.95)" font-size="16" font-weight="600">Resistance 194.20</text>
+                <text x="810" y="293" fill="rgba(239,68,68,0.95)" font-size="16" font-weight="600">Support 189.80</text>
+                <text x="810" y="243" fill="rgba(161,161,170,0.95)" font-size="15" font-weight="500">Range Mid 191.60</text>
               </svg>
             </div>
 
-            <!-- Mock chart -->
-            <svg viewBox="0 0 1000 500" class="absolute inset-0 w-full h-full">
-              <polyline
-                fill="none"
-                stroke="rgba(96,165,250,0.95)"
-                stroke-width="4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                points="20,380 80,360 130,365 180,340 240,300 290,315 350,290 420,260 490,270 560,235 630,220 700,245 760,210 820,190 880,170 950,182"
-              />
-              <polyline
-                fill="rgba(96,165,250,0.10)"
-                stroke="none"
-                points="20,380 80,360 130,365 180,340 240,300 290,315 350,290 420,260 490,270 560,235 630,220 700,245 760,210 820,190 880,170 950,182 950,500 20,500"
-              />
-              <line x1="0" y1="205" x2="1000" y2="205" stroke="rgba(34,197,94,0.45)" stroke-width="2" stroke-dasharray="8 8" />
-              <line x1="0" y1="300" x2="1000" y2="300" stroke="rgba(239,68,68,0.35)" stroke-width="2" stroke-dasharray="8 8" />
-              <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(161,161,170,0.28)" stroke-width="2" stroke-dasharray="6 8" />
-              <text x="820" y="198" fill="rgba(34,197,94,0.95)" font-size="16" font-weight="600">Resistance 194.20</text>
-              <text x="820" y="293" fill="rgba(239,68,68,0.95)" font-size="16" font-weight="600">Support 189.80</text>
-              <text x="820" y="243" fill="rgba(161,161,170,0.95)" font-size="15" font-weight="500">Range Mid 191.60</text>
-            </svg>
-          </div>
-
-          <!-- Timeframes -->
-<div class="mt-5">
-  <div class="flex items-center gap-2 flex-wrap mt-4">
-    <button class="tf-btn" onclick="setTimeframe('1m', this)">1m</button>
-    <button class="tf-btn" onclick="setTimeframe('5m', this)">5m</button>
-    <button class="tf-btn" onclick="setTimeframe('15m', this)">15m</button>
-
-    <button class="tf-btn" onclick="setTimeframe('1H', this)">1H</button>
-    <button class="tf-btn" onclick="setTimeframe('4H', this)">4H</button>
-    <button class="tf-btn active" onclick="setTimeframe('1D', this)">1D</button>
-
-    <button class="tf-btn" onclick="setTimeframe('1W', this)">1W</button>
-    <button class="tf-btn" onclick="setTimeframe('1M', this)">1M</button>
-    <button class="tf-btn" onclick="setTimeframe('3M', this)">3M</button>
-    <button class="tf-btn" onclick="setTimeframe('6M', this)">6M</button>
-    <button class="tf-btn" onclick="setTimeframe('1Y', this)">1Y</button>
-  </div>
-</div>
-
-      <div class="xl:col-span-4 panel rounded-3xl p-6 lg:p-8">
-        <div class="mb-5">
-          <p class="text-sm font-medium mb-2" style="color: var(--accent);">Veloxis Reading</p>
-          <h2 class="text-2xl font-semibold">Analysis Panel</h2>
-          <p class="text-sm muted mt-2">Structured interpretation of price, levels, and scenario behavior.</p>
-        </div>
-
-        <div class="grid grid-cols-1 gap-3 mb-5">
-          <div class="panel-soft rounded-2xl px-4 py-4">
-            <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Trend</div>
-            <div class="font-semibold">Higher High Structure</div>
-          </div>
-          <div class="panel-soft rounded-2xl px-4 py-4">
-            <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Momentum</div>
-            <div class="font-semibold">Constructive, Near Resistance</div>
-          </div>
-          <div class="panel-soft rounded-2xl px-4 py-4">
-            <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Pressure</div>
-            <div class="font-semibold">Upward, With Local Exhaustion Risk</div>
-          </div>
-        </div>
-
-        <div class="panel-soft rounded-2xl p-5 mb-5">
-          <div class="flex items-start justify-between gap-3 mb-4">
-            <div>
-              <div class="text-sm font-semibold">Key Levels</div>
-              <div class="text-sm muted mt-1">Current technical zones in focus.</div>
+            <!-- Timeframes -->
+            <div class="mt-5">
+              <div class="flex items-center gap-2 flex-wrap mt-4">
+                <button class="tf-btn" onclick="setTimeframe('1min', this)">1 min</button>
+                <button class="tf-btn" onclick="setTimeframe('5min', this)">5 min</button>
+                <button class="tf-btn" onclick="setTimeframe('15min', this)">15 min</button>
+                <button class="tf-btn" onclick="setTimeframe('1H', this)">1H</button>
+                <button class="tf-btn" onclick="setTimeframe('4H', this)">4H</button>
+                <button class="tf-btn active" onclick="setTimeframe('1D', this)">1D</button>
+                <button class="tf-btn" onclick="setTimeframe('1W', this)">1W</button>
+                <button class="tf-btn" onclick="setTimeframe('1mo', this)">1 mo</button>
+                <button class="tf-btn" onclick="setTimeframe('3mo', this)">3 mo</button>
+                <button class="tf-btn" onclick="setTimeframe('6mo', this)">6 mo</button>
+                <button class="tf-btn" onclick="setTimeframe('1Y', this)">1Y</button>
+              </div>
             </div>
+          </div>
+        </section>
+
+        <!-- Scenario Map -->
+        <section class="panel rounded-3xl p-6">
+          <div class="mb-5">
+            <h3 class="text-xl font-semibold">Scenario Map</h3>
+            <p class="text-sm muted mt-1">Compact scenario framework built from the current chart structure.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="panel-soft rounded-2xl p-4">
+              <div class="text-xs uppercase tracking-[0.16em] mb-2" style="color: var(--positive);">Bullish Scenario</div>
+              <div class="font-semibold mb-2">Clean Hold Above Resistance</div>
+              <p class="text-sm muted leading-6">
+                Sustained trade above 194.20 with stable follow-through would confirm structure strength and expand upside probability.
+              </p>
+            </div>
+
+            <div class="panel-soft rounded-2xl p-4">
+              <div class="text-xs uppercase tracking-[0.16em] mb-2" style="color: var(--negative);">Bearish Scenario</div>
+              <div class="font-semibold mb-2">Fade Back Into Range</div>
+              <p class="text-sm muted leading-6">
+                Failure near resistance followed by loss of structure would shift focus back toward 191.60 and lower support behavior.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column -->
+      <aside class="xl:col-span-4 space-y-6 xl:sticky xl:top-24 h-fit">
+
+        <!-- Analysis Panel -->
+        <section class="panel rounded-3xl p-6">
+          <div class="mb-5">
+            <p class="text-sm font-medium mb-2" style="color: var(--accent);">Veloxis Reading</p>
+            <h2 class="text-2xl font-semibold">Analysis Panel</h2>
+            <p class="text-sm muted mt-2">Structured interpretation of price, levels, and scenario behavior.</p>
+          </div>
+
+          <div class="grid grid-cols-1 gap-3 mb-5">
+            <div class="panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Trend</div>
+              <div class="font-semibold">Higher High Structure</div>
+            </div>
+            <div class="panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Momentum</div>
+              <div class="font-semibold">Constructive, Near Resistance</div>
+            </div>
+            <div class="panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Pressure</div>
+              <div class="font-semibold">Upward, With Local Exhaustion Risk</div>
+            </div>
+          </div>
+
+          <div class="panel-soft rounded-2xl p-5">
+            <div class="text-sm font-semibold mb-3">Key Levels</div>
+
+            <div class="grid grid-cols-1 gap-3">
+              <div class="flex items-center justify-between">
+                <span class="muted text-sm">Resistance</span>
+                <span class="font-semibold">194.20</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="muted text-sm">Support</span>
+                <span class="font-semibold">189.80</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="muted text-sm">Range Mid</span>
+                <span class="font-semibold">191.60</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="muted text-sm">Break Trigger</span>
+                <span class="font-semibold">194.85</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pattern Signals -->
+        <section class="panel rounded-3xl p-6">
+          <div class="mb-5">
+            <h3 class="text-xl font-semibold">Pattern Signals</h3>
+            <p class="text-sm muted mt-1">Simple pattern detection tied to the selected timeframe.</p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
+              <span class="text-sm font-medium">Bullish Engulfing</span>
+              <span id="badge-bull-engulf" class="signal-badge badge-active">Active</span>
+            </div>
+
+            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
+              <span class="text-sm font-medium">Bearish Engulfing</span>
+              <span id="badge-bear-engulf" class="signal-badge badge-muted">Not Detected</span>
+            </div>
+
+            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
+              <span class="text-sm font-medium">Hammer</span>
+              <span id="badge-hammer" class="signal-badge badge-muted">Not Detected</span>
+            </div>
+
+            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
+              <span class="text-sm font-medium">Shooting Star</span>
+              <span id="badge-shooting" class="signal-badge badge-muted">Not Detected</span>
+            </div>
+
+            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
+              <span class="text-sm font-medium">Doji</span>
+              <span id="badge-doji" class="signal-badge badge-warning">Watching</span>
+            </div>
+
+            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
+              <span class="text-sm font-medium">Breakout</span>
+              <span id="badge-breakout" class="signal-badge badge-watch">Watching</span>
+            </div>
+
+            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
+              <span class="text-sm font-medium">Breakdown</span>
+              <span id="badge-breakdown" class="signal-badge badge-muted">Not Detected</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- User Alerts -->
+        <section class="panel rounded-3xl p-6">
+          <div class="mb-5">
+            <h3 class="text-xl font-semibold">User Alerts</h3>
+            <p class="text-sm muted mt-1">Create personal alerts for price or pattern conditions.</p>
           </div>
 
           <div class="grid grid-cols-1 gap-3">
-            <div class="flex items-center justify-between">
-              <span class="muted text-sm">Resistance</span>
-              <span class="font-semibold">194.20</span>
+            <div>
+              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Alert Type</label>
+              <select id="alert-type" class="w-full rounded-2xl px-4 py-3 outline-none">
+                <option value="pattern">Pattern</option>
+                <option value="price">Price Level</option>
+              </select>
             </div>
-            <div class="flex items-center justify-between">
-              <span class="muted text-sm">Support</span>
-              <span class="font-semibold">189.80</span>
+
+            <div>
+              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Condition</label>
+              <select id="alert-condition" class="w-full rounded-2xl px-4 py-3 outline-none">
+                <option value="bullish_engulfing">Bullish Engulfing</option>
+                <option value="bearish_engulfing">Bearish Engulfing</option>
+                <option value="hammer">Hammer</option>
+                <option value="shooting_star">Shooting Star</option>
+                <option value="doji">Doji</option>
+                <option value="breakout">Breakout</option>
+                <option value="breakdown">Breakdown</option>
+              </select>
             </div>
-            <div class="flex items-center justify-between">
-              <span class="muted text-sm">Range Mid</span>
-              <span class="font-semibold">191.60</span>
+
+            <div>
+              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Timeframe</label>
+              <select id="alert-timeframe" class="w-full rounded-2xl px-4 py-3 outline-none">
+                <option value="1min">1 min</option>
+                <option value="5min">5 min</option>
+                <option value="15min">15 min</option>
+                <option value="1H">1H</option>
+                <option value="4H">4H</option>
+                <option value="1D" selected>1D</option>
+                <option value="1W">1W</option>
+              </select>
             </div>
-            <div class="flex items-center justify-between">
-              <span class="muted text-sm">Break Trigger</span>
-              <span class="font-semibold">194.85</span>
+
+            <div>
+              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Trigger</label>
+              <div class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold">
+                Candle close only
+              </div>
+            </div>
+
+            <button
+              onclick="addUserAlert()"
+              class="w-full rounded-2xl px-4 py-3 font-semibold mt-2"
+              style="background: var(--accent); color: white;"
+            >
+              Add Alert
+            </button>
+          </div>
+
+          <div class="mt-5 panel-soft rounded-2xl p-4">
+            <div class="text-xs uppercase tracking-[0.16em] muted mb-3">Active Alerts</div>
+            <div id="active-alerts" class="space-y-3">
+              <div class="text-sm muted">No active alerts yet.</div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="panel-soft rounded-2xl p-5">
+        <!-- Ask Veloxis -->
+        <section class="panel rounded-3xl p-6">
           <div class="mb-4">
-            <h3 class="text-lg font-semibold">Ask Veloxis</h3>
+            <h3 class="text-xl font-semibold">Ask Veloxis</h3>
             <p class="text-sm muted mt-1">Ask for context, pressure, levels, or scenario interpretation.</p>
           </div>
 
           <div class="space-y-3 mb-4">
             <input
+              id="ask-input"
               type="text"
               value="What matters most on this chart right now?"
-              class="w-full rounded-2xl px-4 py-4 outline-none panel"
-              style="color: var(--text);"
+              class="w-full rounded-2xl px-4 py-4 outline-none"
             />
+
             <button
+              onclick="askVeloxis()"
               class="w-full rounded-2xl px-4 py-3 font-semibold"
               style="background: var(--accent); color: white;"
             >
@@ -368,95 +566,185 @@
             </button>
           </div>
 
-          <div class="panel rounded-2xl p-4">
+          <div class="panel-soft rounded-2xl p-4">
             <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Veloxis Response</div>
-            <p class="text-sm leading-7">
-              Price is still holding constructive structure, but the chart is approaching a known resistance
-              pocket where momentum may pause. The current setup favors watching reaction quality near 194.20
-              rather than assuming clean continuation through it.
+            <p id="veloxis-response" class="text-sm leading-7">
+              Price is holding constructive structure, but the chart is approaching a known resistance pocket where momentum may pause. Watch reaction quality near 194.20 before assuming continuation.
             </p>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Secondary Blocks -->
-    <section class="grid grid-cols-1 xl:grid-cols-12 gap-6">
-      <div class="xl:col-span-7 panel rounded-3xl p-6">
-        <div class="mb-5">
-          <h3 class="text-xl font-semibold">Scenario Map</h3>
-          <p class="text-sm muted mt-1">Compact scenario framework built from the current chart structure.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="panel-soft rounded-2xl p-4">
-            <div class="text-xs uppercase tracking-[0.16em] mb-2" style="color: var(--positive);">Continuation Scenario</div>
-            <div class="font-semibold mb-2">Clean Hold Above Resistance</div>
-            <p class="text-sm muted leading-6">
-              Sustained trade above 194.20 with stable follow-through would confirm ongoing structure strength and expand upside probability.
-            </p>
-          </div>
-
-          <div class="panel-soft rounded-2xl p-4">
-            <div class="text-xs uppercase tracking-[0.16em] mb-2" style="color: var(--negative);">Rejection Scenario</div>
-            <div class="font-semibold mb-2">Fade Back Into Range</div>
-            <p class="text-sm muted leading-6">
-              Failure near resistance followed by loss of intraday structure would shift focus back toward 191.60 and lower support behavior.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="xl:col-span-5 panel rounded-3xl p-6">
-        <div class="mb-5">
-          <h3 class="text-xl font-semibold">Interpretation Framework</h3>
-          <p class="text-sm muted mt-1">How Veloxis presents analysis inside the platform.</p>
-        </div>
-
-        <div class="grid grid-cols-1 gap-3">
-          <div class="panel-soft rounded-2xl px-4 py-4">
-            <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Style</div>
-            <div class="font-semibold">Probabilistic</div>
-          </div>
-          <div class="panel-soft rounded-2xl px-4 py-4">
-            <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Purpose</div>
-            <div class="font-semibold">Interpretation, Not Direction</div>
-          </div>
-          <div class="panel-soft rounded-2xl px-4 py-4">
-            <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Use Case</div>
-            <div class="font-semibold">Chart Context, Levels, and Scenario Framing</div>
-          </div>
-        </div>
-      </div>
+        </section>
+      </aside>
     </section>
   </main>
 
   <script>
-    // تحميل الثيم عند فتح الصفحة
-function applySavedTheme() {
-  const savedTheme = localStorage.getItem("veloxis-theme");
-  const body = document.getElementById("main-body");
+    let selectedTimeframe = "1D";
 
-  if (savedTheme === "light") {
-    body.classList.remove("dark");
-  } else {
-    body.classList.add("dark");
-  }
-}
+    function applySavedTheme() {
+      const savedTheme = localStorage.getItem("veloxis-theme");
+      const body = document.getElementById("main-body");
 
-function toggleTheme() {
-  const body = document.getElementById("main-body");
-  body.classList.toggle("dark");
+      if (savedTheme === "light") {
+        body.classList.remove("dark");
+      } else {
+        body.classList.add("dark");
+      }
+    }
 
-  const currentTheme = body.classList.contains("dark") ? "dark" : "light";
-  localStorage.setItem("veloxis-theme", currentTheme);
-}
+    function toggleTheme() {
+      const body = document.getElementById("main-body");
+      body.classList.toggle("dark");
 
-document.addEventListener("DOMContentLoaded", applySavedTheme);
+      const currentTheme = body.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("veloxis-theme", currentTheme);
+    }
+
     function setTimeframe(tf, el) {
-  document.querySelectorAll(".tf-btn").forEach(btn => btn.classList.remove("active"));
-  el.classList.add("active");
-}
+      selectedTimeframe = tf;
+
+      document.querySelectorAll(".tf-btn").forEach(btn => btn.classList.remove("active"));
+      el.classList.add("active");
+
+      document.getElementById("alert-timeframe").value = tf;
+      refreshPatternMock(tf);
+    }
+
+    function analyzeSymbol() {
+      const symbolInput = document.getElementById("symbol-input");
+      const symbol = symbolInput.value.trim().toUpperCase() || "AAPL";
+
+      symbolInput.value = symbol;
+      document.getElementById("chart-title").textContent = symbol + " Price Structure";
+
+      const knownNames = {
+        AAPL: "Apple Inc.",
+        QQQ: "Invesco QQQ Trust",
+        SPY: "SPDR S&P 500 ETF",
+        TSLA: "Tesla Inc.",
+        AMD: "Advanced Micro Devices",
+        NVDA: "NVIDIA Corp."
+      };
+
+      document.getElementById("company-name").textContent = knownNames[symbol] || symbol;
+      refreshPatternMock(selectedTimeframe);
+    }
+
+    function setBadge(id, text, className) {
+      const badge = document.getElementById(id);
+      badge.className = "signal-badge " + className;
+      badge.textContent = text;
+    }
+
+    function refreshPatternMock(tf) {
+      setBadge("badge-bull-engulf", "Active", "badge-active");
+      setBadge("badge-bear-engulf", "Not Detected", "badge-muted");
+      setBadge("badge-hammer", tf === "5min" ? "Watching" : "Not Detected", tf === "5min" ? "badge-warning" : "badge-muted");
+      setBadge("badge-shooting", "Not Detected", "badge-muted");
+      setBadge("badge-doji", tf === "1H" ? "Active" : "Watching", tf === "1H" ? "badge-active" : "badge-warning");
+      setBadge("badge-breakout", "Watching", "badge-watch");
+      setBadge("badge-breakdown", "Not Detected", "badge-muted");
+    }
+
+    function detectPatterns(candles, resistance = 194.20, support = 189.80) {
+      const result = {
+        bullishEngulfing: false,
+        bearishEngulfing: false,
+        hammer: false,
+        shootingStar: false,
+        doji: false,
+        breakout: false,
+        breakdown: false
+      };
+
+      if (!candles || candles.length < 2) return result;
+
+      const prev = candles[candles.length - 2];
+      const curr = candles[candles.length - 1];
+
+      const body = Math.abs(curr.close - curr.open);
+      const range = curr.high - curr.low;
+      const upperWick = curr.high - Math.max(curr.open, curr.close);
+      const lowerWick = Math.min(curr.open, curr.close) - curr.low;
+
+      result.bullishEngulfing =
+        prev.close < prev.open &&
+        curr.close > curr.open &&
+        curr.open < prev.close &&
+        curr.close > prev.open;
+
+      result.bearishEngulfing =
+        prev.close > prev.open &&
+        curr.close < curr.open &&
+        curr.open > prev.close &&
+        curr.close < prev.open;
+
+      result.hammer =
+        range > 0 &&
+        lowerWick > body * 2 &&
+        upperWick < body * 1.2;
+
+      result.shootingStar =
+        range > 0 &&
+        upperWick > body * 2 &&
+        lowerWick < body * 1.2;
+
+      result.doji =
+        range > 0 &&
+        body <= range * 0.12;
+
+      result.breakout = curr.close > resistance;
+      result.breakdown = curr.close < support;
+
+      return result;
+    }
+
+    function addUserAlert() {
+      const symbol = document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
+      const condition = document.getElementById("alert-condition").value;
+      const timeframe = document.getElementById("alert-timeframe").value;
+      const alertsBox = document.getElementById("active-alerts");
+
+      if (alertsBox.textContent.includes("No active alerts yet")) {
+        alertsBox.innerHTML = "";
+      }
+
+      const labelMap = {
+        bullish_engulfing: "Bullish Engulfing",
+        bearish_engulfing: "Bearish Engulfing",
+        hammer: "Hammer",
+        shooting_star: "Shooting Star",
+        doji: "Doji",
+        breakout: "Breakout",
+        breakdown: "Breakdown"
+      };
+
+      const item = document.createElement("div");
+      item.className = "panel rounded-2xl px-4 py-3";
+      item.innerHTML = `
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <div class="text-sm font-semibold">${symbol} — ${labelMap[condition] || condition}</div>
+            <div class="text-xs muted mt-1">Timeframe: ${timeframe} • Trigger: Candle close only</div>
+          </div>
+          <span class="signal-badge badge-watch">Active</span>
+        </div>
+      `;
+
+      alertsBox.prepend(item);
+    }
+
+    function askVeloxis() {
+      const symbol = document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
+      const response = document.getElementById("veloxis-response");
+
+      response.textContent =
+        symbol + " is showing a constructive structure, but price is close to a resistance area. The best read is to wait for candle-close confirmation on the selected timeframe before treating the move as a true breakout.";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      applySavedTheme();
+      refreshPatternMock(selectedTimeframe);
+    });
   </script>
 </body>
 </html>
