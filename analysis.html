@@ -1,3 +1,5 @@
+انقطع البث
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,9 +37,7 @@
       --shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -58,9 +58,7 @@
       border: 1px solid var(--border);
     }
 
-    .muted {
-      color: var(--muted);
-    }
+    .muted { color: var(--muted); }
 
     .nav-link {
       position: relative;
@@ -73,9 +71,7 @@
     }
 
     .nav-link:hover,
-    .nav-link.active {
-      color: var(--text);
-    }
+    .nav-link.active { color: var(--text); }
 
     .nav-link.active::after {
       content: "";
@@ -155,9 +151,7 @@
       border: 1px solid var(--border);
     }
 
-    input::placeholder {
-      color: var(--muted);
-    }
+    input::placeholder { color: var(--muted); }
 
     .thin-scroll::-webkit-scrollbar {
       height: 8px;
@@ -186,11 +180,7 @@
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <div class="h-16 flex items-center justify-between gap-6">
         <div class="flex items-center min-w-fit">
-          <img
-            src="logo.png"
-            alt="Veloxis logo"
-            class="h-9 w-auto object-contain"
-          />
+          <img src="logo.png" alt="Veloxis logo" class="h-9 w-auto object-contain" />
         </div>
 
         <nav class="desktop-nav flex items-center gap-7 flex-1 justify-center thin-scroll">
@@ -202,16 +192,13 @@
           <a href="top-movers.html" class="nav-link">Top Movers</a>
         </nav>
 
-        <div class="min-w-fit">
-          <button
-            onclick="toggleTheme()"
-            class="panel-soft rounded-xl px-3 py-2 text-sm font-medium"
-            style="color: var(--text);"
-            aria-label="Toggle theme"
-          >
-            Theme
-          </button>
-        </div>
+        <button
+          onclick="toggleTheme()"
+          class="panel-soft rounded-xl px-3 py-2 text-sm font-medium min-w-fit"
+          style="color: var(--text);"
+        >
+          Theme
+        </button>
       </div>
     </div>
   </header>
@@ -256,7 +243,7 @@
     <!-- Main Layout -->
     <section class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
 
-      <!-- Left Column -->
+      <!-- LEFT COLUMN -->
       <div class="xl:col-span-8 space-y-6">
 
         <!-- Chart Panel -->
@@ -266,7 +253,7 @@
               <p class="text-sm font-medium mb-3" style="color: var(--accent);">Technical Structure View</p>
               <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Analysis</h1>
               <p class="text-base lg:text-lg leading-8 muted max-w-3xl">
-                Read current price structure, timeframe context, pattern signals, and user-defined alerts in one clean chart-first layout.
+                Read current price structure, timeframe context, pattern context, and user-defined alerts in one clean chart-first layout.
               </p>
             </div>
 
@@ -326,7 +313,7 @@
                 <line x1="0" y1="300" x2="1000" y2="300" stroke="rgba(239,68,68,0.35)" stroke-width="2" stroke-dasharray="8 8" />
                 <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(161,161,170,0.28)" stroke-width="2" stroke-dasharray="6 8" />
 
-                <circle cx="880" cy="170" r="7" fill="rgba(34,197,94,0.9)" />
+                                <circle cx="880" cy="170" r="7" fill="rgba(34,197,94,0.9)" />
                 <circle cx="700" cy="245" r="6" fill="rgba(245,158,11,0.9)" />
 
                 <text x="800" y="198" fill="rgba(34,197,94,0.95)" font-size="16" font-weight="600">Resistance 194.20</text>
@@ -335,21 +322,18 @@
               </svg>
             </div>
 
-            <!-- Timeframes -->
-            <div class="mt-5">
-              <div class="flex items-center gap-2 flex-wrap mt-4">
-                <button class="tf-btn" onclick="setTimeframe('1min', this)">1 min</button>
-                <button class="tf-btn" onclick="setTimeframe('5min', this)">5 min</button>
-                <button class="tf-btn" onclick="setTimeframe('15min', this)">15 min</button>
-                <button class="tf-btn" onclick="setTimeframe('1H', this)">1H</button>
-                <button class="tf-btn" onclick="setTimeframe('4H', this)">4H</button>
-                <button class="tf-btn active" onclick="setTimeframe('1D', this)">1D</button>
-                <button class="tf-btn" onclick="setTimeframe('1W', this)">1W</button>
-                <button class="tf-btn" onclick="setTimeframe('1mo', this)">1 mo</button>
-                <button class="tf-btn" onclick="setTimeframe('3mo', this)">3 mo</button>
-                <button class="tf-btn" onclick="setTimeframe('6mo', this)">6 mo</button>
-                <button class="tf-btn" onclick="setTimeframe('1Y', this)">1Y</button>
-              </div>
+            <div class="mt-5 flex items-center gap-2 flex-wrap">
+              <button class="tf-btn" onclick="setTimeframe('1min', this)">1 min</button>
+              <button class="tf-btn" onclick="setTimeframe('5min', this)">5 min</button>
+              <button class="tf-btn" onclick="setTimeframe('15min', this)">15 min</button>
+              <button class="tf-btn" onclick="setTimeframe('1H', this)">1H</button>
+              <button class="tf-btn" onclick="setTimeframe('4H', this)">4H</button>
+              <button class="tf-btn active" onclick="setTimeframe('1D', this)">1D</button>
+              <button class="tf-btn" onclick="setTimeframe('1W', this)">1W</button>
+              <button class="tf-btn" onclick="setTimeframe('1mo', this)">1 mo</button>
+              <button class="tf-btn" onclick="setTimeframe('3mo', this)">3 mo</button>
+              <button class="tf-btn" onclick="setTimeframe('6mo', this)">6 mo</button>
+              <button class="tf-btn" onclick="setTimeframe('1Y', this)">1Y</button>
             </div>
           </div>
         </section>
@@ -358,7 +342,7 @@
         <section class="panel rounded-3xl p-6">
           <div class="mb-5">
             <h3 class="text-xl font-semibold">Scenario Map</h3>
-            <p class="text-sm muted mt-1">Compact scenario framework built from the current chart structure.</p>
+            <p class="text-sm muted mt-1">Fast decision view based on current structure.</p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -366,22 +350,66 @@
               <div class="text-xs uppercase tracking-[0.16em] mb-2" style="color: var(--positive);">Bullish Scenario</div>
               <div class="font-semibold mb-2">Clean Hold Above Resistance</div>
               <p class="text-sm muted leading-6">
-                Sustained trade above 194.20 with stable follow-through would confirm structure strength and expand upside probability.
+                Sustained trade above 194.20 with candle-close confirmation would support continuation.
               </p>
             </div>
 
             <div class="panel-soft rounded-2xl p-4">
               <div class="text-xs uppercase tracking-[0.16em] mb-2" style="color: var(--negative);">Bearish Scenario</div>
-              <div class="font-semibold mb-2">Fade Back Into Range</div>
+              <div class="font-semibold mb-2">Rejection Back Into Range</div>
               <p class="text-sm muted leading-6">
-                Failure near resistance followed by loss of structure would shift focus back toward 191.60 and lower support behavior.
+                Failure near resistance shifts focus back toward 191.60, then 189.80 support.
               </p>
             </div>
           </div>
         </section>
+
+        <!-- Ask Veloxis moved left -->
+        <section class="panel rounded-3xl p-6">
+          <div class="mb-4">
+            <h3 class="text-xl font-semibold">Ask Veloxis</h3>
+            <p class="text-sm muted mt-1">Ask about the chart, scenario, resistance, support, or current decision.</p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-4">
+            <button onclick="quickAsk('Is this breakout real?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
+              Is this breakout real?
+            </button>
+            <button onclick="quickAsk('Where is the key resistance?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
+              Where is key resistance?
+            </button>
+            <button onclick="quickAsk('Should I wait or act now?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
+              Wait or act now?
+            </button>
+          </div>
+
+          <div class="space-y-3 mb-4">
+            <input
+              id="ask-input"
+              type="text"
+              value="What matters most on this chart right now?"
+              class="w-full rounded-2xl px-4 py-4 outline-none"
+            />
+
+            <button
+              onclick="askVeloxis()"
+              class="w-full rounded-2xl px-4 py-3 font-semibold"
+              style="background: var(--accent); color: white;"
+            >
+              Ask
+            </button>
+          </div>
+
+          <div class="panel-soft rounded-2xl p-4">
+            <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Veloxis Decision</div>
+            <p id="veloxis-response" class="text-sm leading-7">
+              Wait for confirmation. Price is constructive, but it is approaching resistance. The stronger decision is to watch candle-close behavior near 194.20 before treating this as a clean breakout.
+            </p>
+          </div>
+        </section>
       </div>
 
-      <!-- Right Column -->
+      <!-- RIGHT COLUMN -->
       <aside class="xl:col-span-4 space-y-6 xl:sticky xl:top-24 h-fit">
 
         <!-- Analysis Panel -->
@@ -389,21 +417,21 @@
           <div class="mb-5">
             <p class="text-sm font-medium mb-2" style="color: var(--accent);">Veloxis Reading</p>
             <h2 class="text-2xl font-semibold">Analysis Panel</h2>
-            <p class="text-sm muted mt-2">Structured interpretation of price, levels, and scenario behavior.</p>
+            <p class="text-sm muted mt-2">Quick structure, levels, and decision context.</p>
           </div>
 
           <div class="grid grid-cols-1 gap-3 mb-5">
+            <div class="panel-soft rounded-2xl px-4 py-4">
+              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Decision</div>
+              <div id="decision-label" class="font-semibold">Wait for Confirmation</div>
+            </div>
             <div class="panel-soft rounded-2xl px-4 py-4">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Trend</div>
               <div class="font-semibold">Higher High Structure</div>
             </div>
             <div class="panel-soft rounded-2xl px-4 py-4">
-              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Momentum</div>
-              <div class="font-semibold">Constructive, Near Resistance</div>
-            </div>
-            <div class="panel-soft rounded-2xl px-4 py-4">
               <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Pressure</div>
-              <div class="font-semibold">Upward, With Local Exhaustion Risk</div>
+              <div class="font-semibold">Upward, With Exhaustion Risk</div>
             </div>
           </div>
 
@@ -431,47 +459,31 @@
           </div>
         </section>
 
-        <!-- Pattern Signals -->
+        <!-- Pattern Context compact -->
         <section class="panel rounded-3xl p-6">
           <div class="mb-5">
-            <h3 class="text-xl font-semibold">Pattern Signals</h3>
-            <p class="text-sm muted mt-1">Simple pattern detection tied to the selected timeframe.</p>
+            <h3 class="text-xl font-semibold">Pattern Context</h3>
+            <p class="text-sm muted mt-1">Only the dominant pattern is shown. Other patterns are monitored in the background.</p>
           </div>
 
-          <div class="space-y-3">
-            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
-              <span class="text-sm font-medium">Bullish Engulfing</span>
-              <span id="badge-bull-engulf" class="signal-badge badge-active">Active</span>
+          <div class="panel-soft rounded-2xl p-5">
+            <div class="flex items-start justify-between gap-3 mb-4">
+              <div>
+                <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Dominant Pattern</div>
+                <div id="dominant-pattern" class="text-lg font-semibold">Bullish Engulfing</div>
+              </div>
+              <span id="pattern-status" class="signal-badge badge-active">Confirmed</span>
             </div>
 
-            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
-              <span class="text-sm font-medium">Bearish Engulfing</span>
-              <span id="badge-bear-engulf" class="signal-badge badge-muted">Not Detected</span>
-            </div>
-
-            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
-              <span class="text-sm font-medium">Hammer</span>
-              <span id="badge-hammer" class="signal-badge badge-muted">Not Detected</span>
-            </div>
-
-            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
-              <span class="text-sm font-medium">Shooting Star</span>
-              <span id="badge-shooting" class="signal-badge badge-muted">Not Detected</span>
-            </div>
-
-            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
-              <span class="text-sm font-medium">Doji</span>
-              <span id="badge-doji" class="signal-badge badge-warning">Watching</span>
-            </div>
-
-            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
-              <span class="text-sm font-medium">Breakout</span>
-              <span id="badge-breakout" class="signal-badge badge-watch">Watching</span>
-            </div>
-
-            <div class="panel-soft rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
-              <span class="text-sm font-medium">Breakdown</span>
-              <span id="badge-breakdown" class="signal-badge badge-muted">Not Detected</span>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Timeframe</div>
+                <div id="pattern-timeframe" class="font-semibold">1D</div>
+              </div>
+              <div>
+                <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Quality</div>
+                <div id="pattern-quality" class="font-semibold">Medium</div>
+              </div>
             </div>
           </div>
         </section>
@@ -520,9 +532,11 @@
 
             <div>
               <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Trigger</label>
-              <div class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold">
-                Candle close only
-              </div>
+              <select id="alert-trigger" class="w-full rounded-2xl px-4 py-3 outline-none">
+                <option value="close">Candle Close</option>
+                <option value="intrabar">Real-time Intrabar</option>
+                <option value="confirmation">Close + Confirmation</option>
+              </select>
             </div>
 
             <button
@@ -539,38 +553,6 @@
             <div id="active-alerts" class="space-y-3">
               <div class="text-sm muted">No active alerts yet.</div>
             </div>
-          </div>
-        </section>
-
-        <!-- Ask Veloxis -->
-        <section class="panel rounded-3xl p-6">
-          <div class="mb-4">
-            <h3 class="text-xl font-semibold">Ask Veloxis</h3>
-            <p class="text-sm muted mt-1">Ask for context, pressure, levels, or scenario interpretation.</p>
-          </div>
-
-          <div class="space-y-3 mb-4">
-            <input
-              id="ask-input"
-              type="text"
-              value="What matters most on this chart right now?"
-              class="w-full rounded-2xl px-4 py-4 outline-none"
-            />
-
-            <button
-              onclick="askVeloxis()"
-              class="w-full rounded-2xl px-4 py-3 font-semibold"
-              style="background: var(--accent); color: white;"
-            >
-              Ask
-            </button>
-          </div>
-
-          <div class="panel-soft rounded-2xl p-4">
-            <div class="text-xs uppercase tracking-[0.16em] muted mb-2">Veloxis Response</div>
-            <p id="veloxis-response" class="text-sm leading-7">
-              Price is holding constructive structure, but the chart is approaching a known resistance pocket where momentum may pause. Watch reaction quality near 194.20 before assuming continuation.
-            </p>
           </div>
         </section>
       </aside>
@@ -606,7 +588,10 @@
       el.classList.add("active");
 
       document.getElementById("alert-timeframe").value = tf;
-      refreshPatternMock(tf);
+      document.getElementById("pattern-timeframe").textContent = tf;
+
+      refreshPatternContext(tf);
+      refreshDecision(tf);
     }
 
     function analyzeSymbol() {
@@ -626,82 +611,51 @@
       };
 
       document.getElementById("company-name").textContent = knownNames[symbol] || symbol;
-      refreshPatternMock(selectedTimeframe);
+      refreshPatternContext(selectedTimeframe);
+      refreshDecision(selectedTimeframe);
+      askVeloxis();
     }
 
-    function setBadge(id, text, className) {
-      const badge = document.getElementById(id);
-      badge.className = "signal-badge " + className;
-      badge.textContent = text;
+    function refreshPatternContext(tf) {
+      const dominant = document.getElementById("dominant-pattern");
+      const status = document.getElementById("pattern-status");
+      const quality = document.getElementById("pattern-quality");
+
+      if (tf === "1H") {
+        dominant.textContent = "Doji Near Resistance";
+        status.className = "signal-badge badge-warning";
+        status.textContent = "Watching";
+        quality.textContent = "Medium";
+      } else if (tf === "5min") {
+        dominant.textContent = "Hammer Attempt";
+        status.className = "signal-badge badge-warning";
+        status.textContent = "Developing";
+        quality.textContent = "Low";
+      } else {
+        dominant.textContent = "Bullish Engulfing";
+        status.className = "signal-badge badge-active";
+        status.textContent = "Confirmed";
+        quality.textContent = "Medium";
+      }
     }
 
-    function refreshPatternMock(tf) {
-      setBadge("badge-bull-engulf", "Active", "badge-active");
-      setBadge("badge-bear-engulf", "Not Detected", "badge-muted");
-      setBadge("badge-hammer", tf === "5min" ? "Watching" : "Not Detected", tf === "5min" ? "badge-warning" : "badge-muted");
-      setBadge("badge-shooting", "Not Detected", "badge-muted");
-      setBadge("badge-doji", tf === "1H" ? "Active" : "Watching", tf === "1H" ? "badge-active" : "badge-warning");
-      setBadge("badge-breakout", "Watching", "badge-watch");
-      setBadge("badge-breakdown", "Not Detected", "badge-muted");
-    }
+    function refreshDecision(tf) {
+      const label = document.getElementById("decision-label");
 
-    function detectPatterns(candles, resistance = 194.20, support = 189.80) {
-      const result = {
-        bullishEngulfing: false,
-        bearishEngulfing: false,
-        hammer: false,
-        shootingStar: false,
-        doji: false,
-        breakout: false,
-        breakdown: false
-      };
-
-      if (!candles || candles.length < 2) return result;
-
-      const prev = candles[candles.length - 2];
-      const curr = candles[candles.length - 1];
-
-      const body = Math.abs(curr.close - curr.open);
-      const range = curr.high - curr.low;
-      const upperWick = curr.high - Math.max(curr.open, curr.close);
-      const lowerWick = Math.min(curr.open, curr.close) - curr.low;
-
-      result.bullishEngulfing =
-        prev.close < prev.open &&
-        curr.close > curr.open &&
-        curr.open < prev.close &&
-        curr.close > prev.open;
-
-      result.bearishEngulfing =
-        prev.close > prev.open &&
-        curr.close < curr.open &&
-        curr.open > prev.close &&
-        curr.close < prev.open;
-
-      result.hammer =
-        range > 0 &&
-        lowerWick > body * 2 &&
-        upperWick < body * 1.2;
-
-      result.shootingStar =
-        range > 0 &&
-        upperWick > body * 2 &&
-        lowerWick < body * 1.2;
-
-      result.doji =
-        range > 0 &&
-        body <= range * 0.12;
-
-      result.breakout = curr.close > resistance;
-      result.breakdown = curr.close < support;
-
-      return result;
+      if (tf === "1min" || tf === "5min") {
+        label.textContent = "Wait - Fast Timeframe Noise";
+      } else if (tf === "1H") {
+        label.textContent = "Watch Resistance Reaction";
+      } else {
+        label.textContent = "Wait for Confirmation";
+      }
     }
 
     function addUserAlert() {
       const symbol = document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
       const condition = document.getElementById("alert-condition").value;
       const timeframe = document.getElementById("alert-timeframe").value;
+      const trigger = document.getElementById("alert-trigger").value;
       const alertsBox = document.getElementById("active-alerts");
 
       if (alertsBox.textContent.includes("No active alerts yet")) {
@@ -718,13 +672,19 @@
         breakdown: "Breakdown"
       };
 
+      const triggerMap = {
+        close: "Candle Close",
+        intrabar: "Real-time Intrabar",
+        confirmation: "Close + Confirmation"
+      };
+
       const item = document.createElement("div");
       item.className = "panel rounded-2xl px-4 py-3";
       item.innerHTML = `
         <div class="flex items-center justify-between gap-3">
           <div>
             <div class="text-sm font-semibold">${symbol} — ${labelMap[condition] || condition}</div>
-            <div class="text-xs muted mt-1">Timeframe: ${timeframe} • Trigger: Candle close only</div>
+            <div class="text-xs muted mt-1">Timeframe: ${timeframe} • Trigger: ${triggerMap[trigger]}</div>
           </div>
           <span class="signal-badge badge-watch">Active</span>
         </div>
@@ -733,17 +693,23 @@
       alertsBox.prepend(item);
     }
 
+    function quickAsk(text) {
+      document.getElementById("ask-input").value = text;
+      askVeloxis();
+    }
+
     function askVeloxis() {
       const symbol = document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
       const response = document.getElementById("veloxis-response");
 
       response.textContent =
-        symbol + " is showing a constructive structure, but price is close to a resistance area. The best read is to wait for candle-close confirmation on the selected timeframe before treating the move as a true breakout.";
+        symbol + " is close to resistance. The clean decision is to wait for candle-close confirmation before treating this as a valid breakout. If price rejects 194.20, focus shifts back toward 191.60.";
     }
 
     document.addEventListener("DOMContentLoaded", function () {
       applySavedTheme();
-      refreshPatternMock(selectedTimeframe);
+      refreshPatternContext(selectedTimeframe);
+      refreshDecision(selectedTimeframe);
     });
   </script>
 </body>
