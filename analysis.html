@@ -615,11 +615,14 @@
 
     function toggleManualAlert(){
   const section = document.getElementById("manual-alert-section");
+  const btn = document.getElementById("customize-btn");
 
-  // يفتح / يقفل
   section.classList.toggle("hidden");
 
-  // إذا انفتح → ينزل له المستخدم
+  // تفعيل الزر (لون أزرق)
+  btn.classList.toggle("active");
+
+  // إذا انفتح → ينزل له
   if(!section.classList.contains("hidden")){
     setTimeout(() => {
       section.scrollIntoView({ behavior: "smooth", block: "center" });
