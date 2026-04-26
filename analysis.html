@@ -80,10 +80,21 @@
       border-radius:999px;
     }
 
+    input,
+    select {
+      background:var(--panel-2);
+      color:var(--text);
+      border:1px solid var(--border);
+    }
+
+    input::placeholder { color:var(--muted); }
+
+    .btn,
     .tf-btn,
     .choice-btn,
-    .level-btn {
-      padding:8px 14px;
+    .level-btn,
+    .alert-tf-btn {
+      padding:8px 12px;
       border-radius:12px;
       border:1px solid var(--border);
       background:var(--panel-2);
@@ -94,16 +105,19 @@
       cursor:pointer;
     }
 
+    .btn:hover,
     .tf-btn:hover,
     .choice-btn:hover,
-    .level-btn:hover {
+    .level-btn:hover,
+    .alert-tf-btn:hover {
       color:var(--text);
       border-color:rgba(96,165,250,.35);
     }
 
     .tf-btn.active,
     .choice-btn.active,
-    .level-btn.active {
+    .level-btn.active,
+    .alert-tf-btn.active {
       background:var(--accent);
       color:white;
       border-color:transparent;
@@ -133,14 +147,16 @@
       color:var(--warning);
     }
 
-    input,
-    select {
-      background:var(--panel-2);
-      color:var(--text);
-      border:1px solid var(--border);
+    .sticky-side {
+      position:sticky;
+      top:88px;
+      align-self:start;
     }
 
-    input::placeholder { color:var(--muted); }
+    .decision-card {
+      background:linear-gradient(135deg, rgba(96,165,250,.18), rgba(37,99,235,.06));
+      border:1px solid rgba(96,165,250,.22);
+    }
 
     .thin-scroll::-webkit-scrollbar {
       height:8px;
@@ -150,12 +166,6 @@
     .thin-scroll::-webkit-scrollbar-thumb {
       background:#3f3f46;
       border-radius:999px;
-    }
-
-    .sticky-side {
-      position:sticky;
-      top:88px;
-      align-self:start;
     }
 
     @media (max-width:1280px) {
@@ -204,6 +214,7 @@
 
   <main class="max-w-7xl mx-auto px-5 lg:px-8 py-6 lg:py-8">
 
+    <!-- Search Strip -->
     <section class="panel rounded-2xl p-4 mb-6">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
         <div class="lg:col-span-7">
@@ -238,17 +249,20 @@
       </div>
     </section>
 
+    <!-- Main Layout -->
     <section class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-6">
 
+      <!-- LEFT COLUMN -->
       <div class="xl:col-span-8 space-y-6">
 
+        <!-- Chart Panel -->
         <section class="panel rounded-3xl p-6 lg:p-8">
           <div class="flex items-start justify-between gap-4 mb-6">
             <div>
               <p class="text-sm font-medium mb-3" style="color:var(--accent);">Technical Structure View</p>
               <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Analysis</h1>
               <p class="text-base lg:text-lg leading-8 muted max-w-3xl">
-                Read price structure, timeframe context, dominant pattern, and user-defined alerts in one clean chart-first layout.
+                Read price structure, timeframe context, dominant pattern, and user-defined alerts in one clean decision layout.
               </p>
             </div>
 
@@ -318,21 +332,22 @@
             </div>
 
             <div class="mt-5 flex items-center gap-2 flex-wrap">
-              <button class="tf-btn" onclick="setTimeframe('1min', this)">1 min</button>
-              <button class="tf-btn" onclick="setTimeframe('5min', this)">5 min</button>
-              <button class="tf-btn" onclick="setTimeframe('15min', this)">15 min</button>
-              <button class="tf-btn" onclick="setTimeframe('1H', this)">1H</button>
-              <button class="tf-btn" onclick="setTimeframe('4H', this)">4H</button>
-              <button class="tf-btn active" onclick="setTimeframe('1D', this)">1D</button>
-              <button class="tf-btn" onclick="setTimeframe('1W', this)">1W</button>
-              <button class="tf-btn" onclick="setTimeframe('1mo', this)">1 mo</button>
-              <button class="tf-btn" onclick="setTimeframe('3mo', this)">3 mo</button>
-              <button class="tf-btn" onclick="setTimeframe('6mo', this)">6 mo</button>
-              <button class="tf-btn" onclick="setTimeframe('1Y', this)">1Y</button>
+              <button class="tf-btn" onclick="setChartTimeframe('1min', this)">1 min</button>
+              <button class="tf-btn" onclick="setChartTimeframe('5min', this)">5 min</button>
+              <button class="tf-btn" onclick="setChartTimeframe('15min', this)">15 min</button>
+              <button class="tf-btn" onclick="setChartTimeframe('1H', this)">1H</button>
+              <button class="tf-btn" onclick="setChartTimeframe('4H', this)">4H</button>
+              <button class="tf-btn active" onclick="setChartTimeframe('1D', this)">1D</button>
+              <button class="tf-btn" onclick="setChartTimeframe('1W', this)">1W</button>
+              <button class="tf-btn" onclick="setChartTimeframe('1mo', this)">1 mo</button>
+              <button class="tf-btn" onclick="setChartTimeframe('3mo', this)">3 mo</button>
+              <button class="tf-btn" onclick="setChartTimeframe('6mo', this)">6 mo</button>
+              <button class="tf-btn" onclick="setChartTimeframe('1Y', this)">1Y</button>
             </div>
           </div>
         </section>
 
+        <!-- Scenario Map -->
         <section class="panel rounded-3xl p-6">
           <div class="mb-5">
             <h3 class="text-xl font-semibold">Scenario Map</h3>
@@ -358,6 +373,7 @@
           </div>
         </section>
 
+        <!-- Ask Veloxis -->
         <section class="panel rounded-3xl p-6">
           <div class="mb-4">
             <h3 class="text-xl font-semibold">Ask Veloxis</h3>
@@ -371,7 +387,7 @@
             <button onclick="quickAsk('What confirms this breakout?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
               What confirms breakout?
             </button>
-            <button onclick="quickAsk('Where is the failure level?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
+            <button onclick="quickAsk('Where is failure level?')" class="panel-soft rounded-2xl px-4 py-3 text-sm font-semibold text-left">
               Where is failure level?
             </button>
           </div>
@@ -402,402 +418,167 @@
         </section>
       </div>
             <!-- RIGHT COLUMN -->
-      <div class="xl:col-span-4 sticky-side space-y-6">
+      <div class="xl:col-span-4 space-y-6 sticky-side">
 
-        <!-- Analysis Panel -->
-        <section class="panel rounded-3xl p-6">
+        <!-- Analysis Panel (Decision First) -->
+        <section class="panel rounded-3xl p-6 decision-card">
           <div class="mb-5">
-            <p class="text-sm font-medium mb-2" style="color:var(--accent);">Veloxis Reading</p>
-            <h2 class="text-2xl font-semibold">Analysis Panel</h2>
-            <p class="text-sm muted mt-2">Quick structure, levels, and decision context.</p>
+            <p class="text-sm font-medium" style="color:var(--accent);">Veloxis Reading</p>
+            <h2 class="text-2xl font-semibold mt-1">Analysis Panel</h2>
           </div>
 
-          <div class="grid grid-cols-1 gap-3 mb-5">
-            <div class="panel-soft rounded-2xl px-4 py-4">
-              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Decision</div>
-              <div id="decision-label" class="font-semibold">Wait for Confirmation</div>
-            </div>
-
-            <div class="panel-soft rounded-2xl px-4 py-4">
-              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Trend</div>
-              <div class="font-semibold">Higher High Structure</div>
-            </div>
-
-            <div class="panel-soft rounded-2xl px-4 py-4">
-              <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Pressure</div>
-              <div class="font-semibold">Upward, With Exhaustion Risk</div>
+          <!-- DECISION -->
+          <div class="panel-soft rounded-2xl p-4 mb-4">
+            <div class="text-xs uppercase tracking-[0.15em] muted mb-1">Decision</div>
+            <div id="decision-text" class="text-lg font-semibold">
+              Wait for Confirmation
             </div>
           </div>
 
-          <div class="panel-soft rounded-2xl p-5">
-            <div class="text-sm font-semibold mb-3">Key Levels</div>
+          <!-- QUICK INFO (COMPACT) -->
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="muted">Trend</span>
+              <span class="font-semibold">Higher High</span>
+            </div>
 
-            <div class="grid grid-cols-1 gap-3">
-              <div class="flex items-center justify-between">
-                <span class="muted text-sm">Resistance</span>
-                <span class="font-semibold">194.20</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="muted text-sm">Support</span>
-                <span class="font-semibold">189.80</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="muted text-sm">Range Mid</span>
-                <span class="font-semibold">191.60</span>
-              </div>
+            <div class="flex justify-between">
+              <span class="muted">Pressure</span>
+              <span class="font-semibold">Exhaustion Risk</span>
+            </div>
+
+            <div class="flex justify-between">
+              <span class="muted">Resistance</span>
+              <span class="font-semibold">194.20</span>
+            </div>
+
+            <div class="flex justify-between">
+              <span class="muted">Support</span>
+              <span class="font-semibold">189.80</span>
             </div>
           </div>
         </section>
 
-        <!-- Pattern Context -->
+        <!-- User Alerts (SMART VERSION) -->
         <section class="panel rounded-3xl p-6">
-          <div class="mb-5">
-            <h3 class="text-xl font-semibold">Pattern Context</h3>
-            <p class="text-sm muted mt-1">
-              Only the dominant pattern is shown. Other patterns are monitored in the background.
-            </p>
+          <div class="mb-4">
+            <h3 class="text-lg font-semibold">Smart Alert</h3>
+            <p class="text-xs muted mt-1">Build alert in 3 quick steps</p>
           </div>
 
-          <div class="panel-soft rounded-2xl p-5">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Pattern</div>
-                <div id="dominant-pattern" class="font-semibold">Bullish Engulfing</div>
-              </div>
-
-              <div>
-                <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Timeframe</div>
-                <div id="pattern-timeframe" class="font-semibold">1D</div>
-              </div>
-
-              <div>
-                <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Context</div>
-                <div id="pattern-context" class="font-semibold">Near Resistance</div>
-              </div>
-
-              <div>
-                <div class="text-xs uppercase tracking-[0.16em] muted mb-1">Quality</div>
-                <span id="pattern-quality" class="signal-badge badge-active">Confirmed</span>
-              </div>
+          <!-- LEVEL -->
+          <div class="mb-4">
+            <div class="text-xs uppercase muted mb-2">Level</div>
+            <div class="flex gap-2">
+              <button class="level-btn active" onclick="setLevel('resistance', this)">Resistance</button>
+              <button class="level-btn" onclick="setLevel('mid', this)">Range Mid</button>
+              <button class="level-btn" onclick="setLevel('support', this)">Support</button>
             </div>
+          </div>
+
+          <!-- EXPECTATION -->
+          <div class="mb-4">
+            <div class="text-xs uppercase muted mb-2">Expectation</div>
+            <div class="flex gap-2">
+              <button class="choice-btn active" onclick="setExpectation('breakout', this)">Breakout ↑</button>
+              <button class="choice-btn" onclick="setExpectation('rejection', this)">Rejection ↓</button>
+              <button class="choice-btn" onclick="setExpectation('reaction', this)">Reaction</button>
+            </div>
+          </div>
+
+          <!-- TIMEFRAME (IMPORTANT FIX) -->
+          <div class="mb-4">
+            <div class="text-xs uppercase muted mb-2">Timeframe</div>
+            <div class="flex flex-wrap gap-2">
+              <button class="alert-tf-btn" onclick="setAlertTF('1min', this)">1m</button>
+              <button class="alert-tf-btn" onclick="setAlertTF('5min', this)">5m</button>
+              <button class="alert-tf-btn" onclick="setAlertTF('15min', this)">15m</button>
+              <button class="alert-tf-btn" onclick="setAlertTF('1H', this)">1H</button>
+              <button class="alert-tf-btn" onclick="setAlertTF('4H', this)">4H</button>
+              <button class="alert-tf-btn active" onclick="setAlertTF('1D', this)">1D</button>
+              <button class="alert-tf-btn" onclick="setAlertTF('1W', this)">1W</button>
+              <button class="alert-tf-btn" onclick="setAlertTF('1M', this)">1M</button>
+            </div>
+          </div>
+
+          <!-- BUTTON -->
+          <button
+            onclick="addAlert()"
+            class="w-full rounded-xl py-3 font-semibold"
+            style="background:var(--accent);color:white;"
+          >
+            Add Alert
+          </button>
+
+          <!-- ACTIVE -->
+          <div class="mt-4 text-xs muted">
+            No active alerts yet.
           </div>
         </section>
 
-        <!-- User Alerts -->
-        <section class="panel rounded-3xl p-6">
-          <div class="mb-5">
-            <h3 class="text-xl font-semibold">User Alerts</h3>
-            <p class="text-sm muted mt-1">Create alerts for patterns or price levels.</p>
-          </div>
-
-          <div class="grid grid-cols-1 gap-3">
-            <div>
-              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Alert Type</label>
-              <select id="alert-type" class="w-full rounded-2xl px-4 py-3 outline-none" onchange="handleAlertTypeChange()">
-                <option value="pattern">Pattern</option>
-                <option value="price">Price Level</option>
-              </select>
-            </div>
-
-            <div id="pattern-box">
-              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Pattern</label>
-              <select id="alert-pattern" class="w-full rounded-2xl px-4 py-3 outline-none">
-                <option value="Bullish Engulfing">Bullish Engulfing</option>
-                <option value="Bearish Engulfing">Bearish Engulfing</option>
-                <option value="Hammer">Hammer</option>
-                <option value="Shooting Star">Shooting Star</option>
-                <option value="Doji">Doji</option>
-                <option value="Breakout">Breakout</option>
-                <option value="Breakdown">Breakdown</option>
-              </select>
-            </div>
-
-            <div id="price-box" class="hidden">
-              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Price Level</label>
-              <input
-                id="alert-price"
-                type="text"
-                class="w-full rounded-2xl px-4 py-3 outline-none"
-                placeholder="Choose a level or enter price"
-              />
-
-              <div class="grid grid-cols-3 gap-2 mt-3">
-                <button type="button" onclick="setPriceLevel('194.20', 'Resistance')" class="level-btn">
-                  Resistance
-                </button>
-                <button type="button" onclick="setPriceLevel('191.60', 'Range Mid')" class="level-btn">
-                  Range Mid
-                </button>
-                <button type="button" onclick="setPriceLevel('189.80', 'Support')" class="level-btn">
-                  Support
-                </button>
-              </div>
-
-              <div class="mt-4">
-                <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Expectation</label>
-                <div class="grid grid-cols-1 gap-2">
-                  <button type="button" onclick="setExpectation('Breakout ↑', this)" class="choice-btn active text-left">
-                    Breakout ↑
-                  </button>
-                  <button type="button" onclick="setExpectation('Rejection ↓', this)" class="choice-btn text-left">
-                    Rejection ↓
-                  </button>
-                  <button type="button" onclick="setExpectation('Reaction', this)" class="choice-btn text-left">
-                    Reaction
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Timeframe</label>
-              <select id="alert-timeframe" class="w-full rounded-2xl px-4 py-3 outline-none">
-                <option value="1min">1 min</option>
-                <option value="5min">5 min</option>
-                <option value="15min">15 min</option>
-                <option value="1H">1H</option>
-                <option value="4H">4H</option>
-                <option value="1D" selected>1D</option>
-                <option value="1W">1W</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="text-xs uppercase tracking-[0.16em] muted block mb-2">Trigger</label>
-              <select id="alert-trigger" class="w-full rounded-2xl px-4 py-3 outline-none">
-                <option value="Candle Close">Candle Close</option>
-                <option value="Real-time Intrabar">Real-time Intrabar</option>
-                <option value="Close + Confirmation">Close + Confirmation</option>
-              </select>
-            </div>
-
-            <button
-              onclick="addAlert()"
-              class="w-full rounded-2xl px-4 py-3 font-semibold mt-2"
-              style="background:var(--accent);color:white;"
-            >
-              Add Alert
-            </button>
-          </div>
-
-          <div class="mt-5 panel-soft rounded-2xl p-4">
-            <div class="text-xs uppercase tracking-[0.16em] muted mb-3">Active Alerts</div>
-            <div id="active-alerts" class="space-y-3">
-              <div id="empty-alerts" class="text-sm muted">No active alerts yet.</div>
-            </div>
-          </div>
-        </section>
       </div>
     </section>
   </main>
 
+  <!-- LOGIC -->
   <script>
-    let selectedTimeframe = "1D";
-    let selectedExpectation = "Breakout ↑";
-    let selectedPriceLabel = "";
-
-    function applySavedTheme() {
-      const savedTheme = localStorage.getItem("veloxis-theme");
-      const body = document.getElementById("main-body");
-
-      if (savedTheme === "light") {
-        body.classList.remove("dark");
-      } else {
-        body.classList.add("dark");
-      }
-    }
 
     function toggleTheme() {
-      const body = document.getElementById("main-body");
-      body.classList.toggle("dark");
-
-      const currentTheme = body.classList.contains("dark") ? "dark" : "light";
-      localStorage.setItem("veloxis-theme", currentTheme);
-    }
-
-    function setTimeframe(tf, el) {
-      selectedTimeframe = tf;
-
-      document.querySelectorAll(".tf-btn").forEach(btn => btn.classList.remove("active"));
-      el.classList.add("active");
-
-      const alertTimeframe = document.getElementById("alert-timeframe");
-      if (alertTimeframe) alertTimeframe.value = tf;
-
-      document.getElementById("pattern-timeframe").textContent = tf;
-
-      refreshDecision(tf);
-      refreshPatternContext(tf);
+      document.getElementById("main-body").classList.toggle("dark");
     }
 
     function analyzeSymbol() {
-      const symbolInput = document.getElementById("symbol-input");
-      const symbol = symbolInput.value.trim().toUpperCase() || "AAPL";
-
-      symbolInput.value = symbol;
-      document.getElementById("chart-title").textContent = symbol + " Price Structure";
-
-      const knownNames = {
-        AAPL: "Apple Inc.",
-        QQQ: "Invesco QQQ Trust",
-        SPY: "SPDR S&P 500 ETF",
-        TSLA: "Tesla Inc.",
-        AMD: "Advanced Micro Devices",
-        NVDA: "NVIDIA Corp."
-      };
-
-      document.getElementById("company-name").textContent = knownNames[symbol] || symbol;
-      askVeloxis();
+      const symbol = document.getElementById("symbol-input").value.toUpperCase();
+      document.getElementById("chart-title").innerText = symbol + " Price Structure";
+      document.getElementById("company-name").innerText = symbol;
     }
 
-    function refreshDecision(tf) {
-      const decision = document.getElementById("decision-label");
-
-      if (tf === "1min" || tf === "5min") {
-        decision.textContent = "Wait — Fast Timeframe Noise";
-      } else if (tf === "1H") {
-        decision.textContent = "Watch Resistance Reaction";
-      } else {
-        decision.textContent = "Wait for Confirmation";
-      }
-    }
-
-    function refreshPatternContext(tf) {
-      const pattern = document.getElementById("dominant-pattern");
-      const context = document.getElementById("pattern-context");
-      const quality = document.getElementById("pattern-quality");
-
-      if (tf === "1H") {
-        pattern.textContent = "Doji Near Resistance";
-        context.textContent = "Indecision Zone";
-        quality.className = "signal-badge badge-warning";
-        quality.textContent = "Watching";
-      } else if (tf === "5min") {
-        pattern.textContent = "Hammer Attempt";
-        context.textContent = "Fast Reversal Attempt";
-        quality.className = "signal-badge badge-watch";
-        quality.textContent = "Developing";
-      } else {
-        pattern.textContent = "Bullish Engulfing";
-        context.textContent = "Near Resistance";
-        quality.className = "signal-badge badge-active";
-        quality.textContent = "Confirmed";
-      }
-    }
-
-    function handleAlertTypeChange() {
-      const type = document.getElementById("alert-type").value;
-
-      const patternBox = document.getElementById("pattern-box");
-      const priceBox = document.getElementById("price-box");
-
-      if (type === "price") {
-        patternBox.classList.add("hidden");
-        priceBox.classList.remove("hidden");
-
-        if (!document.getElementById("alert-price").value) {
-          setPriceLevel("194.20", "Resistance");
-        }
-      } else {
-        patternBox.classList.remove("hidden");
-        priceBox.classList.add("hidden");
-      }
-    }
-
-    function setPriceLevel(price, label) {
-      selectedPriceLabel = label;
-      const input = document.getElementById("alert-price");
-      input.value = price + " (" + label + ")";
-
-      document.querySelectorAll(".level-btn").forEach(btn => btn.classList.remove("active"));
-
-      const levelButtons = Array.from(document.querySelectorAll(".level-btn"));
-      const matched = levelButtons.find(btn => btn.textContent.trim() === label);
-      if (matched) matched.classList.add("active");
-
-      updateExpectationHint(label);
-    }
-
-    function setExpectation(expectation, el) {
-      selectedExpectation = expectation;
-
-      document.querySelectorAll(".choice-btn").forEach(btn => btn.classList.remove("active"));
+    function setChartTimeframe(tf, el) {
+      document.querySelectorAll(".tf-btn").forEach(b => b.classList.remove("active"));
       el.classList.add("active");
     }
 
-    function updateExpectationHint(label) {
-      if (label === "Resistance") {
-        selectedExpectation = "Breakout ↑";
-      } else if (label === "Support") {
-        selectedExpectation = "Reaction";
-      } else {
-        selectedExpectation = "Reaction";
-      }
-
-      const choiceButtons = Array.from(document.querySelectorAll(".choice-btn"));
-      choiceButtons.forEach(btn => btn.classList.remove("active"));
-
-      const matched = choiceButtons.find(btn => btn.textContent.trim() === selectedExpectation);
-      if (matched) matched.classList.add("active");
-    }
-
-    function addAlert() {
-      const symbol = document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
-      const type = document.getElementById("alert-type").value;
-      const timeframe = document.getElementById("alert-timeframe").value;
-      const trigger = document.getElementById("alert-trigger").value;
-      const activeAlerts = document.getElementById("active-alerts");
-      const emptyAlerts = document.getElementById("empty-alerts");
-
-      if (emptyAlerts) emptyAlerts.remove();
-
-      let title = "";
-      let detail = "";
-
-      if (type === "price") {
-        const price = document.getElementById("alert-price").value || "194.20 (Resistance)";
-        title = symbol + " — " + selectedExpectation + " at " + price;
-        detail = "Timeframe: " + timeframe + " • Trigger: " + trigger;
-      } else {
-        const pattern = document.getElementById("alert-pattern").value;
-        title = symbol + " — " + pattern;
-        detail = "Timeframe: " + timeframe + " • Trigger: " + trigger;
-      }
-
-      const item = document.createElement("div");
-      item.className = "panel rounded-2xl px-4 py-3";
-      item.innerHTML = `
-        <div class="flex items-center justify-between gap-3">
-          <div>
-            <div class="text-sm font-semibold">${title}</div>
-            <div class="text-xs muted mt-1">${detail}</div>
-          </div>
-          <span class="signal-badge badge-watch">Active</span>
-        </div>
-      `;
-
-      activeAlerts.prepend(item);
-    }
-
-    function quickAsk(question) {
-      document.getElementById("ask-input").value = question;
-      askVeloxis();
+    function quickAsk(q) {
+      document.getElementById("ask-input").value = q;
     }
 
     function askVeloxis() {
-      const symbol = document.getElementById("symbol-input").value.trim().toUpperCase() || "AAPL";
-      const response = document.getElementById("veloxis-response");
+      const text = document.getElementById("ask-input").value;
 
-      response.textContent =
-        symbol + " is approaching 194.20 resistance. The clean decision is to wait for candle-close confirmation before treating this as a valid breakout. If price rejects that level, focus shifts back toward 191.60.";
+      document.getElementById("veloxis-response").innerText =
+        "Market is approaching key resistance. Confirmation above level is required before continuation. Monitor reaction closely.";
+
+      document.getElementById("decision-text").innerText = "Wait for Confirmation";
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-      applySavedTheme();
-      handleAlertTypeChange();
-      refreshDecision(selectedTimeframe);
-      refreshPatternContext(selectedTimeframe);
-    });
+    // SMART ALERT STATE
+    let level = "resistance";
+    let expectation = "breakout";
+    let timeframe = "1D";
+
+    function setLevel(v, el) {
+      level = v;
+      document.querySelectorAll(".level-btn").forEach(b => b.classList.remove("active"));
+      el.classList.add("active");
+    }
+
+    function setExpectation(v, el) {
+      expectation = v;
+      document.querySelectorAll(".choice-btn").forEach(b => b.classList.remove("active"));
+      el.classList.add("active");
+    }
+
+    function setAlertTF(v, el) {
+      timeframe = v;
+      document.querySelectorAll(".alert-tf-btn").forEach(b => b.classList.remove("active"));
+      el.classList.add("active");
+    }
+
+    function addAlert() {
+      alert(`Alert Created:\n${level} → ${expectation}\nTF: ${timeframe}`);
+    }
+
   </script>
+
 </body>
 </html>
