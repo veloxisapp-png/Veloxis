@@ -781,23 +781,42 @@
     }
 
     function useSuggestedAlert(){
-      const box = document.getElementById("active-alerts");
-      const suggestion = document.getElementById("suggestion-text").innerText;
+  const box = document.getElementById("active-alerts");
+  const suggestion = document.getElementById("suggestion-text").innerText;
 
-      box.className = "space-y-2";
-      if(box.innerText.includes("No active alerts yet")) box.innerHTML = "";
+  const section = document.getElementById("manual-alert-section");
+  const customizeBtn = document.getElementById("customize-btn");
+  const suggestedBtn = document.getElementById("suggested-btn");
 
-      const item = document.createElement("div");
-      item.className = "panel rounded-2xl px-4 py-3";
-      item.innerHTML = `
-        <div class="flex items-center justify-between gap-3">
-          <div class="text-sm font-semibold">${suggestion}</div>
-          <span class="signal-badge badge-watch">Active</span>
-        </div>
-      `;
+  // يرجع كل شيء للوضع الطبيعي
+  section.classList.add("hidden");
 
-      box.prepend(item);
-    }
+  customizeBtn.classList.remove("customize-active");
+  customizeBtn.innerText = "Customize Alert";
+
+  suggestedBtn.style.opacity = "1";
+  suggestedBtn.style.filter = "none";
+
+  // إضافة التنبيه
+  box.className = "space-y-2";
+  if(box.innerText.includes("No active alerts yet")) box.innerHTML = "";
+
+  const item = document.createElement("div");
+  item.className = "panel rounded-2xl px-4 py-3 flex justify-between items-center";
+
+  item.innerHTML = `
+    <div class="text-sm font-semibold">${suggestion}</div>
+    <div class="flex items-center gap-2">
+      <span class="signal-badge badge-watch">Active</span>
+      <button onclick="this.closest('div.panel').remove()" 
+        class="text-xs px-2 py-1 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30">
+        Delete
+      </button>
+    </div>
+  `;
+
+  box.prepend(item);
+}
 
     function addAlert(){
       const box = document.getElementById("active-alerts");
